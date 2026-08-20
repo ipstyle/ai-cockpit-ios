@@ -112,6 +112,10 @@ final class Cockpit {
     /// einer Sekunde vorlag. Jede Quelle schreibt ohnehin nur in ihr eigenes
     /// Feld — sie können sich nicht in die Quere kommen.
     func aktualisiere() async {
+        // Im Demomodus wird nichts abgefragt — kein Netz, kein Schlüsselbund.
+        // Die Prüfung steht vor allem anderen: Ein Abruf, der schon läuft,
+        // liesse sich nicht mehr zurückholen.
+        guard !DemoModus.laeuft else { return uebernehmeDemodaten() }
         // Zwei gleichzeitige Läufe würden denselben Refresh-Token doppelt
         // einlösen; der zweite scheitert, sobald Anthropic ihn dreht.
         guard !wirdAktualisiert else { return }
@@ -152,6 +156,7 @@ final class Cockpit {
     /// Fehlermeldung. Die übrigen Karten bleiben unangetastet stehen, samt
     /// ihren Zahlen; sie haben mit dem Fehlschlag nichts zu tun.
     func versucheErneut(_ karte: CardLayout.Card) async {
+        guard !DemoModus.laeuft else { return }
         guard !wirdAktualisiert else { return }
         wirdAktualisiert = true
         defer { wirdAktualisiert = false }
@@ -206,6 +211,17 @@ final class Cockpit {
     }
 
     // MARK: - Karten bauen
+
+    /// Der Demomodus: fertige Karten statt vier Abfragen.
+    ///
+    /// `zuletztAktualisiert` wird trotzdem gesetzt — die Kopfzeile soll «vor
+    /// wenigen Sekunden» sagen und nicht «noch keine Daten». Auch das gehört
+    /// zu dem Bild, das die Demo zeigt.
+    private func uebernehmeDemodaten() {
+        karten = DemoDaten.karten()
+        zuletztAktualisiert = Date()
+        DemoDaten.widgetZustand().schreib()
+    }
 
     private func baueKarten() {
         karten = [

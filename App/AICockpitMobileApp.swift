@@ -41,6 +41,13 @@ struct WurzelAnsicht: View {
             // Das Erscheinungsbild gehört an die Wurzel, nicht in die
             // Einstellungen: Dort gesetzt, färbte es nur sich selbst.
             .preferredColorScheme(cockpit.erscheinungsbild)
+            .safeAreaInset(edge: .top) {
+                // Sagt, dass die Zahlen erfunden sind, und bietet den Ausweg.
+                // Blendet sich selbst aus, wenn die Demo nicht läuft. Ein
+                // Prüfer, der nicht merkt, dass er Demodaten sieht, ist
+                // genauso ein Problem wie gar keine Daten.
+                DemoBand { Task { await cockpit.aktualisiere() } }
+            }
             .sheet(isPresented: $zeigtEinstellungen) {
                 // Nach dem Zumachen gleich nachfassen: Wer eben einen Schlüssel
                 // eingetragen hat, will die Zahlen sehen und nicht noch einen

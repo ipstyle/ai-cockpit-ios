@@ -29,6 +29,11 @@ struct AnmeldeAnsicht: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(laeuft)
 
+                // Der Weg für alle, die (noch) kein Abo haben — offen
+                // beschriftet, kein Geheimcode und keine versteckte Geste.
+                // Eine versteckte wäre selbst ein Ablehnungsgrund.
+                DemoStarterKnopf()
+
                 if anmeldung.protokoll.isEmpty == false {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Ablauf").font(.footnote.weight(.medium))
