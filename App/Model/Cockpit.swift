@@ -653,7 +653,12 @@ private enum Abruf {
             }
             return .daten(try await usage.fetch(token: token))
         } catch let fehler as ProviderError {
-            guard case .notSignedIn = fehler, !schonErneuert,
+            // `.unauthorized`, nicht `.notSignedIn`: Das wirft der Abruf bei
+            // 401/403, also genau im Fall «Schlüssel abgelaufen, ohne dass
+            // `expiresAt` es sagte». `.notSignedIn` trifft dagegen den Fall
+            // «gar kein Erneuerungsschlüssel da» — dort ist ein zweiter
+            // Versuch sinnlos. Der Claude-Pfad darüber macht es richtig.
+            guard case .unauthorized = fehler, !schonErneuert,
                   let erneuert = try? await auth.erneuere(token) else {
                 return .fehler(fehler.userMessage)
             }
