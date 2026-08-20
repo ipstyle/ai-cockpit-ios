@@ -6375,6 +6375,159 @@
           }
         }
       }
+    },
+    "Karten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cards"
+          }
+        }
+      }
+    },
+    "alle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "alle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "all"
+          }
+        }
+      }
+    },
+    "%lld von 5": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld von 5"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld of 5"
+          }
+        }
+      }
+    },
+    "Alle wieder einblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle wieder einblenden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show all again"
+          }
+        }
+      }
+    },
+    "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hidden cards disappear from the list. They are still fetched, so bringing one back shows figures right away rather than a wait."
+          }
+        }
+      }
+    },
+    "In den Systemeinstellungen ändern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Systemeinstellungen ändern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change in System Settings"
+          }
+        }
+      }
+    },
+    "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The same choice lives there, and the system restarts AI Cockpit for you."
+          }
+        }
+      }
+    },
+    "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The new language appears the next time AI Cockpit starts. Close the app completely — returning from the background is not enough."
+          }
+        }
+      }
+    },
+    "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "German and English are fully translated. Without a choice of your own the app follows the device, falling back to English."
+          }
+        }
+      }
     }
   }
 }
