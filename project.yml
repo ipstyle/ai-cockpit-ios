@@ -5,6 +5,9 @@
 name: AICockpitMobile
 options:
   bundleIdPrefix: com.ip-style
+  # Ohne diese Angabe hält iOS die App für einsprachig englisch und formatiert
+  # Datum und Dauer entsprechend — deutscher Text neben «in 2 hours».
+  developmentLanguage: de
   deploymentTarget:
     iOS: "26.0"
   createIntermediateGroups: true
@@ -21,6 +24,7 @@ packages:
 settings:
   base:
     SWIFT_VERSION: "6.0"
+    SWIFT_EMIT_LOC_STRINGS: YES
     DEVELOPMENT_TEAM: ""
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
