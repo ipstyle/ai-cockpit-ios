@@ -377,7 +377,10 @@ final class Cockpit {
             warnung = true
         }
         guard !teile.isEmpty else { return nil }
-        return CardSummary(text: teile.joined(separator: " · "), warning: warnung)
+        // Untereinander statt nebeneinander: Zwei Zeilen mit je einem Zeitraum
+        // und einem Wert lassen sich mit einem Blick vergleichen, eine lange
+        // Zeile nicht. Und es passt in jeder Schriftgrösse, ohne zu schrumpfen.
+        return CardSummary(text: teile.joined(separator: "\n"), warning: warnung)
     }
 
     private func warnt(_ fenster: LimitWindow) -> Bool {
@@ -414,7 +417,7 @@ final class Cockpit {
                 CockpitMoney(title: String(localized: "Gesamt"), value: kosten.total, currency: kosten.currency,
                              emphasised: true)
             ]
-            summary = CardSummary(text: String(localized: "Heute \(Format.money(kosten.today, kosten.currency)) · Monat \(Format.money(kosten.month, kosten.currency))"))
+            summary = CardSummary(text: String(localized: "Heute \(Format.money(kosten.today, kosten.currency))\nMonat \(Format.money(kosten.month, kosten.currency))"))
         }
 
         return CockpitCard(id: .openai, title: "OpenAI-API", provider: .openAI,
@@ -454,7 +457,7 @@ final class Cockpit {
                 CockpitMoney(title: String(localized: "Gesamt"), value: werte.total, currency: werte.currency,
                              emphasised: true)
             ]
-            summary = CardSummary(text: String(localized: "Heute \(Format.money(werte.today, werte.currency)) · Monat \(Format.money(werte.month, werte.currency))"))
+            summary = CardSummary(text: String(localized: "Heute \(Format.money(werte.today, werte.currency))\nMonat \(Format.money(werte.month, werte.currency))"))
         }
 
         return CockpitCard(id: .anthropic, title: "Anthropic-API", provider: .claude,
@@ -589,7 +592,7 @@ final class Cockpit {
             warnung = warnung || warnt(fenster)
         }
         guard !teile.isEmpty else { return nil }
-        return CardSummary(text: teile.joined(separator: " · "), warning: warnung)
+        return CardSummary(text: teile.joined(separator: "\n"), warning: warnung)
     }
 
     private func brueckenKarte(_ id: CardLayout.Card,

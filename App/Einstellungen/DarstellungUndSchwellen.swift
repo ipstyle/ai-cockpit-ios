@@ -78,6 +78,15 @@ enum Sprachwahl {
         return roh.prefix(1).uppercased() + roh.dropFirst()
     }
 
+    /// Merkt die gewählte Sprache für den nächsten Start.
+    ///
+    /// `AppleLanguages` ist der Schlüssel, aus dem iOS beim Start liest. Setzen
+    /// wirkt deshalb erst beim nächsten Start — die Oberfläche sagt das auch.
+    /// Ein leerer Wert übergibt die Wahl wieder dem Gerät.
+    static func setze(_ kuerzel: String) {
+        UserDefaults.standard.set([kuerzel], forKey: "AppleLanguages")
+    }
+
     /// Führt in die Systemeinstellungen dieser App.
     ///
     /// Dieselbe Zeile steht in `MitteilungenErlaubnis`. Sie bleibt dort, wo sie
@@ -103,27 +112,48 @@ enum Sprachwahl {
 /// In den Systemeinstellungen bietet iOS seit Version 13 eine Sprachwahl je
 /// App an. Sie wirkt sofort, weil das System die App dabei neu startet.
 struct SpracheSeite: View {
+    /// Die Sprache, die iOS beim nächsten Start laden soll.
+    ///
+    /// `AppleLanguages` hält iOS als **Liste**, nicht als Zeichenkette —
+    /// `@AppStorage` taugt dafür nicht. Gesetzt wird über `Sprachwahl.setze`,
+    /// und gewirkt hat es erst beim nächsten Start; die Fusszeile sagt das.
+    @State private var wahl: String = Sprachwahl.aktuellesKuerzel
+    @State private var umgestellt = false
 
     var body: some View {
         EinstellungsForm(titel: String(localized: "Sprache")) {
             Section {
-                ZustandsZeile(text: String(localized: "Die App läuft auf \(Sprachwahl.aktuellerName)."),
-                              symbol: "globe")
+                Picker(selection: $wahl) {
+                    // Jede in ihrem **eigenen** Namen. Wer die App gerade in
+                    // einer Sprache vor sich hat, die er nicht liest, findet
+                    // «Deutsch» und «English» trotzdem.
+                    Text(verbatim: "English").tag("en")
+                    Text(verbatim: "Deutsch").tag("de")
+                } label: {
+                    Text("Sprache")
+                }
+                .pickerStyle(.inline)
+                .onChange(of: wahl) { _, neu in
+                    Sprachwahl.setze(neu)
+                    umgestellt = true
+                }
             } footer: {
-                Text("Deutsch und Englisch sind vollständig übersetzt. Steht das Gerät auf einer anderen Sprache, erscheint die App auf Englisch.")
+                if umgestellt {
+                    Text("Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht.")
+                } else {
+                    Text("Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück.")
+                }
             }
 
             Section {
                 Button {
                     Sprachwahl.oeffneSystemeinstellungen()
                 } label: {
-                    Label(String(localized: "Systemeinstellungen öffnen"), systemImage: "arrow.up.forward.app")
+                    Label(String(localized: "In den Systemeinstellungen ändern"), systemImage: "arrow.up.forward.app")
                         .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
                 }
-            } header: {
-                Text("Umstellen")
             } footer: {
-                Text("iOS lädt die Sprachdateien beim Start der App. Ein Schalter an dieser Stelle könnte deshalb erst beim nächsten Start greifen — bis dahin stünde die Oberfläche weiter in der alten Sprache. In den Systemeinstellungen steht dieselbe Wahl unter «Sprache», und das System startet AI Cockpit dabei gleich neu. Deshalb führt der Weg dorthin.")
+                Text("Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu.")
             }
         }
     }

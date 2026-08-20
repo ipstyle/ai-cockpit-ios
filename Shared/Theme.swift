@@ -227,8 +227,11 @@ enum Format {
 /// Mac-Ziels, nicht des Kerns. Bis es hier eine iOS-Fassung davon gibt, reicht
 /// jede Ansicht ihre Schwellen durch; die Vorgaben sind dieselben wie dort.
 struct LimitThresholds: Equatable, Sendable {
-    var warn: Double = 75
-    var critical: Double = 90
+    /// Ab hier orange, ab `critical` rot. Vorgaben 80 und 95 — die
+    /// macOS-Fassung warnt ab 75 und 90; auf dem Telefon schaut man seltener
+    /// hin, und eine Warnung, die zu früh kommt, wird zur Tapete.
+    var warn: Double = 80
+    var critical: Double = 95
 
     static let standard = LimitThresholds()
 

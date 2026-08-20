@@ -161,16 +161,13 @@ struct Card<Content: View>: View {
                         .layoutPriority(1)
                 }
                 Text(summary.text)
-                    .font(.callout).monospacedDigit()
-                    // Eine Zeile, und lieber kleiner als umgebrochen: Die
-                    // Kurzfassung ist eine Zeile Zahlen, und über zwei Zeilen
-                    // verteilt liest sie sich schlechter, nicht besser.
-                    // Abschneiden ist trotzdem keine Möglichkeit — «7 d: 48…»
-                    // ist eine halbe Zahl, und die ist schlimmer als keine.
-                    // Erst bei den Schriftgrössen für Sehbehinderte darf sie
-                    // umbrechen; dort ist Platz das kleinere Übel.
-                    .lineLimit(typeSize.isAccessibilitySize ? nil : 1)
-                    .minimumScaleFactor(0.6)
+                    .font(.callout.weight(.semibold)).monospacedDigit()
+                    // Die Kurzfassung bringt ihre Zeilen selbst mit: je ein
+                    // Zeitraum und ein Wert, untereinander. Zwei kurze Zeilen
+                    // lassen sich mit einem Blick vergleichen, eine lange
+                    // nicht. Abgeschnitten wird nichts — «7 d: 48…» wäre eine
+                    // halbe Zahl, und die ist schlimmer als keine.
+                    .lineLimit(nil)
                     .multilineTextAlignment(.trailing)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -335,7 +332,12 @@ struct LimitRow: View {
                 // Die Zahl steht **immer** da. Der Balken färbt sich, aber
                 // niemand muss die Farbe deuten können, um den Wert zu kennen.
                 Text(Format.percent(window.usedPercent))
-                    .font(muted ? .caption : .callout.weight(.semibold))
+                    // Ein Wert sieht überall gleich aus: `.callout`, halbfett,
+                    // Ziffern gleich breit. Vorher trugen Prozent, Betrag und
+                    // Kurzfassung drei verschiedene Grössen für dieselbe Art
+                    // Information, und das las sich wie eine Rangfolge, die es
+                    // nicht gibt.
+                    .font(muted ? .caption.weight(.semibold) : .callout.weight(.semibold))
                     .monospacedDigit()
                     .foregroundStyle(tint)
                 if let symbol = level.symbol {
@@ -411,18 +413,21 @@ struct MoneyRow: View {
 
     var body: some View {
         let palette = Theme.palette(scheme)
-        let font: Font = emphasised ? .callout.weight(.semibold) : .callout
+        // Die Beschriftung bleibt schlank, der **Wert** ist überall halbfett —
+        // dieselbe Grösse wie die Prozentzahl in der Fensterzeile.
+        let beschriftung: Font = emphasised ? .callout.weight(.medium) : .callout
+        let wertschrift: Font = .callout.weight(.semibold)
         let layout = typeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
             : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 8))
 
         return layout {
             Text(title)
-                .font(font)
+                .font(beschriftung)
                 .foregroundStyle(muted ? palette.secondary : palette.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text(Format.money(value, currency))
-                .font(font)
+                .font(wertschrift)
                 .monospacedDigit()
                 .foregroundStyle(muted ? palette.secondary : palette.primary)
         }
