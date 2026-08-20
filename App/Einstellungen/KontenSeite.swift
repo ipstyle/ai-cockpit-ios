@@ -1,7 +1,7 @@
 import SwiftUI
 import AgentDeckCore
 
-// Konten — die Seite, ohne die drei der sechs Karten dauerhaft leer bleiben.
+// Konten — die Seite, ohne die drei der fünf Karten dauerhaft leer bleiben.
 //
 // Vier Abschnitte, einer je Dienst. Claude ist ein Anmeldevorgang, die übrigen
 // drei sind ein Schlüssel zum Einsetzen. Der Ton ist überall derselbe: **Ein

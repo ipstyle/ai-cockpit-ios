@@ -161,6 +161,20 @@ struct CardsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
 
+            // Alle auf einmal — wie in der Menüleistenfassung. Das Zeichen
+            // zeigt an, was der Druck bewirkt, nicht den heutigen Zustand:
+            // Sind alle zu, weist es nach aussen («aufklappen»), sonst nach
+            // innen. Zusammen mit der Beschriftung für VoiceOver ist damit
+            // beides eindeutig, ohne dass Farbe eine Rolle spielt.
+            knopf(systemImage: alleZu ? "arrow.up.left.and.arrow.down.right"
+                                      : "arrow.down.right.and.arrow.up.left",
+                  label: alleZu ? String(localized: "Alle Karten aufklappen")
+                                : String(localized: "Alle Karten einklappen"),
+                  palette: palette,
+                  busy: false) {
+                withAnimation(.snappy(duration: 0.18)) { klappeAlle() }
+            }
+
             knopf(systemImage: "arrow.clockwise",
                   label: String(localized: "Jetzt aktualisieren"),
                   palette: palette,
@@ -286,6 +300,33 @@ struct CardsView: View {
     /// hier eine Bindung, die beim Setzen über `CardLayout` geht statt selbst
     /// zu basteln. Wird nichts geändert, wird auch nichts geschrieben: Sonst
     /// stösst jede Neuzeichnung eine Schreiboperation an.
+    /// Sind alle sichtbaren Karten eingeklappt?
+    ///
+    /// Gefragt wird nach den **angezeigten** Karten, nicht nach allen, die das
+    /// Layout kennt: Eine Karte, die es hier gar nicht gibt, darf nicht darüber
+    /// entscheiden, was der Knopf tut.
+    private var alleZu: Bool {
+        let zu = CardLayout.parse(collapsedCards)
+        return cards.isEmpty == false && cards.allSatisfy { zu.contains($0.id.rawValue) }
+    }
+
+    /// Klappt alle zu — oder alle auf, wenn schon alle zu sind.
+    private func klappeAlle() {
+        if alleZu {
+            collapsedCards = ""
+        } else {
+            // Über `CardLayout.toggling` gehen statt die Zeichenkette selbst zu
+            // bauen: Das Format teilen wir uns mit der Mac-Fassung, und wer es
+            // an zwei Stellen schreibt, schreibt es irgendwann verschieden.
+            var neu = collapsedCards
+            let zu = CardLayout.parse(collapsedCards)
+            for karte in cards where zu.contains(karte.id.rawValue) == false {
+                neu = CardLayout.toggling(karte.id.rawValue, in: neu)
+            }
+            collapsedCards = neu
+        }
+    }
+
     private func bindung(fuer id: CardLayout.Card) -> Binding<Bool> {
         Binding(
             get: { CardLayout.parse(collapsedCards).contains(id.rawValue) },

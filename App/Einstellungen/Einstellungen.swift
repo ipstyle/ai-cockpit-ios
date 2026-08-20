@@ -252,6 +252,13 @@ final class Einstellungen {
         kritischeSchwelle = LimitThresholds.standard.critical
         for schluessel in Schluessel.alle { vorgaben.removeObject(forKey: schluessel) }
 
+        // Die Mitteilungen gehören dazu: die zwei Schalter, der Merkzettel mit
+        // dem, was schon gemeldet wurde, und eine Meldung, die für später
+        // bereits eingeplant ist. Letztere käme sonst noch, nachdem hier alles
+        // gelöscht wurde — und niemand wüsste, woher.
+        Mitteilungen.geteilt.vergissAlles()
+        for schluessel in MitteilungenVorgaben.Schluessel.alle { vorgaben.removeObject(forKey: schluessel) }
+
         AppGruppe.vorgaben?.removeObject(forKey: WidgetZustand.schluessel)
         WidgetCenter.shared.reloadAllTimelines()
 

@@ -10,7 +10,5 @@
 	<array>
 		<string>$(AppIdentifierPrefix)com.ip-style.aicockpitmobile</string>
 	</array>
-	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
-	<string>$(TeamIdentifierPrefix)com.ipstyle.aicockpit</string>
 </dict>
 </plist>

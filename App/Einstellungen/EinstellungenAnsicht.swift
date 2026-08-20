@@ -3,7 +3,7 @@ import AgentDeckCore
 
 // Die Einstellungen der iOS-Fassung.
 //
-// Auf dem Mac sind es sieben Reiter. Hier sind es fünf Seiten in einem
+// Auf dem Mac sind es sieben Reiter. Hier sind es sechs Seiten in einem
 // `NavigationStack`, und das ist kein Sparzwang: Sieben Reiter nebeneinander
 // setzen voraus, dass man alle sieben gleichzeitig sieht und sich den Weg
 // merkt. Auf einem Telefon sieht man einen Bildschirm. Eine Liste, aus der man
@@ -60,10 +60,23 @@ private struct Inhalt: View {
                       titel: String(localized: "Schwellenwerte"),
                       symbol: "speedometer",
                       wert: "\(Int(einstellungen.warnSchwelle)) % · \(Int(einstellungen.kritischeSchwelle)) %")
+
+                zeile(ziel: MitteilungenSeite(vorgaben: MitteilungenVorgaben.geteilt),
+                      titel: String(localized: "Mitteilungen"),
+                      symbol: "bell.badge",
+                      wert: mitteilungenKurzfassung)
             }
             .listRowBackground(palette.card)
 
             Section {
+                // Steht **vor** der Diagnose und nicht als Absatz in «Über»:
+                // Wer wissen will, wohin seine Schlüssel gehen, sucht das nicht
+                // unter «Über». Die Fusszeile dieses Abschnitts macht dieselbe
+                // Zusage in einem Satz — der Weg hinein ist der Beleg dazu.
+                zeile(ziel: DatenschutzSeite(),
+                      titel: String(localized: "Datenschutz und Sicherheit"),
+                      symbol: "lock.shield",
+                      wert: nil)
                 zeile(ziel: DiagnoseSeite(einstellungen: einstellungen, cockpit: cockpit),
                       titel: String(localized: "Diagnose"),
                       symbol: "stethoscope",
@@ -118,6 +131,19 @@ private struct Inhalt: View {
     /// «Angemeldet · 2 von 3 Schlüsseln» — und wenn nichts eingerichtet ist,
     /// steht das auch so da, ohne Warnzeichen. Ein leeres Konto ist kein
     /// Fehlerzustand.
+    /// Was gemeldet wird — oder «aus». Dieselbe Absicht wie bei den anderen
+    /// Zeilen: Wer nur nachsehen will, ob die Hinweise an sind, soll dafür
+    /// nicht hineingehen müssen.
+    private var mitteilungenKurzfassung: String {
+        let vorgaben = MitteilungenVorgaben.geteilt
+        switch (vorgaben.beiLimit, vorgaben.beiNeuemFenster) {
+        case (false, false): return String(localized: "aus")
+        case (true, false): return String(localized: "Limit")
+        case (false, true): return String(localized: "neues Fenster")
+        case (true, true): return String(localized: "Limit · neues Fenster")
+        }
+    }
+
     private var kontenKurzfassung: String {
         let schluessel = Einstellungen.schluesselDienste.filter { einstellungen.zustand($0).istHinterlegt }.count
         let anmeldung = einstellungen.claudeZustand.istAngemeldet

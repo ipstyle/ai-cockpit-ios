@@ -142,6 +142,11 @@ final class Cockpit {
         zuletztAktualisiert = Date()
         baueKarten()
         schreibeWidgetZustand()
+        // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
+        // Meldung auf sie zeigt. Was gemeldet wird, entscheidet `Mitteilungen`
+        // — hier wird nur gesagt, was es Neues gibt.
+        await Mitteilungen.geteilt.melde(claude: claude.wert, chatgpt: codex.wert,
+                                         schwellen: schwellen)
     }
 
     /// Aktualisiert nur, wenn die Zahlen alt genug sind.
@@ -183,6 +188,11 @@ final class Cockpit {
         }
         baueKarten()
         schreibeWidgetZustand()
+        // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
+        // Meldung auf sie zeigt. Was gemeldet wird, entscheidet `Mitteilungen`
+        // — hier wird nur gesagt, was es Neues gibt.
+        await Mitteilungen.geteilt.melde(claude: claude.wert, chatgpt: codex.wert,
+                                         schwellen: schwellen)
     }
 
     // MARK: - Knöpfe an den Karten
