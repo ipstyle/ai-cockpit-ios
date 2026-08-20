@@ -94,11 +94,30 @@ struct WidgetZustand: Codable, Sendable, Equatable {
     /// - Returns: ob das Widget angestossen wurde.
     @discardableResult
     func schreib(nach vorgaben: UserDefaults? = AppGruppe.vorgaben) -> Bool {
+        schreib(nach: vorgaben, stossAn: true)
+    }
+
+    /// Dasselbe, ohne das Widget anzustossen.
+    ///
+    /// Ruft das Widget selbst ab und legt das Ergebnis hier ab, wäre ein
+    /// Anstoss ein Kreis: Neuladen führte zum Abruf, der Abruf zum Neuladen.
+    /// Deshalb dieser Weg — und **nicht** ein zweiter Kodierer auf der
+    /// Widget-Seite. Zwei Kodierer heisst zwei Datumsschreibweisen, die im
+    /// Gleichschritt bleiben müssen, und der Tag, an dem eine davon nachzieht,
+    /// fällt niemandem auf: Der Zustand liesse sich schreiben und nicht mehr
+    /// lesen, das Widget bliebe einfach leer.
+    @discardableResult
+    func legAbOhneNeuladen(nach vorgaben: UserDefaults? = AppGruppe.vorgaben) -> Bool {
+        schreib(nach: vorgaben, stossAn: false)
+    }
+
+    @discardableResult
+    private func schreib(nach vorgaben: UserDefaults?, stossAn: Bool) -> Bool {
         guard let vorgaben, let daten = try? Self.kodierer.encode(self) else { return false }
         let vorher = Self.lies(aus: vorgaben)
         vorgaben.set(daten, forKey: Self.schluessel)
 
-        guard vorher?.fenster != fenster else { return false }
+        guard stossAn, vorher?.fenster != fenster else { return false }
         WidgetCenter.shared.reloadAllTimelines()
         return true
     }

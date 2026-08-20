@@ -42,7 +42,7 @@ struct Zugaenge: Sendable {
         case kimiAPIKey = "kimi-api-key"
     }
 
-    static let dienst = "AI Cockpit Mobile"
+    static let dienst = SchluesselbundNamen.dienst
 
     /// Die Zugriffsgruppe, unter der App und Widget denselben Eintrag sehen.
     ///
