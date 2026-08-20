@@ -22,6 +22,9 @@ struct AICockpitMobileApp: App {
 struct WurzelAnsicht: View {
     @Bindable var cockpit: Cockpit
 
+    @State private var zeigtEinstellungen = false
+    /// Getrennt vom Einstellungs-Sheet: Wer auf der Claude-Karte «Anmelden»
+    /// tippt, will sich anmelden — nicht erst durch die Einstellungen suchen.
     @State private var zeigtAnmeldung = false
     @Environment(\.scenePhase) private var phase
 
@@ -32,16 +35,21 @@ struct WurzelAnsicht: View {
                   thresholds: cockpit.schwellen,
                   collapsedCards: $cockpit.eingeklappteKarten,
                   refresh: { await cockpit.aktualisiere() },
-                  // Das Zahnrad öffnet heute das Einzige, was sich einstellen
-                  // lässt: die Anmeldung. Die drei API-Schlüssel brauchen ein
-                  // eigenes Fenster — solange es das nicht gibt, laden ihre
-                  // Karten im Text ein statt mit einem Knopf ins Leere.
-                  openSettings: { zeigtAnmeldung = true },
+                  openSettings: { zeigtEinstellungen = true },
                   cardAction: fuehreAus)
             .task { await cockpit.aktualisiere() }
+            // Das Erscheinungsbild gehört an die Wurzel, nicht in die
+            // Einstellungen: Dort gesetzt, färbte es nur sich selbst.
+            .preferredColorScheme(cockpit.erscheinungsbild)
+            .sheet(isPresented: $zeigtEinstellungen) {
+                // Nach dem Zumachen gleich nachfassen: Wer eben einen Schlüssel
+                // eingetragen hat, will die Zahlen sehen und nicht noch einen
+                // Knopf suchen.
+                Task { await cockpit.aktualisiere() }
+            } content: {
+                EinstellungenAnsicht(cockpit: cockpit)
+            }
             .sheet(isPresented: $zeigtAnmeldung) {
-                // Nach dem Zumachen gleich nachfassen: Wer sich eben angemeldet
-                // hat, will die Zahlen sehen und nicht noch einen Knopf suchen.
                 Task { await cockpit.aktualisiere() }
             } content: {
                 AnmeldeAnsicht()

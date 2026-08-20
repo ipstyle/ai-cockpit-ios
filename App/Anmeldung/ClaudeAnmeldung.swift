@@ -31,7 +31,11 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     enum Zustand: Equatable {
         case bereit
         case laeuft(schritt: String)
-        case erfolg(abo: String)
+        /// Die Abostufe, sofern der Dienst sie mitgeschickt hat. Auf dem Mac
+        /// steht sie in `~/.claude.json`; die Nutzungs-Schnittstelle nennt sie
+        /// nicht, und der Anmeldedienst liefert sie nur manchmal. Deshalb
+        /// optional: «Abo: unbekannt» sagt weniger als gar nichts.
+        case erfolg(abo: String?)
         case abgebrochen(grund: String)
         case fehler(String)
     }
@@ -124,7 +128,7 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
                 return
             }
             notiere("Im Schlüsselbund abgelegt")
-            zustand = .erfolg(abo: tokens.subscriptionType ?? "unbekannt")
+            zustand = .erfolg(abo: tokens.subscriptionType)
         } catch is CancellationError {
             laufenderAuftrag = nil
         } catch {

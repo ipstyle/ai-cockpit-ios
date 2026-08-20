@@ -62,7 +62,10 @@ struct AnmeldeAnsicht: View {
         case let .laeuft(schritt):
             HStack(spacing: 8) { ProgressView(); Text(schritt) }
         case let .erfolg(abo):
-            Label("Angemeldet — Abo: \(abo)", systemImage: "checkmark.circle")
+            // Ohne Abostufe steht schlicht «Angemeldet». «Abo: unbekannt» wäre
+            // eine Auskunft über unser Nichtwissen, nicht über das Konto.
+            Label(abo.map { "Angemeldet — Abo: \($0)" } ?? "Angemeldet",
+                  systemImage: "checkmark.circle")
                 .foregroundStyle(.green)
         case let .abgebrochen(grund):
             Label(grund, systemImage: "exclamationmark.circle")

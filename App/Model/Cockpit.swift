@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 import AgentDeckCore
 
 // Der Zustand der iOS-Fassung — das Stück zwischen dem Kern und `CardsView`.
@@ -60,11 +61,29 @@ final class Cockpit {
         }
     }
 
-    /// Solange es keine Einstellungen gibt, gelten die Vorgaben der Mac-Fassung
-    /// (75 / 90). Sie hier als Eigenschaft zu führen statt an jeder Fundstelle
-    /// `.standard` zu schreiben, ist der Unterschied zwischen einer späteren
-    /// Zeile und einer späteren Suche.
-    let schwellen = LimitThresholds.standard
+    /// Aus den Benutzervorgaben, unter denselben Schlüsselnamen wie auf dem
+    /// Mac. Fehlt ein Wert, gelten dessen Vorgaben (75 / 90) — der Nutzer hat
+    /// dann schlicht noch nichts eingestellt, und das ist kein Fehlerfall.
+    var schwellen: LimitThresholds {
+        let vorgaben = UserDefaults.standard
+        let warnung = vorgaben.object(forKey: "warnThreshold") as? Double
+        let kritisch = vorgaben.object(forKey: "criticalThreshold") as? Double
+        var werte = LimitThresholds.standard
+        if let warnung { werte.warn = warnung }
+        if let kritisch { werte.critical = kritisch }
+        return werte
+    }
+
+    /// Hell, dunkel oder wie das System — `nil` heisst «wie das System».
+    /// Gehört an die Wurzel der Ansichten; in den Einstellungen gesetzt, färbte
+    /// es nur diese selbst.
+    var erscheinungsbild: ColorScheme? {
+        switch UserDefaults.standard.string(forKey: "appearanceMode") {
+        case "light": return .light
+        case "dark": return .dark
+        default: return nil
+        }
+    }
 
     /// Die Abostufe zum angemeldeten Konto — steht als Etikett neben «Claude».
     private(set) var claudeAbo: String?
@@ -461,10 +480,9 @@ final class Cockpit {
         ClaudeAccount.subscription(fallback: Zugaenge().liesToken()?.subscriptionType)
     }
 
-    /// Solange es keine Einstellungen gibt, gilt die internationale Plattform.
-    /// Gelesen wird trotzdem aus den Benutzervorgaben, und unter demselben
-    /// Schlüsselnamen wie auf dem Mac: Steht dort später einmal etwas, wirkt es
-    /// ohne eine Zeile Änderung hier.
+    /// Aus den Benutzervorgaben, unter demselben Schlüsselnamen wie auf dem
+    /// Mac. Ohne Angabe gilt die internationale Plattform — die chinesische
+    /// hängt an einem anderen Server, das ist keine Kleinigkeit zum Raten.
     private static func kimiRegion() -> KimiClient.Region {
         let roh = UserDefaults.standard.string(forKey: "kimiRegion") ?? ""
         return KimiClient.Region(rawValue: roh) ?? .international
