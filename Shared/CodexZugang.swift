@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 import AgentDeckCore
 
 // Anmeldung und Kontingentabruf für ChatGPT/Codex — die iOS-Fassung.
@@ -268,6 +269,105 @@ public struct CodexAuth: Sendable {
 
         let daten = try await fuehreAus(anfrage, was: String(localized: "Anmeldung"))
         return try Self.werteTokenAus(daten, bisher: nil)
+    }
+
+    // MARK: Der bequeme Weg — Rücksprung auf die Rückschleife
+
+    /// Die Häfen, die dieser Client hinterlegt hat.
+    ///
+    /// **Fest**, anders als bei Claude: Der Autorisierungsserver nimmt nur
+    /// Rücksprungadressen an, die zur Client-Kennung eingetragen sind. Einen
+    /// freien Port zu wählen hiesse, die Anmeldeseite gar nicht erst zu sehen.
+    public static let loopbackPorts: [UInt16] = [1455, 1457]
+
+    /// Was eine laufende Anmeldung über den Rücksprung zusammenhält.
+    public struct LoopbackAnmeldung: Sendable {
+        public let adresse: URL
+        let verifier: String
+        let state: String
+        let rueckweg: String
+    }
+
+    /// Baut die Anmeldeadresse für den Rücksprungweg.
+    ///
+    /// Hier erzeugt **der Client** das PKCE-Paar — anders als im
+    /// Gerätecode-Fluss, wo der Server es mitschickt. Und hier gehören die drei
+    /// Zusatzparameter dazu (`login/src/server.rs:575-612`): Bei der
+    /// Claude-Anmeldung hat seinerzeit ein einziger fehlender Parameter
+    /// «Invalid request format» ergeben.
+    public static func beginneRuecksprung(port: UInt16) throws -> LoopbackAnmeldung {
+        let verifier = try zufall(bytes: 64)
+        let challenge = base64URL(Data(SHA256.hash(data: Data(verifier.utf8))))
+        let state = try zufall(bytes: 32)
+        let rueckweg = "http://localhost:\(port)/auth/callback"
+
+        let query = [
+            ("response_type", "code"),
+            ("client_id", clientID),
+            ("redirect_uri", rueckweg),
+            // `login/src/server.rs:588-597` — genau diese Liste, genau diese
+            // Reihenfolge. Bei Claude hat eine abweichende Auswahl die
+            // Autorisierung mit «Invalid request format» scheitern lassen.
+            ("scope", "openid profile email offline_access api.connectors.read api.connectors.invoke"),
+            ("code_challenge", challenge),
+            ("code_challenge_method", "S256"),
+            ("id_token_add_organizations", "true"),
+            ("codex_cli_simplified_flow", "true"),
+            ("state", state),
+            // Derselbe Wert, den der Codex-Client mit dieser Kennung sendet.
+            // Ein eigener wäre ehrlicher — aber der Server kennt nur die
+            // hinterlegten, und eine unbekannte Angabe kostet die Anmeldung.
+            ("originator", "codex_cli_rs")
+        ]
+        .map { "\($0)=\(formularkodiert($1))" }
+        .joined(separator: "&")
+
+        guard let adresse = URL(string: "\(issuer)/oauth/authorize?\(query)") else {
+            throw ProviderError.decoding(String(localized: "Anmeldeadresse liess sich nicht bilden"))
+        }
+        return LoopbackAnmeldung(adresse: adresse, verifier: verifier, state: state, rueckweg: rueckweg)
+    }
+
+    /// Tauscht den zurückgesprungenen Code gegen Token.
+    public func tausche(code: String, state: String?, anmeldung: LoopbackAnmeldung) async throws -> CodexToken {
+        // Der Zustandswert ist der Schutz davor, dass jemand anderes eine
+        // Anmeldung unterschiebt. Stimmt er nicht, wird nicht getauscht.
+        guard state == nil || state == anmeldung.state else {
+            throw ProviderError.unauthorized(String(localized: "Die Antwort gehört nicht zu dieser Anmeldung"))
+        }
+        let koerper = [
+            ("grant_type", "authorization_code"),
+            ("code", code),
+            ("redirect_uri", anmeldung.rueckweg),
+            ("client_id", Self.clientID),
+            ("code_verifier", anmeldung.verifier)
+        ]
+        .map { "\($0)=\(Self.formularkodiert($1))" }
+        .joined(separator: "&")
+
+        var anfrage = URLRequest(url: Self.tokenURL)
+        anfrage.httpMethod = "POST"
+        anfrage.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        anfrage.httpBody = Data(koerper.utf8)
+        anfrage.timeoutInterval = 30
+
+        let daten = try await fuehreAus(anfrage, was: String(localized: "Anmeldung"))
+        return try Self.werteTokenAus(daten, bisher: nil)
+    }
+
+    static func zufall(bytes: Int) throws -> String {
+        var roh = [UInt8](repeating: 0, count: bytes)
+        guard SecRandomCopyBytes(kSecRandomDefault, bytes, &roh) == errSecSuccess else {
+            throw ProviderError.decoding(String(localized: "Zufallswerte nicht verfügbar"))
+        }
+        return base64URL(Data(roh))
+    }
+
+    static func base64URL(_ daten: Data) -> String {
+        daten.base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
     }
 
     // MARK: Erneuern

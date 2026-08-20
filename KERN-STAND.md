@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `671ea6c33481d4eff6476f02bf982a7df9c3b5e7` |
-| kurz | `671ea6c` |
-| Betreff | Stop a foreign number from ending the process |
+| Commit | `f00cbc400d8a3851d316968d5f4a37f31bc2baa9` |
+| kurz | `f00cbc4` |
+| Betreff | Let the callback listener take a fixed port |
 | festgehalten | 20.08.2026 |

@@ -1,16 +1,20 @@
 import SwiftUI
+import AuthenticationServices
 import AgentDeckCore
 
 /// Die Anmeldung bei ChatGPT auf iOS.
 ///
-/// Anders als bei Claude läuft hier kein Rücksprung auf `localhost`, sondern
-/// der Gerätecode-Fluss: Die App holt einen Code, der Nutzer tippt ihn auf
-/// einer Seite von OpenAI ein, und die App fragt so lange nach, bis er
-/// bestätigt ist. Warum dieser Weg und nicht der Rücksprung, steht in
-/// `CodexZugang.swift`.
+/// Zwei Wege, in dieser Reihenfolge:
 ///
-/// Für den Nutzer hat er einen Vorzug, der nicht offensichtlich ist: Er kann
-/// den Code auch am Rechner eingeben, während er das Telefon in der Hand hält.
+/// **1. Rücksprung**, wie bei Claude — anmelden, fertig, nichts abzutippen.
+/// Ein Unterschied bleibt: Der Port ist bei diesem Client **fest** (1455,
+/// ersatzweise 1457), weil der Autorisierungsserver nur hinterlegte
+/// Rücksprungadressen annimmt. Ist er belegt, geht dieser Weg nicht.
+///
+/// **2. Gerätecode**, falls kein Port frei war. Dann zeigt die App einen Code,
+/// den der Nutzer auf einer Seite von OpenAI eingibt. Umständlicher, aber
+/// unabhängig von Ports — und er erlaubt die Eingabe am Rechner, während man
+/// das Telefon in der Hand hält.
 @MainActor
 final class CodexAnmeldung: ObservableObject {
 
@@ -31,6 +35,8 @@ final class CodexAnmeldung: ObservableObject {
     @Published private(set) var protokoll: [String] = []
 
     private var auftrag: Task<Void, Never>?
+    private var sitzung: ASWebAuthenticationSession?
+    private let anker = Fensteranker()
     private let auth = CodexAuth()
 
     func melde() {
@@ -42,14 +48,67 @@ final class CodexAnmeldung: ObservableObject {
 
     func brichAb() {
         auftrag?.cancel(); auftrag = nil
+        sitzung?.cancel(); sitzung = nil
         code = nil
         notiere("Vom Nutzer abgebrochen")
         zustand = .abgebrochen(grund: String(localized: "Die Anmeldung wurde abgebrochen."))
     }
 
     private func ablauf() async {
-        zustand = .laeuft(schritt: String(localized: "Code wird angefordert"))
         notiere("Anmeldung gestartet")
+        // Erst der bequeme Weg. Klappt er nicht, weil beide Häfen belegt sind,
+        // kommt der Gerätecode — und zwar mit einer Meldung, die den Grund
+        // nennt, statt kommentarlos etwas anderes zu tun.
+        for port in CodexAuth.loopbackPorts {
+            do {
+                try await ueberRuecksprung(port: port)
+                return
+            } catch let fehler as ProviderError {
+                auftrag = nil
+                notiere("Fehler: \(fehler.userMessage)")
+                zustand = .fehler(fehler.userMessage)
+                return
+            } catch is CancellationError {
+                auftrag = nil
+                return
+            } catch {
+                notiere("Port \(port) nicht verfügbar")
+                continue
+            }
+        }
+        notiere("Kein Rücksprung möglich — weiter über den Gerätecode")
+        await ueberGeraetecode()
+    }
+
+    /// Der Weg wie bei Claude: Anmeldeseite im eigenen Fenster, Rücksprung auf
+    /// die Rückschleife.
+    ///
+    /// Die Sitzung zeigt die Seite **innerhalb** der App an, nicht in Safari —
+    /// dadurch bleibt die App im Vordergrund und behält ihren Zuhörer. Beim
+    /// Sprung in Safari wäre sie im Hintergrund und der Socket weg.
+    private func ueberRuecksprung(port: UInt16) async throws {
+        let server = try LoopbackCallbackServer(port: port)
+        defer { server.stop() }
+        _ = try await server.start()
+
+        let anmeldung = try CodexAuth.beginneRuecksprung(port: port)
+        notiere("Rückkanal auf Port \(port) offen")
+        zustand = .laeuft(schritt: String(localized: "Anmeldeseite geöffnet"))
+        zeige(anmeldung.adresse)
+
+        let rueckgabe = try await server.waitForCallback()
+        sitzung?.cancel(); sitzung = nil
+        notiere("Rücksprung angekommen")
+        zustand = .laeuft(schritt: String(localized: "Zugriffsschlüssel wird geholt"))
+
+        let token = try await auth.tausche(code: rueckgabe.code, state: rueckgabe.state, anmeldung: anmeldung)
+        auftrag = nil
+        sichere(token)
+    }
+
+    /// Der Ausweichweg, wenn kein Hafen frei war.
+    private func ueberGeraetecode() async {
+        zustand = .laeuft(schritt: String(localized: "Code wird angefordert"))
         do {
             let geraetecode = try await auth.fordereCode()
             code = geraetecode
@@ -62,19 +121,7 @@ final class CodexAnmeldung: ObservableObject {
 
             auftrag = nil
             code = nil
-            notiere("Zugriffsschlüssel erhalten")
-
-            // Ohne diese Zeile bliebe die Anmeldung ein Bildschirmtext: Der
-            // Schlüssel lebte nur in dieser Ansicht, die Karte suchte ihn im
-            // Schlüsselbund und fände nichts. Genau so ist es bei der
-            // Claude-Anmeldung einmal gewesen.
-            guard Zugaenge().schreibCodexToken(token) else {
-                notiere("Schlüssel liess sich nicht im Schlüsselbund ablegen")
-                zustand = .fehler(String(localized: "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen."))
-                return
-            }
-            notiere("Im Schlüsselbund abgelegt")
-            zustand = .erfolg(abo: token.planType)
+            sichere(token)
         } catch is CancellationError {
             auftrag = nil
         } catch {
@@ -83,6 +130,41 @@ final class CodexAnmeldung: ObservableObject {
             let text = (error as? ProviderError)?.userMessage ?? error.localizedDescription
             notiere("Fehler: \(text)")
             zustand = .fehler(text)
+        }
+    }
+
+    /// Legt den Schlüssel ab und meldet den Erfolg.
+    ///
+    /// Ohne die Ablage bliebe die Anmeldung ein Bildschirmtext: Der Schlüssel
+    /// lebte nur hier, die Karte suchte ihn im Schlüsselbund und fände nichts.
+    /// Genau so ist es bei der Claude-Anmeldung einmal gewesen.
+    private func sichere(_ token: CodexToken) {
+        notiere("Zugriffsschlüssel erhalten")
+        guard Zugaenge().schreibCodexToken(token) else {
+            notiere("Schlüssel liess sich nicht im Schlüsselbund ablegen")
+            zustand = .fehler(String(localized: "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen."))
+            return
+        }
+        notiere("Im Schlüsselbund abgelegt")
+        zustand = .erfolg(abo: token.planType)
+    }
+
+    private func zeige(_ adresse: URL) {
+        let s = ASWebAuthenticationSession(url: adresse, callback: .customScheme("aicockpit-unbenutzt")) { [weak self] _, fehler in
+            guard let self else { return }
+            // Nur der Abbruch durch den Nutzer ist hier eine Nachricht: Der
+            // Erfolg kommt über den Zuhörer, nicht über diesen Rückruf.
+            if let fehler = fehler as? ASWebAuthenticationSessionError,
+               fehler.code == .canceledLogin, case .laeuft = self.zustand {
+                self.brichAb()
+            }
+        }
+        s.presentationContextProvider = anker
+        s.prefersEphemeralWebBrowserSession = false
+        sitzung = s
+        if s.start() == false {
+            notiere("Anmeldefenster liess sich nicht öffnen")
+            zustand = .fehler(String(localized: "Das Anmeldefenster liess sich nicht öffnen."))
         }
     }
 
@@ -109,5 +191,21 @@ final class CodexAnmeldung: ObservableObject {
 
     private func notiere(_ text: String) {
         protokoll.append("\(Date.now.formatted(date: .omitted, time: .standard))  \(text)")
+    }
+}
+
+/// Sagt der Anmeldesitzung, an welchem Fenster sie hängen soll.
+///
+/// Eine eigene kleine Klasse, weil `ASWebAuthenticationPresentationContextProviding`
+/// von `NSObject` erben muss — und die Anmeldung selbst soll deswegen nicht zur
+/// `NSObject`-Unterklasse werden.
+private final class Fensteranker: NSObject, ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        let szenen = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        let szene = szenen.first { $0.activationState == .foregroundActive } ?? szenen.first
+        if let fenster = szene?.keyWindow ?? szene?.windows.first { return fenster }
+        // Ohne Fensterszene läuft die App nicht mehr; die Sitzung wird dann
+        // gar nicht erst gestartet.
+        preconditionFailure("Anmeldefenster ohne Fensterszene")
     }
 }
