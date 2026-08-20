@@ -19,11 +19,10 @@ import AgentDeckCore
 // 2. **Krumme Zahlen.** 63.4 statt 60, 41.63 statt 40. Ein Satz runder Werte
 //    liest sich sofort als erfunden; das Ziel ist ein Bildschirm, der aussieht
 //    wie nach einem Arbeitstag, nicht wie eine Tabellenvorlage.
-// 3. **Kein einziger echter Name.** Die Sitzungen tragen erfundene Projekte.
 //    Nichts hier stammt aus jemandes Arbeit und nichts sieht danach aus.
 //
 // Gestreut ist auch die Lage: Eine Karte steht deutlich über der Warnschwelle,
-// eine kratzt knapp darunter, eine ist entspannt grün, eine Sitzung ist im
+// eine kratzt knapp darunter, eine ist entspannt grün, und der Verlauf ist im
 // roten Bereich. Wer die Ampel sehen will, muss sie sehen können.
 
 enum DemoDaten {
@@ -39,8 +38,7 @@ enum DemoDaten {
          chatGPT(jetzt),
          openAI(jetzt),
          anthropic(jetzt),
-         kimi(jetzt),
-         sitzungen(jetzt)]
+         kimi(jetzt)]
     }
 
     // MARK: Claude
@@ -116,7 +114,6 @@ enum DemoDaten {
         return CockpitCard(
             id: .chatgpt, title: "ChatGPT", provider: .chatGPT,
             badge: String(localized: "Plus"),
-            note: String(localized: "vom Mac übernommen"),
             updated: jetzt.addingTimeInterval(-386),
             summary: CardSummary(text: "5 h \(Format.percent(fuenfStunden.usedPercent)) · 7 d \(Format.percent(woche.usedPercent))"),
             limits: [
@@ -198,36 +195,6 @@ enum DemoDaten {
 
     // MARK: Aktive Sitzungen
 
-    /// Drei laufende Claude-Code-Sitzungen.
-    ///
-    /// Gezeigt werden sie als Fensterzeilen, weil es in `CockpitCard` (noch)
-    /// nichts anderes gibt — eine `SessionRow` wie auf dem Mac ist ein eigenes
-    /// Stück Arbeit und steht in `Kartenaufbau.md` als offener Punkt. Der
-    /// Balken bedeutet hier also **belegtes Kontextfenster**, nicht ein
-    /// Kontingent, und weil ein Balken das nicht von selbst sagt, steht es in
-    /// `note`. Ein Balken ohne Masseinheit ist eine Behauptung.
-    ///
-    /// Die Zurücksetzung bleibt leer: Ein Kontextfenster setzt sich nicht
-    /// zurück, es wird verdichtet oder die Sitzung endet. `LimitRow` lässt die
-    /// Zeile dann weg, statt eine Zeit zu erfinden.
-    ///
-    /// Projekt- und Sitzungsnamen sind erfunden. Sie sollen nach gewöhnlicher
-    /// Bastelei aussehen und nach niemandes Arbeit.
-    private static func sitzungen(_ jetzt: Date) -> CockpitCard {
-        CockpitCard(
-            id: .sitzungen, title: String(localized: "Aktive Sitzungen"), provider: .sessions,
-            note: String(localized: "Balken: belegtes Kontextfenster"),
-            updated: jetzt.addingTimeInterval(-46),
-            summary: CardSummary(text: String(localized: "3 Sitzungen · 1 arbeitet")),
-            limits: [
-                CockpitLimit(title: String(localized: "Wetterstation — \(SessionState.working.label)"),
-                             window: LimitWindow(label: "kontext-1", usedPercent: 91.3, resetsAt: nil)),
-                CockpitLimit(title: String(localized: "Ferienplaner — \(SessionState.waiting.label)"),
-                             window: LimitWindow(label: "kontext-2", usedPercent: 64.0, resetsAt: nil)),
-                CockpitLimit(title: String(localized: "Rezeptsammlung — \(SessionState.idle.label)"),
-                             window: LimitWindow(label: "kontext-3", usedPercent: 28.5, resetsAt: nil))
-            ])
-    }
 
     // MARK: - Was das Widget bekommt
 
