@@ -72,9 +72,11 @@ enum WidgetAbruf {
         let bisher = WidgetZustand.lies()?.quellen ?? []
         let claudeZeile = WidgetZustand.Quelle(
             name: "Claude",
+            anbieter: Theme.Provider.claude.rawValue,
             wert: fenster.prefix(2).map { "\($0.name): \(Format.percent($0.prozent))" }
                          .joined(separator: " · "),
             kurz: fenster.first.map { "\($0.name): \(Format.percent($0.prozent))" },
+            fenster: fenster,
             prozent: fenster.first?.prozent,
             warnung: fenster.contains { $0.prozent >= LimitThresholds.standard.warn },
             stand: werte.fetchedAt)

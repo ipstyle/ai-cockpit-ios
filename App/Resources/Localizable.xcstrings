@@ -2136,6 +2136,23 @@
         }
       }
     },
+    "Der Abruf dauert etwas länger als bei den übrigen Karten — das ist normal.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Abruf dauert etwas länger als bei den übrigen Karten — das ist normal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This fetch takes a little longer than the other cards. That is normal."
+          }
+        }
+      }
+    },
     "Der Code gilt 15 Minuten. Danach fängt die Anmeldung von vorn an.": {
       "extractionState": "manual",
       "localizations": {
@@ -2336,23 +2353,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "The text contains no keys and no tokens — only states and the last four characters, which are shown above as well. It can be passed on without concern."
-          }
-        }
-      }
-    },
-    "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The first fetch after you enter the key takes longer than the other cards. That is normal."
           }
         }
       }
@@ -3996,19 +3996,19 @@
         }
       }
     },
-    "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus.": {
+    "Kosten werden geholt … OpenAI gibt sie nur seitenweise heraus, das dauert ein paar Sekunden.": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus."
+            "value": "Kosten werden geholt … OpenAI gibt sie nur seitenweise heraus, das dauert ein paar Sekunden."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fetching costs … The first fetch can take more than a minute: OpenAI hands out costs one page at a time."
+            "value": "Fetching costs … OpenAI hands them out one page at a time, which takes a few seconds."
           }
         }
       }

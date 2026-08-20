@@ -262,6 +262,13 @@ final class Einstellungen {
         Mitteilungen.geteilt.vergissAlles()
         for schluessel in MitteilungenVorgaben.Schluessel.alle { vorgaben.removeObject(forKey: schluessel) }
 
+        // Der Zwischenspeicher gehört dazu: Er hält die zuletzt gezeigten
+        // Zahlen, damit ein Kaltstart nicht leer dasteht. Bliebe er stehen,
+        // stünden nach dem Zurücksetzen Beträge da, deren Grundlage gerade
+        // gelöscht wurde — und genau an dieser Stelle geht das Vertrauen
+        // verloren, das der Knopf herstellen soll.
+        Zwischenspeicher.loesche()
+
         AppGruppe.vorgaben?.removeObject(forKey: WidgetZustand.schluessel)
         WidgetCenter.shared.reloadAllTimelines()
 

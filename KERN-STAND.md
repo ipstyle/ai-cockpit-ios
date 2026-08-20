@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `5d144b451fea4e8e962d44bcfd7017a3c0444123` |
-| kurz | `5d144b4` |
-| Betreff | Let the callback listener take the path it should listen on |
+| Commit | `f6680207e131647b8e5526e9adf523dccfbad080` |
+| kurz | `f668020` |
+| Betreff | Give the cost summing a name and a lean way in |
 | festgehalten | 20.08.2026 |

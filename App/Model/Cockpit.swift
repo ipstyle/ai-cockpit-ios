@@ -134,7 +134,7 @@ final class Cockpit {
 
     private var claude: Quellenstand<ClaudeLimits> = .laedt
     private var codex: Quellenstand<CodexLimits> = .laedt
-    private var openAI: Quellenstand<OpenAIUsageClient.Snapshot> = .laedt
+    private var openAI: Quellenstand<OpenAICosts> = .laedt
     private var anthropic: Quellenstand<AnthropicCosts> = .laedt
     private var kimi: Quellenstand<KimiClient.Balance> = .laedt
 
@@ -144,6 +144,24 @@ final class Cockpit {
     init() {
         eingeklappteKarten = UserDefaults.standard.string(forKey: Self.schluesselEingeklappt) ?? ""
         versteckteKarten = UserDefaults.standard.string(forKey: Self.schluesselVersteckt) ?? ""
+
+        // **Der letzte bekannte Stand, bevor irgendetwas geholt wird.** Vorher
+        // stand hier fünfmal «wird geholt …», und weil der OpenAI-Abruf der
+        // langsamste ist, sah man dort am längsten nichts — was aussieht wie
+        // eine kaputte Karte und nicht wie eine ladende.
+        //
+        // Die Zahlen tragen ihr Alter mit («Aktualisiert vor 2 Std.»), und die
+        // Karten, die gerade nachgeladen werden, tragen den Kreisel. Damit ist
+        // gesagt, was der Fall ist: alte Zahlen, neue unterwegs.
+        let letzter = Zwischenspeicher.lies()
+        if let w = letzter.claude { claude = .daten(w.zuKern) }
+        if let w = letzter.codex { codex = .daten(w.zuKern) }
+        if let w = letzter.openAI { openAI = .daten(w.alsOpenAI) }
+        if let w = letzter.anthropic { anthropic = .daten(w.alsAnthropic) }
+        if let w = letzter.kimi { kimi = .daten(w.zuKern) }
+        zuletztAktualisiert = letzter.zuletztAktualisiert
+        claudeAbo = letzter.claude == nil ? nil : Self.abostufe()
+
         baueKarten()
     }
 
@@ -156,7 +174,42 @@ final class Cockpit {
     /// Minute lang stünde die Claude-Karte leer da, obwohl ihre Antwort nach
     /// einer Sekunde vorlag. Jede Quelle schreibt ohnehin nur in ihr eigenes
     /// Feld — sie können sich nicht in die Quere kommen.
-    func aktualisiere() async {
+    /// Wie frisch eine Quelle sein muss, damit ein selbsttätiger Durchgang sie
+    /// in Ruhe lässt.
+    ///
+    /// **Kosten ändern sich langsam, Kontingente schnell.** Der OpenAI-Abruf
+    /// blättert drei Jahre Tagesbeträge durch — sieben Anfragen nacheinander,
+    /// rund eine Minute. Den bei jedem Blick in die App neu zu starten, kostet
+    /// Akku und Netz für eine Zahl, die sich in der Zwischenzeit um Rappen
+    /// bewegt hat. Ein Fünfstundenfenster kann derweil um zwanzig Prozent
+    /// gestiegen sein.
+    ///
+    /// **Der Knopf gilt trotzdem.** Wer «Aktualisieren» drückt oder die Liste
+    /// herunterzieht, bekommt alles neu — dafür ist er da.
+    private static func mindestalter(_ quelle: CardLayout.Card) -> TimeInterval {
+        switch quelle {
+        case .openai, .anthropic: return 15 * 60
+        default: return 0
+        }
+    }
+
+    /// Wann die Zahlen dieser Quelle erhoben wurden.
+    private func stand(_ quelle: CardLayout.Card) -> Date? {
+        switch quelle {
+        case .claude: if case .daten(let w) = claude { return w.fetchedAt }
+        case .chatgpt: if case .daten(let w) = codex { return w.observedAt }
+        case .openai: if case .daten(let w) = openAI { return w.fetchedAt }
+        case .anthropic: if case .daten(let w) = anthropic { return w.fetchedAt }
+        case .kimi: if case .daten(let w) = kimi { return w.fetchedAt }
+        case .sitzungen: return nil
+        }
+        return nil
+    }
+
+    /// - Parameter erzwingen: Auch holen, was noch frisch genug wäre. Der
+    ///   Aktualisieren-Knopf und das Herunterziehen setzen das; der Weg zurück
+    ///   in den Vordergrund nicht.
+    func aktualisiere(erzwingen: Bool = false) async {
         // Im Demomodus wird nichts abgefragt — kein Netz, kein Schlüsselbund.
         // Die Prüfung steht vor allem anderen: Ein Abruf, der schon läuft,
         // liesse sich nicht mehr zurückholen.
@@ -165,7 +218,12 @@ final class Cockpit {
         // **Nur das anstossen, was nicht schon unterwegs ist.** Früher wurde der
         // ganze Durchgang verworfen, sobald irgendetwas lief — und damit fiel
         // das Nachfassen nach dem Eintragen eines Schlüssels ersatzlos weg.
-        let offen = Self.quellen.filter { laufendeQuellen.contains($0) == false }
+        let jetzt = Date()
+        let offen = Self.quellen.filter { quelle in
+            guard laufendeQuellen.contains(quelle) == false else { return false }
+            guard !erzwingen, let erhoben = stand(quelle) else { return true }
+            return jetzt.timeIntervalSince(erhoben) >= Self.mindestalter(quelle)
+        }
         guard !offen.isEmpty else { return }
         laufendeQuellen.formUnion(offen)
 
@@ -196,6 +254,7 @@ final class Cockpit {
 
         baueKarten()
         schreibeWidgetZustand()
+        schreibeZwischenspeicher()
         // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
         // Meldung auf sie zeigt. Was gemeldet wird, entscheidet `Mitteilungen`
         // — hier wird nur gesagt, was es Neues gibt.
@@ -261,6 +320,7 @@ final class Cockpit {
         // x» meint den Abschluss eines ganzen Durchgangs, nicht den einer
         // einzelnen Quelle.
         schreibeWidgetZustand()
+        schreibeZwischenspeicher()
         // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
         // Meldung auf sie zeigt. Was gemeldet wird, entscheidet `Mitteilungen`
         // — hier wird nur gesagt, was es Neues gibt.
@@ -457,11 +517,11 @@ final class Cockpit {
         switch openAI {
         case .laedt:
             summary = CardSummary(text: String(localized: "wird geholt …"))
-            // Als einzige Karte mit Begründung: Dieser Abruf dauert wirklich
-            // lange — er blättert Kostenseiten durch und fragt danach jedes
-            // Projekt einzeln. Ohne den Satz sieht die Wartezeit aus wie ein
-            // Hänger, und der nächste Griff ist der zum Neustart.
-            status = .loading(String(localized: "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus."))
+            // Als einzige Karte mit Begründung: Auch der schlanke Abruf muss
+            // die Kostenseiten durchblättern. Das sind Sekunden, nicht mehr die
+            // Minute von früher — aber ohne den Satz sieht auch das nach einem
+            // Hänger aus.
+            status = .loading(String(localized: "Kosten werden geholt … OpenAI gibt sie nur seitenweise heraus, das dauert ein paar Sekunden."))
         case .nichtEingerichtet:
             summary = CardSummary(text: String(localized: "nicht eingerichtet"))
             status = .missing(String(localized: "Kein Admin-Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist — sie ist keine Voraussetzung für die übrigen."))
@@ -470,8 +530,7 @@ final class Cockpit {
             summary = kurz(text)
             status = .failed(text)
             knopf = String(localized: "Erneut versuchen")
-        case .daten(let werte):
-            let kosten = werte.costs
+        case .daten(let kosten):
             updated = kosten.fetchedAt
             geld = [
                 CockpitMoney(title: String(localized: "Heute"), value: kosten.today, currency: kosten.currency),
@@ -687,6 +746,24 @@ final class Cockpit {
     /// Geschrieben wird nur, was gemessen wurde. Eine Karte ohne Schlüssel oder
     /// mitten im Abruf trägt einen Statushinweis; die gehört nicht aufs Widget,
     /// wo für «nicht eingerichtet» weder Platz noch Anlass ist.
+    /// Legt den letzten erfolgreichen Stand ab.
+    ///
+    /// **Nur Erfolge.** Ein Fehlschlag darf den letzten guten Stand nicht
+    /// wegwischen — dieselbe Regel wie beim Widget-Zustand darunter. Wer sich
+    /// hier den `.fehler`-Fall mitspeichert, hat nach einem Netzaussetzer eine
+    /// App, die beim nächsten Start leer startet.
+    private func schreibeZwischenspeicher() {
+        var stand = Zwischenspeicher()
+        if case .daten(let w) = claude { stand.claude = .init(w) }
+        if case .daten(let w) = codex { stand.codex = .init(w) }
+        if case .daten(let w) = openAI { stand.openAI = .init(w) }
+        if case .daten(let w) = anthropic { stand.anthropic = .init(w) }
+        if case .daten(let w) = kimi { stand.kimi = .init(w) }
+        stand.zuletztAktualisiert = zuletztAktualisiert
+        guard !stand.istLeer else { return }
+        stand.schreib()
+    }
+
     private func schreibeWidgetZustand() {
         let quellen: [WidgetZustand.Quelle] = karten.compactMap { karte in
             // `status == nil` heisst: Die Karte zeigt Zahlen und keinen
@@ -696,6 +773,11 @@ final class Cockpit {
             let zeilen = kurz.text.split(separator: "\n").map(String.init)
             return WidgetZustand.Quelle(
                 name: karte.title,
+                // Anbieter und Fenster liegen auf der Karte längst vor — sie
+                // wurden nur nie weitergereicht. Ohne den Anbieter stand die
+                // ganze Kachel in Claudes Orange; ohne die Fenster lag der
+                // Balkenblock der grossen Kachel herrenlos unter der Liste.
+                anbieter: karte.provider.rawValue,
                 // Die Kurzfassung bringt ihre Zeilen mit; auf dem Widget ist
                 // eine Zeile je Quelle das Mass, also wird umgehängt.
                 wert: zeilen.joined(separator: " · "),
@@ -704,6 +786,10 @@ final class Cockpit {
                 // zuschlägt. Bei Geld die letzte: der laufende Monat sagt mehr
                 // als der heutige Betrag, der morgens oft null ist.
                 kurz: karte.widgetKurz ?? zeilen.first ?? kurz.text,
+                fenster: karte.limits.map {
+                    .init(name: $0.window.label, prozent: $0.window.usedPercent,
+                          zuruecksetzung: $0.window.resetsAt)
+                },
                 prozent: karte.limits.first?.window.usedPercent,
                 warnung: kurz.warning,
                 stand: karte.updated ?? Date())
@@ -895,12 +981,20 @@ private enum Abruf {
 
     // MARK: OpenAI
 
-    static func openAI() async -> Quellenstand<OpenAIUsageClient.Snapshot> {
+    /// **`costs` statt `fetch` — und das ist der Unterschied zwischen ein paar
+    /// Sekunden und über einer Minute.**
+    ///
+    /// `fetch` lädt zusätzlich Projekte und Kosten je Modell: zwei serverseitig
+    /// gruppierte Seitenläufe, nacheinander und jeder mit einem zweiten Anlauf.
+    /// Genau die beiden sind es, die bei OpenAI regelmässig ins Zeitlimit
+    /// laufen. Diese Karte zeigt Heute, laufenden Monat und Gesamt — sie hat
+    /// über eine Minute auf Daten gewartet, die sie nie angesehen hat.
+    static func openAI() async -> Quellenstand<OpenAICosts> {
         guard let schluessel = Zugaenge().liesText(.openAIAdminKey), !schluessel.isEmpty else {
             return .nichtEingerichtet
         }
         do {
-            return .daten(try await OpenAIUsageClient().fetch(adminKey: schluessel))
+            return .daten(try await OpenAIUsageClient().costs(adminKey: schluessel))
         } catch {
             return .fehler(meldung(error))
         }

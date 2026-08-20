@@ -38,7 +38,7 @@ struct KontenSeite: View {
                 // Diese eine Karte braucht den Satz: Ihr Abruf blättert
                 // Kostenseiten durch und fragt danach jedes Projekt einzeln. Wer
                 // das nicht weiss, hält die Wartezeit für einen Fehler.
-                hinweis: String(localized: "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal."))
+                hinweis: String(localized: "Der Abruf dauert etwas länger als bei den übrigen Karten — das ist normal."))
 
             SchluesselAbschnitt(
                 einstellungen: einstellungen,

@@ -48,8 +48,23 @@ struct WidgetTon {
     var akzent: Color { einfarbig ? .primary : palette.claude }
     var warnung: Color { einfarbig ? .primary : palette.warning }
 
-    func wert(_ stufe: LimitLevel) -> Color {
-        einfarbig ? .primary : stufe.color(in: palette, accent: palette.claude)
+    /// Die Farbe eines Anbieters — im eingetönten Modus gibt es keine.
+    ///
+    /// **Nur über diesen Weg.** Wer `palette.color(for:)` direkt nimmt, baut
+    /// eine Kachel, die auf einem eingetönten Homescreen einfarbig grau ist und
+    /// nichts mehr unterscheidet — dort verwirft das System jeden Farbton, und
+    /// nur Deckkraft und Zeichen überleben.
+    func farbe(fuer anbieter: Theme.Provider) -> Color {
+        einfarbig ? .primary : palette.color(for: anbieter)
+    }
+
+    /// Der Wert eines Fensters: Anbieterfarbe, solange es ruhig ist — Warnfarbe,
+    /// sobald es drückt.
+    ///
+    /// Der Akzent war hier fest `palette.claude`. Damit stand ein ChatGPT-Wert
+    /// in Claudes Orange, und die grosse Kachel war durchgehend einfarbig.
+    func wert(_ stufe: LimitLevel, anbieter: Theme.Provider = .claude) -> Color {
+        einfarbig ? .primary : stufe.color(in: palette, accent: palette.color(for: anbieter))
     }
 
     /// Die leere Spur eines Balkens. Im einfarbigen Modus über die Deckkraft
@@ -217,6 +232,9 @@ struct WidgetBalken: View {
 /// Name, Prozentzahl, Balken — und auf der grossen Kachel die Zurücksetzung.
 struct FensterZeile: View {
     let fenster: WidgetZustand.Fenster
+    /// Damit ein Balken die Farbe **seiner** Quelle trägt und nicht die von
+    /// Claude.
+    var anbieter: Theme.Provider = .claude
     var schwellen: LimitThresholds = .standard
     var zeigtZuruecksetzung = false
 
@@ -226,7 +244,7 @@ struct FensterZeile: View {
     var body: some View {
         let ton = WidgetTon(schema, darstellung)
         let stufe = schwellen.level(fenster.prozent)
-        let farbe = ton.wert(stufe)
+        let farbe = ton.wert(stufe, anbieter: anbieter)
 
         VStack(alignment: .leading, spacing: 3) {
             HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -401,17 +419,27 @@ struct QuellenListe: View {
     private func zeile(_ quelle: WidgetZustand.Quelle, ton: WidgetTon) -> some View {
         // Ohne Prozentsatz gibt es keine Stufe — Geldkarten führen kein
         // Kontingent, und eine erfundene Ampel wäre schlimmer als keine.
+        let anbieter = quelle.alsAnbieter
         let stufe = quelle.prozent.map { LimitThresholds.standard.level($0) }
+        let akzent = ton.farbe(fuer: anbieter)
 
-        return HStack(alignment: .firstTextBaseline, spacing: 4) {
+        return HStack(alignment: .center, spacing: 5) {
+            // Dieselbe Akzentkante wie auf der Karte in der App. Sie ist das
+            // Wiedererkennungszeichen der Quelle — und sie trägt auch dann noch,
+            // wenn der eingetönte Homescreen den Farbton verwirft: Dann ist sie
+            // eine hellere Fläche neben einer dunkleren.
+            RoundedRectangle(cornerRadius: 1)
+                .fill(akzent)
+                .frame(width: 2.5)
+                .frame(maxHeight: .infinity)
             if let symbol = stufe?.symbol {
                 Image(systemName: symbol)
                     .widgetAccentedRenderingMode(.fullColor)
                     .font(.system(size: 9))
             }
             Text(quelle.name)
-                .fontWeight(.medium)
-                .foregroundStyle(ton.neben)
+                .fontWeight(.semibold)
+                .foregroundStyle(akzent)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .layoutPriority(1)
@@ -419,14 +447,94 @@ struct QuellenListe: View {
             Text(knapp ? quelle.kurz : quelle.wert)
                 .monospacedDigit()
                 .fontWeight(.semibold)
-                .foregroundStyle(stufe.map(ton.wert) ?? ton.haupt)
+                .foregroundStyle(stufe.map { ton.wert($0, anbieter: anbieter) } ?? ton.haupt)
                 .lineLimit(1)
                 .minimumScaleFactor(0.55)
         }
+        .frame(minHeight: knapp ? 13 : 15)
         .font(knapp ? .system(size: 10) : .caption2)
         .accessibilityElement(children: .combine)
         // VoiceOver bekommt immer die volle Fassung — dort ist kein Platz knapp.
         .accessibilityLabel("\(quelle.name): \(quelle.wert)")
+    }
+}
+
+/// Die grosse Kachel: je Quelle ein Block.
+///
+/// Vorher standen dort oben die Quellenliste und darunter ein Balkenblock, der
+/// zu nichts Sichtbarem gehörte — es waren Claudes Fenster, aber nichts sagte
+/// das. Hier steht jedes Fenster unter dem Namen, zu dem es gehört, und trägt
+/// dessen Farbe.
+struct QuellenBlock: View {
+    let eintrag: UeberblickEintrag
+    var maximum = 5
+
+    @Environment(\.colorScheme) private var schema
+    @Environment(\.widgetRenderingMode) private var darstellung
+
+    var body: some View {
+        let ton = WidgetTon(schema, darstellung)
+
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(Array(eintrag.quellen.prefix(maximum).enumerated()), id: \.offset) { _, quelle in
+                block(quelle, ton: ton)
+            }
+            if eintrag.quellen.count > maximum {
+                Text("+ \(eintrag.quellen.count - maximum) weitere in der App")
+                    .font(.caption2)
+                    .foregroundStyle(ton.leise)
+            }
+        }
+    }
+
+    private func block(_ quelle: WidgetZustand.Quelle, ton: WidgetTon) -> some View {
+        let anbieter = quelle.alsAnbieter
+        let akzent = ton.farbe(fuer: anbieter)
+
+        return HStack(alignment: .top, spacing: 7) {
+            // Die Kante läuft über den ganzen Block, nicht nur über den Kopf:
+            // Sie ist es, die Kopf und Balken als **eine** Sache zusammenhält.
+            RoundedRectangle(cornerRadius: 1.5)
+                .fill(akzent)
+                .frame(width: 3)
+
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(quelle.name)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(akzent)
+                        .lineLimit(1)
+                    Spacer(minLength: 6)
+                    // Bei einer Quelle mit Fenstern stünde der Wert zweimal —
+                    // einmal hier, einmal an den Balken. Dort gehört er hin.
+                    if quelle.fenster.isEmpty {
+                        Text(quelle.wert)
+                            .font(.caption.weight(.semibold))
+                            .monospacedDigit()
+                            .foregroundStyle(ton.haupt)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                    }
+                }
+
+                ForEach(Array(sichtbareFenster(quelle).enumerated()), id: \.offset) { _, fenster in
+                    FensterZeile(fenster: fenster, anbieter: anbieter, zeigtZuruecksetzung: true)
+                }
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    /// Zwei Fenster je Quelle, damit fünf Quellen hineinpassen — ein drittes
+    /// nur, wenn es über der Warnschwelle liegt.
+    ///
+    /// Dieselbe Regel, nach der die Kartenkurzfassung in der App entscheidet:
+    /// Ein modellbezogenes Fenster ist nur dann eine Nachricht, wenn es drückt.
+    private func sichtbareFenster(_ quelle: WidgetZustand.Quelle) -> [WidgetZustand.Fenster] {
+        let erste = Array(quelle.fenster.prefix(2))
+        let drueckende = quelle.fenster.dropFirst(2)
+            .filter { $0.prozent >= LimitThresholds.standard.warn }
+        return erste + drueckende.prefix(1)
     }
 }
 
@@ -460,7 +568,7 @@ struct KleineAnsicht: View {
         } else if let fenster = eintrag.hauptfenster {
             VStack(spacing: 4) {
                 UsageRing(percent: fenster.prozent,
-                          provider: .claude,
+                          provider: eintrag.hauptanbieter,
                           label: .percent,
                           accessibilityTitle: "Claude \(fenster.name)")
                     // Der Ring ist das, was die Tönung einfärben soll; alles
@@ -516,17 +624,14 @@ struct MittlereAnsicht: View {
             }
 
             if !eintrag.quellen.isEmpty {
-                QuellenListe(eintrag: eintrag, maximum: maximum)
-                // Auf der grossen Kachel ist unter der Liste noch Platz für die
-                // Claude-Fenster mit Balken und Zurücksetzung. Auf der mittleren
-                // nicht — dort ist die Liste die ganze Auskunft.
-                if mitZuruecksetzung, !eintrag.fenster.isEmpty {
-                    Divider().opacity(0.4)
-                    VStack(alignment: .leading, spacing: 9) {
-                        ForEach(Array(eintrag.fenster.prefix(3).enumerated()), id: \.offset) { _, fenster in
-                            FensterZeile(fenster: fenster, zeigtZuruecksetzung: true)
-                        }
-                    }
+                // Die grosse Kachel zeigt Blöcke mit Balken, die mittlere die
+                // knappe Liste. Unter der Liste stand einmal ein Balkenblock
+                // ohne Zugehörigkeit — es waren Claudes Fenster, aber nichts
+                // sagte das. Jetzt steht jedes Fenster in seinem Block.
+                if mitZuruecksetzung {
+                    QuellenBlock(eintrag: eintrag, maximum: maximum)
+                } else {
+                    QuellenListe(eintrag: eintrag, maximum: maximum)
                 }
                 Spacer(minLength: 0)
             } else if eintrag.fenster.isEmpty {
@@ -570,7 +675,7 @@ struct RundeAnsicht: View {
             // Die Verhältnisse sind auf die 58 Punkte gerechnet, die eine
             // runde Zubehörkachel innen hat — `UsageRing` skaliert sie mit.
             UsageRing(percent: fenster.prozent,
-                      provider: .claude,
+                      provider: eintrag.hauptanbieter,
                       label: .none,
                       lineWidthRatio: 5.0 / 58.0,
                       paddingRatio: 1.5 / 58.0)

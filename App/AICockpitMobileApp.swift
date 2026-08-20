@@ -35,7 +35,9 @@ struct WurzelAnsicht: View {
                   laufend: cockpit.laufendeNamen,
                   thresholds: cockpit.schwellen,
                   collapsedCards: $cockpit.eingeklappteKarten,
-                  refresh: { await cockpit.aktualisiere() },
+                  // Der Knopf und das Herunterziehen holen **alles**, auch
+                  // die Kostenkarten, die sonst eine Viertelstunde Ruhe haben.
+                  refresh: { await cockpit.aktualisiere(erzwingen: true) },
                   openSettings: { zeigtEinstellungen = true },
                   cardAction: fuehreAus)
             .task { await cockpit.aktualisiere() }

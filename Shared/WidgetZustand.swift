@@ -59,6 +59,19 @@ struct WidgetZustand: Codable, Sendable, Equatable {
     struct Quelle: Codable, Sendable, Equatable {
         /// «Claude», «ChatGPT», «OpenAI-API» — wie auf der Karte.
         let name: String
+        /// Der Rohwert von `Theme.Provider`.
+        ///
+        /// Ohne ihn kann die Kachel die Anbieterfarbe nicht kennen, und genau
+        /// das war zu sehen: Die ganze grosse Kachel stand in Claudes Orange,
+        /// ChatGPT und Kimi eingeschlossen. In der App erkennt man die Quelle an
+        /// ihrer Farbe, bevor man den Namen liest — das gehört aufs Widget.
+        let anbieter: String
+        /// Die Fenster **dieser** Quelle.
+        ///
+        /// Vorher lagen alle Fenster flach auf oberster Ebene und stammten
+        /// sämtlich von Claude. Auf der grossen Kachel stand darum unter der
+        /// Quellenliste ein Balkenblock, der zu nichts Sichtbarem gehörte.
+        let fenster: [Fenster]
         /// «5 h: 64 % · 7 d: 57 %», «Heute US$ 0.00 · Monat US$ 3.05».
         let wert: String
         /// Dasselbe auf **eine** Angabe eingedampft — für die kleine Kachel und
@@ -76,9 +89,11 @@ struct WidgetZustand: Codable, Sendable, Equatable {
         /// so alt wie der letzte Lauf der App.
         let stand: Date
 
-        init(name: String, wert: String, kurz: String? = nil,
-             prozent: Double?, warnung: Bool, stand: Date) {
+        init(name: String, anbieter: String = "neutral", wert: String, kurz: String? = nil,
+             fenster: [Fenster] = [], prozent: Double?, warnung: Bool, stand: Date) {
             self.name = name
+            self.anbieter = anbieter
+            self.fenster = fenster
             self.wert = wert
             self.kurz = kurz ?? wert
             self.prozent = prozent
@@ -86,10 +101,20 @@ struct WidgetZustand: Codable, Sendable, Equatable {
             self.stand = stand
         }
 
+        /// Der Anbieter als Aufzählung. Unbekannte Rohwerte werden `.neutral`
+        /// statt zu einem Absturz — der Wert kommt aus einer abgelegten Datei,
+        /// die eine ältere Fassung geschrieben haben kann.
+        var alsAnbieter: Theme.Provider { Theme.Provider(rawValue: anbieter) ?? .neutral }
+
         /// Ältere Stände kennen `kurz` nicht — dort gilt der volle Wert.
         init(from decoder: any Decoder) throws {
             let c = try decoder.container(keyedBy: CodingKeys.self)
             name = try c.decode(String.self, forKey: .name)
+            // Ältere Stände kennen weder Anbieter noch eigene Fenster. Sie
+            // deswegen zu verwerfen hiesse: leeres Widget bis zum nächsten
+            // Start der App.
+            anbieter = try c.decodeIfPresent(String.self, forKey: .anbieter) ?? "neutral"
+            fenster = try c.decodeIfPresent([Fenster].self, forKey: .fenster) ?? []
             wert = try c.decode(String.self, forKey: .wert)
             kurz = try c.decodeIfPresent(String.self, forKey: .kurz) ?? wert
             prozent = try c.decodeIfPresent(Double.self, forKey: .prozent)

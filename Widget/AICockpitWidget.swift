@@ -76,7 +76,19 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
     /// und er kommt übersetzt aus einer Netzantwort. Fehlt das
     /// Fünfstundenfenster, steht eben das nächste da; sein Name steht darunter,
     /// also behauptet die Kachel nichts Falsches.
-    var hauptfenster: WidgetZustand.Fenster? { fenster.first }
+    ///
+    /// Seit jede Quelle ihre eigenen Fenster mitbringt, wird zuerst dort
+    /// gesucht; `fenster` ist nur noch der Rückfall für einen Stand aus einer
+    /// älteren Fassung.
+    var hauptfenster: WidgetZustand.Fenster? {
+        quellen.first(where: { !$0.fenster.isEmpty })?.fenster.first ?? fenster.first
+    }
+
+    /// Wem der Ring gehört. Er stand fest auf Claude — ist die Claude-Karte
+    /// ausgeblendet, zeigte er ein ChatGPT-Fenster in Claudes Farbe.
+    var hauptanbieter: Theme.Provider {
+        quellen.first(where: { !$0.fenster.isEmpty })?.alsAnbieter ?? .claude
+    }
 
     /// Platzhalterwerte für Galerie und Vorschau.
     ///
@@ -101,15 +113,23 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
                 // Auch die Vorschau trägt die Kurzfassungen — sonst zeigte die
                 // Galerie auf der kleinen Kachel einen abgeschnittenen Betrag,
                 // also genau das Bild, das die App gerade nicht abgibt.
-                .init(name: "Claude", wert: "5 h: 42 % · 7 d: 78 %", kurz: "5 h: 42 %",
+                .init(name: "Claude", anbieter: "claude", wert: "5 h: 42 % · 7 d: 78 %", kurz: "5 h: 42 %",
+                      fenster: [.init(name: String(localized: "5 Stunden"), prozent: 42,
+                                      zuruecksetzung: datum.addingTimeInterval(2 * 3600)),
+                                .init(name: String(localized: "7 Tage"), prozent: 78,
+                                      zuruecksetzung: datum.addingTimeInterval(3 * 86400))],
                       prozent: 78, warnung: false, stand: erhoben),
-                .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
+                .init(name: "ChatGPT", anbieter: "chatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
+                      fenster: [.init(name: String(localized: "5 Stunden"), prozent: 8,
+                                      zuruecksetzung: datum.addingTimeInterval(3600)),
+                                .init(name: String(localized: "7 Tage"), prozent: 21,
+                                      zuruecksetzung: datum.addingTimeInterval(4 * 86400))],
                       prozent: 21, warnung: false, stand: erhoben),
-                .init(name: String(localized: "OpenAI-API"),
+                .init(name: String(localized: "OpenAI-API"), anbieter: "openAI",
                       wert: String(localized: "Heute \(Format.money(0.4, "USD")) · Monat \(Format.money(12.3, "USD"))"),
                       kurz: Format.money(12.3, "USD"),
                       prozent: nil, warnung: false, stand: erhoben),
-                .init(name: "Kimi K3",
+                .init(name: "Kimi K3", anbieter: "kimi",
                       wert: String(localized: "\(Format.money(9.9, "USD")) verfügbar"),
                       kurz: Format.money(9.9, "USD"),
                       prozent: nil, warnung: false, stand: erhoben)
@@ -304,14 +324,14 @@ extension UeberblickEintrag {
                             .init(name: "Opus", prozent: 33, zuruecksetzung: .now.addingTimeInterval(3 * 86400))
                           ],
                           quellen: [
-                            .init(name: "Claude", wert: "5 h: 42 % · 7 d: 61 %", kurz: "5 h: 42 %",
+                            .init(name: "Claude", anbieter: "claude", wert: "5 h: 42 % · 7 d: 61 %", kurz: "5 h: 42 %",
                                   prozent: 61, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
+                            .init(name: "ChatGPT", anbieter: "chatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
                                   prozent: 21, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "OpenAI-API", wert: "Heute US$ 0.40 · Monat US$ 12.30",
+                            .init(name: "OpenAI-API", anbieter: "openAI", wert: "Heute US$ 0.40 · Monat US$ 12.30",
                                   kurz: "US$ 12.30",
                                   prozent: nil, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "Kimi K3", wert: "US$ 9.90 verfügbar", kurz: "US$ 9.90",
+                            .init(name: "Kimi K3", anbieter: "kimi", wert: "US$ 9.90 verfügbar", kurz: "US$ 9.90",
                                   prozent: nil, warnung: false, stand: .now.addingTimeInterval(-3 * 60))
                           ],
                           anmeldungFaellig: false)
@@ -324,9 +344,9 @@ extension UeberblickEintrag {
                             .init(name: "7 Tage", prozent: 81, zuruecksetzung: .now.addingTimeInterval(2 * 86400))
                           ],
                           quellen: [
-                            .init(name: "Claude", wert: "5 h: 94 % · 7 d: 81 %", kurz: "5 h: 94 %",
+                            .init(name: "Claude", anbieter: "claude", wert: "5 h: 94 % · 7 d: 81 %", kurz: "5 h: 94 %",
                                   prozent: 94, warnung: true, stand: .now.addingTimeInterval(-12 * 60)),
-                            .init(name: "ChatGPT", wert: "5 h: 88 %", kurz: "5 h: 88 %",
+                            .init(name: "ChatGPT", anbieter: "chatGPT", wert: "5 h: 88 %", kurz: "5 h: 88 %",
                                   prozent: 88, warnung: true, stand: .now.addingTimeInterval(-12 * 60))
                           ],
                           anmeldungFaellig: false)
