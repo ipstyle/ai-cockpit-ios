@@ -54,10 +54,10 @@ enum DemoDaten {
     /// echten Zahlen entstünde — samt der Entscheidung, ob das Fenster vor
     /// seiner Zurücksetzung volläuft.
     private static func claude(_ jetzt: Date) -> CockpitCard {
-        let fuenfStunden = LimitWindow(label: "5 Stunden",
+        let fuenfStunden = LimitWindow(label: String(localized: "5 Stunden"),
                                        usedPercent: 63.4,
                                        resetsAt: jetzt.addingTimeInterval(2 * 3600 + 11 * 60))
-        let woche = LimitWindow(label: "7 Tage",
+        let woche = LimitWindow(label: String(localized: "7 Tage"),
                                 usedPercent: 81.7,
                                 resetsAt: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600))
         let opus = LimitWindow(label: "Opus",
@@ -104,10 +104,10 @@ enum DemoDaten {
     /// im Demomodus würde niemandem etwas zeigen — am wenigsten dem, der die
     /// App zum ersten Mal in der Hand hält und wissen will, wofür sie da ist.
     private static func chatGPT(_ jetzt: Date) -> CockpitCard {
-        let fuenfStunden = LimitWindow(label: "5 Stunden",
+        let fuenfStunden = LimitWindow(label: String(localized: "5 Stunden"),
                                        usedPercent: 48.9,
                                        resetsAt: jetzt.addingTimeInterval(1 * 3600 + 47 * 60))
-        let woche = LimitWindow(label: "7 Tage",
+        let woche = LimitWindow(label: String(localized: "7 Tage"),
                                 usedPercent: 71.5,
                                 resetsAt: jetzt.addingTimeInterval(4 * 86400 + 9 * 3600))
 
@@ -211,16 +211,17 @@ enum DemoDaten {
     /// Verlassen — der Zusatz im Namen ist die einzige Stelle, an der sie sagen
     /// kann, dass diese Zahlen nichts gemessen haben.
     static func widgetZustand(jetzt: Date = .now) -> WidgetZustand {
-        WidgetZustand(
-            erhoben: jetzt.addingTimeInterval(-142),
-            fenster: [
-                .init(name: String(localized: "5 Stunden · Demo"), prozent: 63.4,
-                      zuruecksetzung: jetzt.addingTimeInterval(2 * 3600 + 11 * 60)),
-                .init(name: String(localized: "7 Tage · Demo"), prozent: 81.7,
-                      zuruecksetzung: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600)),
-                .init(name: String(localized: "Opus · Demo"), prozent: 37.2,
-                      zuruecksetzung: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600))
-            ])
+        // **Aus denselben Karten, die die Demo auch zeigt.** Vorher standen
+        // hier drei von Hand gesetzte Claude-Fenster — die Kachel im Demomodus
+        // sah damit anders aus als die im Betrieb, und ein Prüfer bekam ein
+        // Bild zu sehen, das es so nicht gibt.
+        let quellen = karten(jetzt: jetzt).compactMap(WidgetZustand.Quelle.init(karte:))
+        return WidgetZustand(
+            erhoben: quellen.map(\.stand).min() ?? jetzt.addingTimeInterval(-142),
+            // Die Claude-Fenster tragen Ring und Sperrbildschirm.
+            fenster: quellen.first { $0.alsAnbieter == .claude }?.fenster ?? [],
+            quellen: quellen,
+            demo: true)
     }
 
     // MARK: - Kleinkram

@@ -103,6 +103,44 @@ struct CockpitMoney: Identifiable {
     }
 }
 
+// MARK: - Die Karte als Widget-Zeile
+
+extension WidgetZustand.Quelle {
+
+    /// Baut die Widget-Zeile aus einer Karte — oder gar keine.
+    ///
+    /// `nil`, wenn die Karte keine Zahlen zeigt: Eine Karte ohne Schlüssel oder
+    /// mitten im Abruf trägt einen Statushinweis, und für «nicht eingerichtet»
+    /// ist auf einer Kachel weder Platz noch Anlass.
+    ///
+    /// **An einer Stelle, weil zwei Seiten sie brauchen.** Der Zustand entsteht
+    /// im Betrieb aus `Cockpit.schreibeWidgetZustand()` und im Demomodus aus
+    /// `DemoDaten`. Getrennt gebaut liefen sie auseinander — und genau das war
+    /// der Fall: Die Demo legte nur Claude-Fenster ab und zeigte damit eine
+    /// Kachel, die es so nicht mehr gibt.
+    init?(karte: CockpitCard) {
+        guard karte.status == nil, let kurz = karte.summary else { return nil }
+        let zeilen = kurz.text.split(separator: "\n").map(String.init)
+        self.init(
+            name: karte.title,
+            anbieter: karte.provider.rawValue,
+            // Die Kurzfassung bringt ihre Zeilen mit; auf dem Widget ist eine
+            // Zeile je Quelle das Mass, also wird umgehängt.
+            wert: zeilen.joined(separator: " · "),
+            // Auf die knappste Kachel passt **eine** Angabe. Bei einem
+            // Kontingent ist das die erste — das nächste Fenster, das
+            // zuschlägt. Bei Geld nimmt die Karte selbst Stellung.
+            kurz: karte.widgetKurz ?? zeilen.first ?? kurz.text,
+            fenster: karte.limits.map {
+                .init(name: $0.window.label, prozent: $0.window.usedPercent,
+                      zuruecksetzung: $0.window.resetsAt)
+            },
+            prozent: karte.limits.first?.window.usedPercent,
+            warnung: kurz.warning,
+            stand: karte.updated ?? Date())
+    }
+}
+
 // MARK: - Liste
 
 struct CardsView: View {

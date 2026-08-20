@@ -765,35 +765,9 @@ final class Cockpit {
     }
 
     private func schreibeWidgetZustand() {
-        let quellen: [WidgetZustand.Quelle] = karten.compactMap { karte in
-            // `status == nil` heisst: Die Karte zeigt Zahlen und keinen
-            // Hinweis. Das ist dieselbe Regel, an der die Karte selbst
-            // entscheidet, ob sie eine Fussnote braucht.
-            guard karte.status == nil, let kurz = karte.summary else { return nil }
-            let zeilen = kurz.text.split(separator: "\n").map(String.init)
-            return WidgetZustand.Quelle(
-                name: karte.title,
-                // Anbieter und Fenster liegen auf der Karte längst vor — sie
-                // wurden nur nie weitergereicht. Ohne den Anbieter stand die
-                // ganze Kachel in Claudes Orange; ohne die Fenster lag der
-                // Balkenblock der grossen Kachel herrenlos unter der Liste.
-                anbieter: karte.provider.rawValue,
-                // Die Kurzfassung bringt ihre Zeilen mit; auf dem Widget ist
-                // eine Zeile je Quelle das Mass, also wird umgehängt.
-                wert: zeilen.joined(separator: " · "),
-                // Auf die knappste Kachel passt **eine** Angabe. Bei einem
-                // Kontingent ist das die erste — das nächste Fenster, das
-                // zuschlägt. Bei Geld die letzte: der laufende Monat sagt mehr
-                // als der heutige Betrag, der morgens oft null ist.
-                kurz: karte.widgetKurz ?? zeilen.first ?? kurz.text,
-                fenster: karte.limits.map {
-                    .init(name: $0.window.label, prozent: $0.window.usedPercent,
-                          zuruecksetzung: $0.window.resetsAt)
-                },
-                prozent: karte.limits.first?.window.usedPercent,
-                warnung: kurz.warning,
-                stand: karte.updated ?? Date())
-        }
+        // Eine Zeile je eingeblendeter Karte, die Zahlen zeigt — gebaut vom
+        // selben Initialisierer, den auch der Demomodus benutzt.
+        let quellen = karten.compactMap(WidgetZustand.Quelle.init(karte:))
 
         guard case .daten(let werte) = claude else {
             // Ohne Claude gibt es keine Fenster für den Ring — die Liste der

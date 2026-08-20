@@ -154,12 +154,20 @@ struct WidgetZustand: Codable, Sendable, Equatable {
     /// Eine Zeile je eingeblendeter Karte mit Zahlen. Leer bei einem Stand aus
     /// einer älteren Fassung; dann zeigt das Widget wie früher nur `fenster`.
     let quellen: [Quelle]
+    /// Stammen diese Zahlen aus dem Demomodus?
+    ///
+    /// Das Widget weiss sonst nichts davon: Es findet keinen Claude-Token und
+    /// hängt der Kachel «in der App anmelden» an — neben Zahlen, die sichtbar
+    /// dastehen. Wer die Demo laufen lässt (und das tut auch der Prüfer bei
+    /// Apple), bekam damit eine Aufforderung, die für ihn nicht gilt.
+    let demo: Bool
 
-    init(erhoben: Date, fenster: [Fenster], quellen: [Quelle] = []) {
+    init(erhoben: Date, fenster: [Fenster], quellen: [Quelle] = [], demo: Bool = false) {
         self.version = Self.aktuelleVersion
         self.erhoben = erhoben
         self.fenster = fenster
         self.quellen = quellen
+        self.demo = demo
     }
 
     /// Ein Stand aus einer älteren Fassung kennt `quellen` nicht. Ihn deswegen
@@ -170,6 +178,7 @@ struct WidgetZustand: Codable, Sendable, Equatable {
         erhoben = try c.decode(Date.self, forKey: .erhoben)
         fenster = try c.decode([Fenster].self, forKey: .fenster)
         quellen = try c.decodeIfPresent([Quelle].self, forKey: .quellen) ?? []
+        demo = try c.decodeIfPresent(Bool.self, forKey: .demo) ?? false
     }
 
     // MARK: - Lesen und Schreiben

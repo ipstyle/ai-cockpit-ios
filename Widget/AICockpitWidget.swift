@@ -194,7 +194,11 @@ struct UeberblickAnbieter: TimelineProvider {
             let fund = WidgetSchluesselbund.claudeToken()
             var eintrag = Self.ausZwischenstand(jetzt, anmeldungFaellig: fund.brauchtDieApp)
 
-            if !istVorschau, case .token(let token) = fund, Self.lohntAbruf(eintrag, jetzt: jetzt) {
+            // Läuft die Demo, wird nichts geholt: Ein echter Abruf schriebe
+            // echte Zahlen über die Beispielzahlen, und die Kachel zeigte etwas
+            // anderes als die App daneben.
+            let demo = WidgetZustand.lies()?.demo == true
+            if !istVorschau, !demo, case .token(let token) = fund, Self.lohntAbruf(eintrag, jetzt: jetzt) {
                 if case .frisch(let zustand) = await WidgetAbruf.claude(token: token,
                                                                        zeitlimit: Self.zeitlimit) {
                     // Ohne Anstossen — der Aufruf käme sonst mitten aus dieser
@@ -227,7 +231,10 @@ struct UeberblickAnbieter: TimelineProvider {
                                  stand: zustand.erhoben,
                                  fenster: zustand.fenster,
                                  quellen: zustand.quellen,
-                                 anmeldungFaellig: anmeldungFaellig)
+                                 // Im Demomodus gilt die Aufforderung nicht:
+                                 // Die Zahlen stehen da, und anmelden muss sich
+                                 // dafür niemand.
+                                 anmeldungFaellig: anmeldungFaellig && !zustand.demo)
     }
 
     private static func lohntAbruf(_ eintrag: UeberblickEintrag, jetzt: Date) -> Bool {
