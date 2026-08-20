@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Nur für den Simulator. Die echten Berechtigungen stehen in
+	     App/Resources/AICockpitMobile.entitlements und tragen das Team-Präfix,
+	     das erst beim Signieren mit einem Entwicklerkonto feststeht. Hier steht
+	     es ohne Präfix, damit eine Ad-hoc-Signatur genügt — der Schlüsselbund
+	     verlangt eine App-Kennung und antwortet sonst mit -34018. -->
+	<key>application-identifier</key>
+	<string>com.ip-style.aicockpitmobile</string>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>com.ip-style.aicockpitmobile</string>
+	</array>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.ipstyle.aicockpit</string>
+	</array>
+</dict>
+</plist>

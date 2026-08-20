@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `5b26d5472b2a0423d5e5beeef902447f4e065113` |
-| kurz | `5b26d54` |
-| Betreff | Guard the OAuth callback against resuming twice |
+| Commit | `671ea6c33481d4eff6476f02bf982a7df9c3b5e7` |
+| kurz | `671ea6c` |
+| Betreff | Stop a foreign number from ending the process |
 | festgehalten | 20.08.2026 |

@@ -42,6 +42,10 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     @Published private(set) var protokoll: [String] = []
 
     private var sitzung: ASWebAuthenticationSession?
+    /// Das Fenster, an dem das Anmeldefenster hängt. Wird beim Öffnen ermittelt,
+    /// nicht beim Rückruf: Zu dem Zeitpunkt ist sicher, dass es eines gibt —
+    /// sonst wird die Anmeldung gar nicht erst gestartet.
+    private var anker: ASPresentationAnchor?
     private var laufenderAuftrag: Task<Void, Never>?
 
     func melde() {
@@ -90,6 +94,15 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     }
 
     private func zeige(_ url: URL) {
+        let szenen = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        let szene = szenen.first { $0.activationState == .foregroundActive } ?? szenen.first
+        guard let fenster = szene?.keyWindow ?? szene?.windows.first else {
+            notiere("Kein Fenster gefunden, an dem das Anmeldefenster hängen könnte")
+            zustand = .fehler("Das Anmeldefenster liess sich nicht öffnen.")
+            return
+        }
+        anker = fenster
+
         notiere("Rückkanal offen, Anmeldeseite wird geöffnet")
         zustand = .laeuft(schritt: "Anmeldeseite geöffnet")
 
@@ -132,12 +145,11 @@ extension ClaudeAnmeldung: ASWebAuthenticationPresentationContextProviding {
         // Das aktive Fenster der App. Über die Szenen zu gehen statt über
         // `UIApplication.windows` ist der Weg, der auf dem iPad im Split View
         // und in mehreren Fenstern noch stimmt.
-        let szenen = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-        let szene = szenen.first { $0.activationState == .foregroundActive } ?? szenen.first
-        if let fenster = szene?.keyWindow { return fenster }
-        if let szene { return ASPresentationAnchor(windowScene: szene) }
-        // Ohne jede Fensterszene gibt es nichts, woran das Anmeldefenster
-        // hängen könnte. Das kann nur eintreten, während die App beendet wird.
-        return ASPresentationAnchor(frame: .zero)
+        // `zeige(_:)` setzt den Anker, bevor es die Sitzung startet, und startet
+        // sie ohne Anker gar nicht — hierher kommt also nur, wer ein Fenster hat.
+        guard let anker else {
+            preconditionFailure("Anmeldefenster ohne Anker — zeige(_:) hätte nicht starten dürfen.")
+        }
+        return anker
     }
 }
