@@ -81,6 +81,8 @@ struct WurzelAnsicht: View {
             zeigtAnmeldung = true
         case .beiChatGPTAnmelden:
             zeigtChatGPTAnmeldung = true
+        case .einrichten:
+            zeigtEinstellungen = true
         case .erneutVersuchen(let quelle):
             Task { await cockpit.versucheErneut(quelle) }
         case nil:

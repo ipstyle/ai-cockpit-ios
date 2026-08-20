@@ -189,12 +189,16 @@ final class Cockpit {
 
     /// Was der Knopf einer Karte auslösen soll.
     ///
-    /// Die drei API-Schlüssel haben bewusst keinen eigenen Fall: Ihre Karten
-    /// laden im Text zu den Einstellungen ein, statt mit einer Fläche, die
-    /// dasselbe noch einmal sagt.
+    /// Was ein Knopf auf einer Karte auslöst.
+    ///
+    /// Die drei Schlüssel-Karten hatten lange keinen, weil es kein Ziel gab —
+    /// ein Knopf ins Leere ist schlimmer als keiner. Seit es die Einstellungen
+    /// gibt, führt «Eintragen» dorthin.
     enum Kartenaktion: Equatable, Sendable {
         case anmelden
         case beiChatGPTAnmelden
+        /// Führt in die Einstellungen, wo der Schlüssel eingetragen wird.
+        case einrichten
         case erneutVersuchen(CardLayout.Card)
     }
 
@@ -204,10 +208,13 @@ final class Cockpit {
             if case .nichtEingerichtet = claude { return .anmelden }
             if case .fehler = claude { return .erneutVersuchen(.claude) }
         case .openai:
+            if case .nichtEingerichtet = openAI { return .einrichten }
             if case .fehler = openAI { return .erneutVersuchen(.openai) }
         case .anthropic:
+            if case .nichtEingerichtet = anthropic { return .einrichten }
             if case .fehler = anthropic { return .erneutVersuchen(.anthropic) }
         case .kimi:
+            if case .nichtEingerichtet = kimi { return .einrichten }
             if case .fehler = kimi { return .erneutVersuchen(.kimi) }
         case .chatgpt:
             if case .nichtEingerichtet = codex { return .beiChatGPTAnmelden }
@@ -331,6 +338,7 @@ final class Cockpit {
         case .nichtEingerichtet:
             summary = CardSummary(text: String(localized: "nicht eingerichtet"))
             status = .missing(String(localized: "Kein Admin-Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist — sie ist keine Voraussetzung für die übrigen."))
+            knopf = String(localized: "Eintragen")
         case .fehler(let text):
             summary = kurz(text)
             status = .failed(text)
@@ -371,6 +379,7 @@ final class Cockpit {
         case .nichtEingerichtet:
             summary = CardSummary(text: String(localized: "nicht eingerichtet"))
             status = .missing(String(localized: "Kein Admin-Schlüssel hinterlegt. Zeigt die Kosten der Anthropic-API — nicht das Abo darüber."))
+            knopf = String(localized: "Eintragen")
         case .fehler(let text):
             summary = kurz(text)
             status = .failed(text)
@@ -411,6 +420,7 @@ final class Cockpit {
         case .nichtEingerichtet:
             summary = CardSummary(text: String(localized: "nicht eingerichtet"))
             status = .missing(String(localized: "Kein Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist."))
+            knopf = String(localized: "Eintragen")
         case .fehler(let text):
             summary = kurz(text)
             status = .failed(text)
