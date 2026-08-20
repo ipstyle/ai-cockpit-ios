@@ -49,7 +49,33 @@ final class Cockpit {
     /// ihren eigenen, genaueren Zeitstempel — dieser hier steht in der
     /// Kopfzeile und beantwortet «wann habe ich zuletzt gefragt».
     private(set) var zuletztAktualisiert: Date?
-    private(set) var wirdAktualisiert = false
+
+    /// Welche Quellen gerade unterwegs sind.
+    ///
+    /// Früher stand hier ein einzelnes `wirdAktualisiert`, und daran hingen
+    /// gleich drei Fehler: Ein zweiter Aufruf während eines laufenden Durchgangs
+    /// wurde **stillschweigend verworfen** — wer einen Schlüssel eintrug,
+    /// während der Startlauf noch lief, sah seine Karte bis zum nächsten
+    /// App-Start leer. Und die Kopfzeile behauptete eine Minute lang, die ganze
+    /// App arbeite, obwohl vier von fünf Karten längst dastanden.
+    ///
+    /// Der ursprüngliche Grund für die Sperre bleibt gewahrt: Zwei gleichzeitige
+    /// Läufe **derselben** Quelle würden denselben Refresh-Token doppelt
+    /// einlösen. Genau das ist gesperrt — nicht mehr.
+    private(set) var laufendeQuellen: Set<CardLayout.Card> = []
+
+    /// Läuft überhaupt noch etwas? Für den Kreisel im Aktualisieren-Knopf.
+    var wirdAktualisiert: Bool { laufendeQuellen.isEmpty == false }
+
+    /// Namen der Quellen, die noch unterwegs sind — in der Reihenfolge der
+    /// Karten, damit die Kopfzeile nicht bei jedem Durchgang anders sortiert.
+    var laufendeNamen: [String] {
+        Self.quellen.filter { laufendeQuellen.contains($0) }.map(Self.name(fuer:))
+    }
+
+    /// Die fünf Quellen, die diese Fassung abfragt. Die Sitzungskarte gehört
+    /// nicht dazu — sie hat auf einem iPhone keine Quelle.
+    private static let quellen: [CardLayout.Card] = [.claude, .chatgpt, .openai, .anthropic, .kimi]
 
     /// Kennungen der eingeklappten Karten, mit Komma getrennt — dasselbe
     /// Format wie `AppSettings.collapsedCards` auf dem Mac. Zerlegt wird es von
@@ -58,6 +84,22 @@ final class Cockpit {
         didSet {
             guard eingeklappteKarten != oldValue else { return }
             UserDefaults.standard.set(eingeklappteKarten, forKey: Self.schluesselEingeklappt)
+        }
+    }
+
+    /// Kennungen der ausgeblendeten Karten, mit Komma getrennt.
+    ///
+    /// Sie liegt **hier** und nicht als `@AppStorage` in der Einstellungsseite:
+    /// Eine Ansicht, die in die Vorgaben schreibt, sagt niemandem Bescheid — die
+    /// Kartenliste erfuhr von der Änderung erst beim nächsten vollständigen
+    /// Durchgang, also frühestens nach dem langsamsten Netzabruf und in der
+    /// Praxis oft erst nach einem Neustart. Über `didSet` greift ein Schalter
+    /// sofort, ganz ohne Netz.
+    var versteckteKarten: String {
+        didSet {
+            guard versteckteKarten != oldValue else { return }
+            UserDefaults.standard.set(versteckteKarten, forKey: Self.schluesselVersteckt)
+            baueKarten()
         }
     }
 
@@ -97,9 +139,11 @@ final class Cockpit {
     private var kimi: Quellenstand<KimiClient.Balance> = .laedt
 
     private static let schluesselEingeklappt = "collapsedCards"
+    private static let schluesselVersteckt = "hiddenCards"
 
     init() {
         eingeklappteKarten = UserDefaults.standard.string(forKey: Self.schluesselEingeklappt) ?? ""
+        versteckteKarten = UserDefaults.standard.string(forKey: Self.schluesselVersteckt) ?? ""
         baueKarten()
     }
 
@@ -117,11 +161,13 @@ final class Cockpit {
         // Die Prüfung steht vor allem anderen: Ein Abruf, der schon läuft,
         // liesse sich nicht mehr zurückholen.
         guard !DemoModus.laeuft else { return uebernehmeDemodaten() }
-        // Zwei gleichzeitige Läufe würden denselben Refresh-Token doppelt
-        // einlösen; der zweite scheitert, sobald Anthropic ihn dreht.
-        guard !wirdAktualisiert else { return }
-        wirdAktualisiert = true
-        defer { wirdAktualisiert = false }
+
+        // **Nur das anstossen, was nicht schon unterwegs ist.** Früher wurde der
+        // ganze Durchgang verworfen, sobald irgendetwas lief — und damit fiel
+        // das Nachfassen nach dem Eintragen eines Schlüssels ersatzlos weg.
+        let offen = Self.quellen.filter { laufendeQuellen.contains($0) == false }
+        guard !offen.isEmpty else { return }
+        laufendeQuellen.formUnion(offen)
 
         claudeAbo = Self.abostufe()
         let region = Self.kimiRegion()
@@ -138,29 +184,16 @@ final class Cockpit {
         // ein paarmal mehr Arbeit für die Ansicht und der Grund, warum man
         // überhaupt etwas sieht, während der Rest noch läuft.
         await withTaskGroup(of: Void.self) { gruppe in
-            gruppe.addTask { [weak self] in
-                let w = await Abruf.claude()
-                await MainActor.run { self?.uebernimm { $0.claude = w } }
-            }
-            gruppe.addTask { [weak self] in
-                let w = await Abruf.codex()
-                await MainActor.run { self?.uebernimm { $0.codex = w } }
-            }
-            gruppe.addTask { [weak self] in
-                let w = await Abruf.openAI()
-                await MainActor.run { self?.uebernimm { $0.openAI = w } }
-            }
-            gruppe.addTask { [weak self] in
-                let w = await Abruf.anthropic()
-                await MainActor.run { self?.uebernimm { $0.anthropic = w } }
-            }
-            gruppe.addTask { [weak self] in
-                let w = await Abruf.kimi(region: region)
-                await MainActor.run { self?.uebernimm { $0.kimi = w } }
+            for quelle in offen {
+                gruppe.addTask { [weak self] in await self?.hole(quelle, region: region) }
             }
         }
+        // Sicherungsnetz: `hole` streicht jede Quelle selbst, sobald sie da ist.
+        // Wird ein Auftrag abgebrochen, käme er dort nicht mehr an — und eine
+        // Quelle, die für immer als «läuft» gilt, liesse sich nie wieder
+        // anstossen.
+        laufendeQuellen.subtract(offen)
 
-        zuletztAktualisiert = Date()
         baueKarten()
         schreibeWidgetZustand()
         // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
@@ -170,12 +203,29 @@ final class Cockpit {
                                          schwellen: schwellen)
     }
 
-    /// Nimmt das Ergebnis einer Quelle entgegen und zeichnet neu.
+    /// Holt **eine** Quelle und zeichnet sie ein.
     ///
-    /// Der Zeitstempel bleibt hier unangetastet: «Aktualisiert vor x» meint den
-    /// Abschluss des ganzen Durchgangs, nicht den der schnellsten Quelle.
-    private func uebernimm(_ setze: (Cockpit) -> Void) {
-        setze(self)
+    /// Die Quelle wird gestrichen, bevor neu gebaut wird — so verschwindet ihr
+    /// Name aus der Kopfzeile im selben Zug, in dem ihre Zahlen erscheinen.
+    private func hole(_ quelle: CardLayout.Card, region: KimiClient.Region) async {
+        switch quelle {
+        case .claude:    claude = await Abruf.claude()
+        case .chatgpt:   codex = await Abruf.codex()
+        case .openai:    openAI = await Abruf.openAI()
+        case .anthropic: anthropic = await Abruf.anthropic()
+        case .kimi:      kimi = await Abruf.kimi(region: region)
+        case .sitzungen:
+            // Die einzige Karte, die tatsächlich am Mac hängt: Die laufenden
+            // Sitzungen stehen in Dateien, für die es keinen Netz-Endpunkt gibt.
+            break
+        }
+        laufendeQuellen.remove(quelle)
+        // **Der Zeitstempel gehört hierhin, nicht ans Ende eines Durchgangs.**
+        // Sonst kann ein zweiter, kurzer Lauf über die schnellen Quellen
+        // «Aktualisiert vor 40 s» melden, während der erste OpenAI-Abruf noch
+        // gar nie durchgekommen ist. «Aktualisiert vor x» heisst: seither hat
+        // keine Quelle mehr etwas Neues gebracht.
+        if laufendeQuellen.isEmpty { zuletztAktualisiert = Date() }
         baueKarten()
     }
 
@@ -185,6 +235,11 @@ final class Cockpit {
     /// aufmacht, soll nicht zehn volle Kostenläufe auslösen — sehen will er
     /// trotzdem etwas Frisches.
     func aktualisiereFallsAelterAls(_ dauer: TimeInterval) async {
+        // Läuft schon etwas, ist die Frage beantwortet: frischer geht es
+        // gerade nicht. Ohne diese Zeile stiess der Wechsel in den Vordergrund
+        // beim Start einen zweiten Lauf an, während der erste noch unterwegs
+        // war — und der holte die schnellen Quellen ein zweites Mal.
+        guard laufendeQuellen.isEmpty else { return }
         guard let zuletztAktualisiert else { return await aktualisiere() }
         guard Date().timeIntervalSince(zuletztAktualisiert) >= dauer else { return }
         await aktualisiere()
@@ -195,28 +250,16 @@ final class Cockpit {
     /// ihren Zahlen; sie haben mit dem Fehlschlag nichts zu tun.
     func versucheErneut(_ karte: CardLayout.Card) async {
         guard !DemoModus.laeuft else { return }
-        guard !wirdAktualisiert else { return }
-        wirdAktualisiert = true
-        defer { wirdAktualisiert = false }
+        // Nur diese eine Quelle sperren. Dass eine andere gerade läuft, geht
+        // diesen Knopf nichts an — jede Quelle schreibt nur in ihr eigenes Feld.
+        guard Self.quellen.contains(karte), laufendeQuellen.contains(karte) == false else { return }
+        laufendeQuellen.insert(karte)
 
-        switch karte {
-        case .claude:
-            claude = await Abruf.claude()
-            claudeAbo = Self.abostufe()
-        case .openai:
-            openAI = await Abruf.openAI()
-        case .anthropic:
-            anthropic = await Abruf.anthropic()
-        case .kimi:
-            kimi = await Abruf.kimi(region: Self.kimiRegion())
-        case .chatgpt:
-            codex = await Abruf.codex()
-        case .sitzungen:
-            // Die einzige Karte, die tatsächlich am Mac hängt: Die laufenden
-            // Sitzungen stehen in Dateien, für die es keinen Netz-Endpunkt gibt.
-            return
-        }
-        baueKarten()
+        if karte == .claude { claudeAbo = Self.abostufe() }
+        await hole(karte, region: Self.kimiRegion())
+        // Der Zeitstempel der Kopfzeile bleibt unangetastet: «Aktualisiert vor
+        // x» meint den Abschluss eines ganzen Durchgangs, nicht den einer
+        // einzelnen Quelle.
         schreibeWidgetZustand()
         // Zuletzt und nicht zuerst: Die Karten sollen stehen, bevor eine
         // Meldung auf sie zeigt. Was gemeldet wird, entscheidet `Mitteilungen`
@@ -280,19 +323,18 @@ final class Cockpit {
         DemoDaten.widgetZustand().schreib()
     }
 
-    /// Welche Karten der Nutzer ausgeblendet hat.
+    /// Die Kennungen der ausgeblendeten Karten, zerlegt.
     ///
     /// Dasselbe Format wie bei den eingeklappten Karten und der Reihenfolge:
-    /// eine Liste von Kennungen in den Benutzervorgaben. Ausblenden ist etwas
-    /// anderes als Einklappen — eine eingeklappte Karte wird weiter abgerufen
-    /// und zeigt ihre Kurzfassung, eine ausgeblendete gibt es nicht mehr.
-    static func versteckteKarten() -> Set<String> {
-        let roh = UserDefaults.standard.string(forKey: "hiddenCards") ?? ""
-        return Set(roh.split(separator: ",").map(String.init).filter { $0.isEmpty == false })
+    /// eine Liste von Kennungen. Ausblenden ist etwas anderes als Einklappen —
+    /// eine eingeklappte Karte wird weiter abgerufen und zeigt ihre
+    /// Kurzfassung, eine ausgeblendete gibt es nicht mehr.
+    var versteckteKennungen: Set<String> {
+        Set(versteckteKarten.split(separator: ",").map(String.init).filter { $0.isEmpty == false })
     }
 
     private func baueKarten() {
-        let versteckt = Self.versteckteKarten()
+        let versteckt = versteckteKennungen
         karten = [
             claudeKarte(),
             chatgptKarte(),
@@ -310,6 +352,21 @@ final class Cockpit {
         // abgerufen worden sein — wer sie wieder einblendet, will nicht auf den
         // nächsten Durchgang warten.
         .filter { versteckt.contains($0.id.rawValue) == false }
+        // An einer Stelle statt in fünf Kartenbauern: Ob eine Quelle läuft,
+        // steht hier und geht die Karte selbst nichts an.
+        //
+        // **Nicht beim allerersten Abruf.** Dann steht der Ladehinweis samt
+        // eigenem Kreisel schon in der Karte; ein zweiter oben rechts wäre
+        // dieselbe Auskunft zweimal. Der Kreisel im Kopf gehört dem anderen
+        // Fall: Die Karte zeigt ihre letzten Zahlen, und daneben soll stehen,
+        // dass gerade neue unterwegs sind.
+        .map { karte in
+            var mit = karte
+            let zeigtSchonLadehinweis: Bool
+            if case .loading = karte.status { zeigtSchonLadehinweis = true } else { zeigtSchonLadehinweis = false }
+            mit.wirdGeholt = laufendeQuellen.contains(karte.id) && !zeigtSchonLadehinweis
+            return mit
+        }
     }
 
     // MARK: Claude
@@ -399,7 +456,11 @@ final class Cockpit {
         switch openAI {
         case .laedt:
             summary = CardSummary(text: String(localized: "wird geholt …"))
-            status = .loading(String(localized: "Kosten werden geholt …"))
+            // Als einzige Karte mit Begründung: Dieser Abruf dauert wirklich
+            // lange — er blättert Kostenseiten durch und fragt danach jedes
+            // Projekt einzeln. Ohne den Satz sieht die Wartezeit aus wie ein
+            // Hänger, und der nächste Griff ist der zum Neustart.
+            status = .loading(String(localized: "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus."))
         case .nichtEingerichtet:
             summary = CardSummary(text: String(localized: "nicht eingerichtet"))
             status = .missing(String(localized: "Kein Admin-Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist — sie ist keine Voraussetzung für die übrigen."))
@@ -643,6 +704,21 @@ final class Cockpit {
     /// dort der Rückfall auf den Token und liefert denselben lesbaren Namen.
     private static func abostufe() -> String? {
         ClaudeAccount.subscription(fallback: Zugaenge().liesToken()?.subscriptionType)
+    }
+
+    /// Wie eine Quelle in der Kopfzeile heisst, solange sie noch läuft.
+    ///
+    /// Dieselben Namen wie auf den Karten — ein zweiter Satz Bezeichnungen wäre
+    /// für den Leser eine zweite Liste zum Zuordnen.
+    private static func name(fuer karte: CardLayout.Card) -> String {
+        switch karte {
+        case .claude: return "Claude"
+        case .chatgpt: return "ChatGPT"
+        case .openai: return String(localized: "OpenAI-API")
+        case .anthropic: return String(localized: "Anthropic-API")
+        case .kimi: return "Kimi K3"
+        case .sitzungen: return String(localized: "Sitzungen")
+        }
     }
 
     /// Aus den Benutzervorgaben, unter demselben Schlüsselnamen wie auf dem

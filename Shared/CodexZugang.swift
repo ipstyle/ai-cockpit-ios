@@ -273,6 +273,15 @@ public struct CodexAuth: Sendable {
 
     // MARK: Der bequeme Weg — Rücksprung auf die Rückschleife
 
+    /// Der Pfad, auf den dieser Client zurückspringt.
+    ///
+    /// Er steht hier und nicht zweimal im Code: Einmal wird er in die
+    /// Anmeldeadresse geschrieben, einmal muss der Zuhörer auf ihn hören. Genau
+    /// diese zwei Stellen sind einmal auseinandergelaufen — der Zuhörer wartete
+    /// auf `/callback`, der Dienst sprang auf `/auth/callback` zurück, und die
+    /// Anmeldung blieb bis zum Abbruch bei «Warte auf die Anmeldung …» stehen.
+    public static let rueckwegPfad = "/auth/callback"
+
     /// Die Häfen, die dieser Client hinterlegt hat.
     ///
     /// **Fest**, anders als bei Claude: Der Autorisierungsserver nimmt nur
@@ -299,7 +308,7 @@ public struct CodexAuth: Sendable {
         let verifier = try zufall(bytes: 64)
         let challenge = base64URL(Data(SHA256.hash(data: Data(verifier.utf8))))
         let state = try zufall(bytes: 32)
-        let rueckweg = "http://localhost:\(port)/auth/callback"
+        let rueckweg = "http://localhost:\(port)\(rueckwegPfad)"
 
         let query = [
             ("response_type", "code"),

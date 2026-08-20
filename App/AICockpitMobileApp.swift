@@ -32,7 +32,7 @@ struct WurzelAnsicht: View {
     var body: some View {
         CardsView(cards: cockpit.karten,
                   lastUpdated: cockpit.zuletztAktualisiert,
-                  isRefreshing: cockpit.wirdAktualisiert,
+                  laufend: cockpit.laufendeNamen,
                   thresholds: cockpit.schwellen,
                   collapsedCards: $cockpit.eingeklappteKarten,
                   refresh: { await cockpit.aktualisiere() },

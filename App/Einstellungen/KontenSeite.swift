@@ -16,6 +16,9 @@ import AgentDeckCore
 
 struct KontenSeite: View {
     let einstellungen: Einstellungen
+    /// Damit eine Karte gleich zu laden beginnt, sobald ihr Schlüssel dasteht —
+    /// und nicht erst, wenn man die Einstellungen wieder zumacht.
+    let cockpit: Cockpit
 
     @State private var zeigtAnmeldung = false
 
@@ -25,15 +28,23 @@ struct KontenSeite: View {
 
             SchluesselAbschnitt(
                 einstellungen: einstellungen,
+                cockpit: cockpit,
                 zugang: .openAIAdminKey,
+                karte: .openai,
                 titel: "OpenAI-Admin",
                 platzhalter: String(localized: "Admin-Schlüssel (sk-admin-…)"),
                 herkunft: String(localized: "Zu finden unter platform.openai.com → Settings → Admin keys. Es muss ein Organisations-Admin-Schlüssel sein; ein gewöhnlicher Projektschlüssel gibt die Kosten nicht heraus."),
-                nutzen: String(localized: "Zeigt die Kosten der OpenAI-API — heute, laufender Monat, gesamt."))
+                nutzen: String(localized: "Zeigt die Kosten der OpenAI-API — heute, laufender Monat, gesamt."),
+                // Diese eine Karte braucht den Satz: Ihr Abruf blättert
+                // Kostenseiten durch und fragt danach jedes Projekt einzeln. Wer
+                // das nicht weiss, hält die Wartezeit für einen Fehler.
+                hinweis: String(localized: "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal."))
 
             SchluesselAbschnitt(
                 einstellungen: einstellungen,
+                cockpit: cockpit,
                 zugang: .anthropicAdminKey,
+                karte: .anthropic,
                 titel: "Anthropic-Admin",
                 platzhalter: String(localized: "Admin-Schlüssel (sk-ant-admin-…)"),
                 herkunft: String(localized: "Zu finden unter console.anthropic.com → Settings → Admin keys."),
@@ -46,6 +57,7 @@ struct KontenSeite: View {
             // legt den Token selbst ab, und ohne diesen Griff stünde hier
             // weiter «nicht angemeldet», während es längst geklappt hat.
             einstellungen.aktualisiereStand()
+            Task { await cockpit.versucheErneut(.claude) }
         } content: {
             AnmeldeAnsicht()
         }
@@ -116,7 +128,9 @@ struct KontenSeite: View {
     private var kimiAbschnitt: some View {
         SchluesselAbschnitt(
             einstellungen: einstellungen,
+            cockpit: cockpit,
             zugang: .kimiAPIKey,
+            karte: .kimi,
             titel: "Kimi K3",
             platzhalter: String(localized: "API-Schlüssel"),
             herkunft: String(localized: "Zu finden in der Kontoverwaltung der oben gewählten Plattform."),
@@ -159,13 +173,20 @@ private struct KimiPlattform: View {
 /// welcher Schlüssel hineingehört.
 struct SchluesselAbschnitt<Zusatz: View>: View {
     let einstellungen: Einstellungen
+    let cockpit: Cockpit
     let zugang: Zugaenge.Zugang
+    /// Die Karte, die von diesem Schlüssel lebt. Sie wird sofort nach dem
+    /// Sichern angestossen — sonst stünde sie weiter auf «nicht eingerichtet»,
+    /// während der Schlüssel längst im Schlüsselbund liegt.
+    let karte: CardLayout.Card
     let titel: String
     let platzhalter: String
     /// Wo man den Schlüssel herbekommt.
     let herkunft: String
     /// Was er bringt — und damit auch, was ohne ihn fehlt.
     let nutzen: String
+    /// Was nur diesen einen Dienst betrifft. Steht am Ende der Fusszeile.
+    let hinweis: String?
     let zusatz: Zusatz
 
     @State private var eingabe = ""
@@ -173,18 +194,24 @@ struct SchluesselAbschnitt<Zusatz: View>: View {
     @State private var fehler: String?
 
     init(einstellungen: Einstellungen,
+         cockpit: Cockpit,
          zugang: Zugaenge.Zugang,
+         karte: CardLayout.Card,
          titel: String,
          platzhalter: String,
          herkunft: String,
          nutzen: String,
+         hinweis: String? = nil,
          @ViewBuilder zusatz: () -> Zusatz) {
         self.einstellungen = einstellungen
+        self.cockpit = cockpit
         self.zugang = zugang
+        self.karte = karte
         self.titel = titel
         self.platzhalter = platzhalter
         self.herkunft = herkunft
         self.nutzen = nutzen
+        self.hinweis = hinweis
         self.zusatz = zusatz()
     }
 
@@ -244,7 +271,13 @@ struct SchluesselAbschnitt<Zusatz: View>: View {
             // Erst was es bringt, dann wo es herkommt, dann die Entwarnung —
             // in dieser Reihenfolge, weil die dritte Zeile sonst wie eine
             // Ausrede klingt statt wie eine Auskunft.
-            Text("\(nutzen)\n\n\(herkunft)\n\nFreiwillig: Ohne diesen Schlüssel bleibt nur diese eine Karte leer, alles andere läuft weiter.")
+            VStack(alignment: .leading, spacing: 8) {
+                Text("\(nutzen)\n\n\(herkunft)\n\nFreiwillig: Ohne diesen Schlüssel bleibt nur diese eine Karte leer, alles andere läuft weiter.")
+                if let hinweis {
+                    Text(hinweis)
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -273,6 +306,11 @@ struct SchluesselAbschnitt<Zusatz: View>: View {
         guard !sauber.isEmpty else { return }
         if einstellungen.sichere(sauber, in: zugang) {
             fehler = nil
+            // Sofort loslegen, nicht erst beim Schliessen der Einstellungen: So
+            // steht die Karte schon auf «wird geholt …», während man noch hier
+            // ist — und bei OpenAI läuft die lange Wartezeit bereits, statt erst
+            // danach anzufangen.
+            Task { await cockpit.versucheErneut(karte) }
         } else {
             fehler = String(localized: "Der Schlüssel liess sich nicht im Schlüsselbund ablegen. Bitte noch einmal versuchen.")
         }
@@ -290,16 +328,22 @@ struct SchluesselAbschnitt<Zusatz: View>: View {
 /// den generischen Parameter erst festlegen würde.
 extension SchluesselAbschnitt where Zusatz == EmptyView {
     init(einstellungen: Einstellungen,
+         cockpit: Cockpit,
          zugang: Zugaenge.Zugang,
+         karte: CardLayout.Card,
          titel: String,
          platzhalter: String,
          herkunft: String,
-         nutzen: String) {
+         nutzen: String,
+         hinweis: String? = nil) {
         self.init(einstellungen: einstellungen,
+                  cockpit: cockpit,
                   zugang: zugang,
+                  karte: karte,
                   titel: titel,
                   platzhalter: platzhalter,
                   herkunft: herkunft,
-                  nutzen: nutzen) { EmptyView() }
+                  nutzen: nutzen,
+                  hinweis: hinweis) { EmptyView() }
     }
 }

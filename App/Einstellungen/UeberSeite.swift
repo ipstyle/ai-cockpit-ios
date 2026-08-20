@@ -1,13 +1,16 @@
 import SwiftUI
 import AgentDeckCore
 
-// Über — Fassung, Datenschutz, Abgrenzung, Verweise, und der eine Knopf, der
-// alles wegräumt.
+// Über — Fassung, Datenschutz, Abgrenzung, Verweise.
 //
 // Die ausführliche Auskunft über Netzziele, Ablage und Prüfstand steht auf der
 // eigenen Seite «Datenschutz und Sicherheit»; hier bleibt die Kurzfassung mit
-// dem Weg dorthin. Sonst stünde der Löschknopf unter zwei Bildschirmlängen
-// Text, und den findet niemand, der ihn braucht.
+// dem Weg dorthin.
+//
+// Der Knopf zum Zurücksetzen stand einmal hier unten. Er steht jetzt direkt in
+// der Einstellungsliste: Wer die App zurücksetzen will, sucht das unter
+// «Einstellungen» und nicht unter «Über» — und hat ihn dort prompt nicht
+// gefunden.
 //
 // Die Abgrenzung steht hier nicht aus Höflichkeit: AI Cockpit zeigt Zahlen von
 // Anthropic, OpenAI und Moonshot und trägt deren Namen auf fünf Karten. Wer
@@ -16,9 +19,7 @@ import AgentDeckCore
 
 struct UeberSeite: View {
     let einstellungen: Einstellungen
-    let cockpit: Cockpit
 
-    @State private var fragtNachLoeschen = false
     @Environment(\.colorScheme) private var scheme
 
     var body: some View {
@@ -90,34 +91,6 @@ struct UeberSeite: View {
                 Text("Die Projektseite beschreibt zurzeit die Mac-Fassung; ein Teil für diese App entsteht noch. Die macOS-Fassung ist kostenpflichtig und teilt sich mit dieser App den Quellcode, wird aber getrennt gezählt.")
             }
 
-            Section {
-                Button(role: .destructive) {
-                    fragtNachLoeschen = true
-                } label: {
-                    Label(String(localized: "Abmelden und alle lokalen Daten löschen"),
-                          systemImage: "trash")
-                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
-                        // `role: .destructive` färbt nur die Schrift; das
-                        // Zeichen bliebe in der Akzentfarbe der Seite stehen.
-                        // Ein blauer Papierkorb neben rotem Text sagt zwei
-                        // verschiedene Dinge über denselben Knopf.
-                        .foregroundStyle(.red)
-                }
-                .confirmationDialog(Text("Wirklich alles löschen?"),
-                                    isPresented: $fragtNachLoeschen,
-                                    titleVisibility: .visible) {
-                    Button("Abmelden und alles löschen", role: .destructive) { raeumeAuf() }
-                    Button("Abbrechen", role: .cancel) { }
-                } message: {
-                    // «Beide Anmeldungen», nicht nur die von Claude: `loescheAlles()`
-                    // läuft über **alle** Einträge, und der ChatGPT-Zugang ist
-                    // einer davon. Ein Warnhinweis, der weniger aufzählt, als der
-                    // Knopf tut, ist an dieser Stelle der falsche Fehler.
-                    Text("Entfernt beide Anmeldungen — Claude und ChatGPT — und alle drei API-Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen zurück und löscht den Stand, den das Widget zeigt. Bei den Diensten selbst ändert sich nichts — die Schlüssel bleiben dort gültig und müssten dort widerrufen werden.")
-                }
-            } footer: {
-                Text("Danach ist die App wieder so, wie sie beim ersten Start war. Rückgängig machen lässt sich das nicht.")
-            }
         }
     }
 
@@ -142,16 +115,5 @@ struct UeberSeite: View {
         }
         .frame(minHeight: 44)
         .accessibilityElement(children: .combine)
-    }
-
-    /// Räumt auf — und sorgt dafür, dass die Karten das sofort zeigen.
-    ///
-    /// Ohne den zweiten Teil bliebe die Liste mit Zahlen stehen, deren Grundlage
-    /// gerade gelöscht wurde. Das wäre die unangenehmste Art, an dieser Stelle
-    /// Vertrauen zu verlieren: Man drückt «alles löschen» und sieht weiter alles.
-    private func raeumeAuf() {
-        einstellungen.loescheAlles()
-        cockpit.eingeklappteKarten = ""
-        Task { await cockpit.aktualisiere() }
     }
 }

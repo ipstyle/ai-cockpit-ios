@@ -8,11 +8,16 @@ import AgentDeckCore
 /// der Liste nicht mehr. Wer die Anthropic-Schnittstelle nie benutzt, will sie
 /// auch nicht als leere Zeile sehen.
 struct KartenSeite: View {
+    /// Die Ablage der ausgeblendeten Karten liegt im Zustand, nicht hier.
+    ///
+    /// Vorher stand hier ein `@AppStorage("hiddenCards")`. Das schreibt zwar in
+    /// dieselben Vorgaben, sagt aber der Kartenliste nichts — die erfuhr von
+    /// der Änderung erst beim nächsten vollständigen Durchgang, in der Praxis
+    /// also erst nach einem Neustart. Über `Cockpit` greift der Schalter
+    /// augenblicklich.
+    @Bindable var cockpit: Cockpit
+
     @Environment(\.colorScheme) private var scheme
-    /// Dasselbe Format wie bei Reihenfolge und eingeklappten Karten: eine Liste
-    /// von Kennungen. Über `@AppStorage`, damit die Kartenansicht die Änderung
-    /// beim Zumachen von selbst bemerkt.
-    @AppStorage("hiddenCards") private var versteckt = ""
 
     /// Die Reihenfolge, in der die App die Karten anlegt — nicht die, die der
     /// Nutzer gelegt hat. Hier geht es um das Was, nicht um das Wohin.
@@ -51,10 +56,10 @@ struct KartenSeite: View {
             }
             .listRowBackground(palette.card)
 
-            if versteckt.isEmpty == false {
+            if cockpit.versteckteKarten.isEmpty == false {
                 Section {
                     Button {
-                        versteckt = ""
+                        cockpit.versteckteKarten = ""
                     } label: {
                         Label("Alle wieder einblenden", systemImage: "eye")
                             .frame(minHeight: 44)
@@ -77,12 +82,12 @@ struct KartenSeite: View {
                 } else if neu.contains(id.rawValue) == false {
                     neu.append(id.rawValue)
                 }
-                versteckt = neu.joined(separator: ",")
+                cockpit.versteckteKarten = neu.joined(separator: ",")
             }
         )
     }
 
     private var liste: [String] {
-        versteckt.split(separator: ",").map(String.init).filter { $0.isEmpty == false }
+        Array(cockpit.versteckteKennungen)
     }
 }

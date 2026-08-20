@@ -25,6 +25,9 @@ struct CockpitCard: Identifiable {
     var badge: String?
     var note: String?
     var updated: Date?
+    /// Läuft für diese Karte gerade ein Abruf? Wird beim Bauen gesetzt, nicht
+    /// von den einzelnen Kartenbauern — sie wissen nichts davon.
+    var wirdGeholt = false
     var summary: CardSummary?
     var limits: [CockpitLimit] = []
     var money: [CockpitMoney] = []
@@ -96,7 +99,14 @@ struct CockpitMoney: Identifiable {
 struct CardsView: View {
     let cards: [CockpitCard]
     var lastUpdated: Date?
-    var isRefreshing: Bool
+    /// Namen der Quellen, die gerade noch geholt werden.
+    ///
+    /// Eine Liste statt eines `Bool`: Solange **irgendetwas** lief, stand hier
+    /// «wird aktualisiert …» und im Knopf ein Kreisel — eine knappe Minute
+    /// lang, weil der OpenAI-Kostenabruf so lange braucht. Vier von fünf Karten
+    /// standen derweil fertig da, und die Kopfzeile behauptete das Gegenteil.
+    /// Ein Kreisel ohne Gegenstand sieht nicht geduldig aus, sondern kaputt.
+    var laufend: [String]
     var thresholds: LimitThresholds
     /// Kennungen der eingeklappten Karten, mit Komma getrennt — genau das
     /// Format, das `AppSettings.collapsedCards` auf dem Mac ablegt. Zerlegt
@@ -129,7 +139,7 @@ struct CardsView: View {
 
     init(cards: [CockpitCard],
          lastUpdated: Date? = nil,
-         isRefreshing: Bool = false,
+         laufend: [String] = [],
          thresholds: LimitThresholds = .standard,
          collapsedCards: Binding<String>,
          refresh: @escaping @Sendable () async -> Void,
@@ -137,7 +147,7 @@ struct CardsView: View {
          cardAction: @escaping (CardLayout.Card) -> Void = { _ in }) {
         self.cards = cards
         self.lastUpdated = lastUpdated
-        self.isRefreshing = isRefreshing
+        self.laufend = laufend
         self.thresholds = thresholds
         self._collapsedCards = collapsedCards
         self.refresh = refresh
@@ -230,10 +240,10 @@ struct CardsView: View {
             knopf(systemImage: "arrow.clockwise",
                   label: String(localized: "Jetzt aktualisieren"),
                   palette: palette,
-                  busy: isRefreshing) {
+                  busy: laeuft) {
                 Task { await refresh() }
             }
-            .disabled(isRefreshing)
+            .disabled(laeuft)
 
             knopf(systemImage: "gearshape",
                   label: String(localized: "Einstellungen"),
@@ -265,11 +275,32 @@ struct CardsView: View {
         .accessibilityLabel(label)
     }
 
+    private var laeuft: Bool { laufend.isEmpty == false }
+
+    /// Was unter dem Titel steht — und zwar so genau, wie es geht.
+    ///
+    /// Hier stand einmal pauschal «wird aktualisiert …», solange irgendetwas
+    /// lief. Der Unterschied zwischen Fortschritt und Hänger ist aber nicht der
+    /// Kreisel, sondern die Auskunft, worauf er wartet: Ein benannter
+    /// Nachzügler neben vier fertigen Karten liest sich als «gleich soweit»,
+    /// dieselbe Wartezeit ohne Namen als «steht».
     private var updatedText: String {
-        if isRefreshing { return String(localized: "wird aktualisiert …") }
-        guard let lastUpdated else { return String(localized: "noch keine Daten") }
         _ = tick
-        return String(localized: "Aktualisiert \(Theme.ago(lastUpdated))")
+        let stand = lastUpdated.map { String(localized: "Aktualisiert \(Theme.ago($0))") }
+        guard laeuft else { return stand ?? String(localized: "noch keine Daten") }
+
+        let offen: String
+        switch (laufend.count, stand) {
+        case (1, .none): offen = String(localized: "\(laufend[0]) wird geholt …")
+        case (1, .some): offen = String(localized: "\(laufend[0]) läuft noch")
+        // Ab zwei Namen wäre die Zeile länger als der Bildschirm breit. Die
+        // Zahl sagt dasselbe, und wer es genauer wissen will, sieht es an den
+        // Karten selbst.
+        case (_, .none): offen = String(localized: "\(laufend.count) Quellen werden geholt …")
+        case (_, .some): offen = String(localized: "noch \(laufend.count) Quellen")
+        }
+        guard let stand else { return offen }
+        return "\(stand) · \(offen)"
     }
 
     // MARK: Karten
@@ -404,6 +435,7 @@ struct CardsView: View {
              badge: card.badge,
              note: card.note,
              updated: card.updated,
+             wirdGeholt: card.wirdGeholt,
              summary: card.summary,
              provider: card.provider,
              collapsed: bindung(fuer: card.id),

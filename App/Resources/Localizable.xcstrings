@@ -104,6 +104,23 @@
         }
       }
     },
+    "%@ läuft noch": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ läuft noch"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ still running"
+          }
+        }
+      }
+    },
     "%@ verfügbar": {
       "extractionState": "manual",
       "localizations": {
@@ -117,6 +134,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ available"
+          }
+        }
+      }
+    },
+    "%@ wird geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ wird geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching %@ …"
           }
         }
       }
@@ -388,6 +422,23 @@
         }
       }
     },
+    "%lld Quellen werden geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Quellen werden geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching %lld sources …"
+          }
+        }
+      }
+    },
     "%lld Stunden": {
       "extractionState": "manual",
       "localizations": {
@@ -466,6 +517,23 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld von 5": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld von 5"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld of 5"
           }
         }
       }
@@ -997,6 +1065,40 @@
         }
       }
     },
+    "Alle wieder einblenden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle wieder einblenden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show all again"
+          }
+        }
+      }
+    },
+    "Alles zurücksetzen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles zurücksetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset everything"
+          }
+        }
+      }
+    },
     "Angemeldet": {
       "extractionState": "manual",
       "localizations": {
@@ -1252,6 +1354,23 @@
         }
       }
     },
+    "Anthropic-API": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic-API"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic-API"
+          }
+        }
+      }
+    },
     "Anthropic-Admin-Schlüssel ungültig": {
       "extractionState": "manual",
       "localizations": {
@@ -1299,6 +1418,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Even for the Mac edition these were documented self-reviews, not an external audit. That distinction belongs here."
+          }
+        }
+      }
+    },
+    "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hidden cards disappear from the list. They are still fetched, so bringing one back shows figures right away rather than a wait."
           }
         }
       }
@@ -2204,6 +2340,40 @@
         }
       }
     },
+    "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der erste Abruf nach dem Eintragen dauert länger als die übrigen Karten — das ist normal."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The first fetch after you enter the key takes longer than the other cards. That is normal."
+          }
+        }
+      }
+    },
+    "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "German and English are fully translated. Without a choice of your own the app follows the device, falling back to English."
+          }
+        }
+      }
+    },
     "Deutsch und Englisch sind vollständig übersetzt. Steht das Gerät auf einer anderen Sprache, erscheint die App auf Englisch.": {
       "extractionState": "manual",
       "localizations": {
@@ -2646,6 +2816,23 @@
         }
       }
     },
+    "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The new language appears the next time AI Cockpit starts. Close the app completely — returning from the background is not enough."
+          }
+        }
+      }
+    },
     "Die zwei feinen Marken auf dem Balken zeigen, wo die Schwellen liegen — sie sagen es ohne Farbe, und damit auch in einem eingefärbten Widget.": {
       "extractionState": "manual",
       "localizations": {
@@ -2693,6 +2880,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "This app talks to no server of its own: there is none. It queries only the services for which you have stored access yourself, and shows their answer. There is no AI Cockpit account, no sign-in with us, no analytics, no advertising identifier and no sharing with third parties."
+          }
+        }
+      }
+    },
+    "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The same choice lives there, and the system restarts AI Cockpit for you."
           }
         }
       }
@@ -3214,6 +3418,23 @@
         }
       }
     },
+    "In den Systemeinstellungen ändern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Systemeinstellungen ändern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change in System Settings"
+          }
+        }
+      }
+    },
     "In die Zwischenablage": {
       "extractionState": "manual",
       "localizations": {
@@ -3295,6 +3516,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Query again now"
+          }
+        }
+      }
+    },
+    "Karten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cards"
           }
         }
       }
@@ -3758,6 +3996,23 @@
         }
       }
     },
+    "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten werden geholt … Der erste Abruf kann über eine Minute dauern: OpenAI gibt die Kosten nur seitenweise heraus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching costs … The first fetch can take more than a minute: OpenAI hands out costs one page at a time."
+          }
+        }
+      }
+    },
     "Kosten, Token und Ausgabengrenzen der OpenAI-Organisation.": {
       "extractionState": "manual",
       "localizations": {
@@ -4217,6 +4472,23 @@
         }
       }
     },
+    "OpenAI-API": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-API"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-API"
+          }
+        }
+      }
+    },
     "OpenAI-Admin-Schlüssel": {
       "extractionState": "manual",
       "localizations": {
@@ -4655,6 +4927,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "They are not visible inside the app either. The accounts page shows **that** a key is stored, and at most its last four characters — enough to tell two apart, too little to read over your shoulder. The same standard applies to the diagnostics text."
+          }
+        }
+      }
+    },
+    "Sitzungen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessions"
           }
         }
       }
@@ -5441,6 +5730,23 @@
         }
       }
     },
+    "alle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "alle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "all"
+          }
+        }
+      }
+    },
     "angemeldet": {
       "extractionState": "manual",
       "localizations": {
@@ -6002,6 +6308,23 @@
         }
       }
     },
+    "noch %lld Quellen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch %lld Quellen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sources still running"
+          }
+        }
+      }
+    },
     "noch keine Daten": {
       "extractionState": "manual",
       "localizations": {
@@ -6372,159 +6695,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "About"
-          }
-        }
-      }
-    },
-    "Karten": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Karten"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cards"
-          }
-        }
-      }
-    },
-    "alle": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "alle"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "all"
-          }
-        }
-      }
-    },
-    "%lld von 5": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld von 5"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld of 5"
-          }
-        }
-      }
-    },
-    "Alle wieder einblenden": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle wieder einblenden"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Show all again"
-          }
-        }
-      }
-    },
-    "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausgeblendete Karten verschwinden aus der Liste. Abgerufen werden sie trotzdem — wer eine wieder einblendet, sieht sofort Zahlen statt einer Wartemeldung."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hidden cards disappear from the list. They are still fetched, so bringing one back shows figures right away rather than a wait."
-          }
-        }
-      }
-    },
-    "In den Systemeinstellungen ändern": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In den Systemeinstellungen ändern"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Change in System Settings"
-          }
-        }
-      }
-    },
-    "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dort steht dieselbe Wahl, und das System startet AI Cockpit beim Umstellen gleich neu."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The same choice lives there, and the system restarts AI Cockpit for you."
-          }
-        }
-      }
-    },
-    "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die neue Sprache erscheint, sobald AI Cockpit das nächste Mal startet. Schliesse die App dafür ganz — aus dem Hintergrund zurückzukehren genügt nicht."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The new language appears the next time AI Cockpit starts. Close the app completely — returning from the background is not enough."
-          }
-        }
-      }
-    },
-    "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Deutsch und Englisch sind vollständig übersetzt. Ohne eigene Wahl richtet sich die App nach dem Gerät und fällt sonst auf Englisch zurück."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "German and English are fully translated. Without a choice of your own the app follows the device, falling back to English."
           }
         }
       }

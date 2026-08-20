@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `f00cbc400d8a3851d316968d5f4a37f31bc2baa9` |
-| kurz | `f00cbc4` |
-| Betreff | Let the callback listener take a fixed port |
+| Commit | `5d144b451fea4e8e962d44bcfd7017a3c0444123` |
+| kurz | `5d144b4` |
+| Betreff | Let the callback listener take the path it should listen on |
 | festgehalten | 20.08.2026 |

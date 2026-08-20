@@ -42,13 +42,14 @@ private struct Inhalt: View {
 
     @Environment(\.dismiss) private var schliesse
     @Environment(\.colorScheme) private var scheme
+    @State private var fragtNachLoeschen = false
 
     var body: some View {
         let palette = Theme.palette(scheme)
 
         List {
             Section {
-                zeile(ziel: KontenSeite(einstellungen: einstellungen),
+                zeile(ziel: KontenSeite(einstellungen: einstellungen, cockpit: cockpit),
                       titel: String(localized: "Konten"),
                       symbol: "person.badge.key",
                       wert: kontenKurzfassung)
@@ -57,7 +58,7 @@ private struct Inhalt: View {
                       symbol: "circle.lefthalf.filled",
                       wert: einstellungen.darstellung.title)
 
-                zeile(ziel: KartenSeite(),
+                zeile(ziel: KartenSeite(cockpit: cockpit),
                       titel: String(localized: "Karten"),
                       symbol: "rectangle.stack",
                       wert: kartenKurzfassung)
@@ -96,7 +97,7 @@ private struct Inhalt: View {
                       titel: String(localized: "Diagnose"),
                       symbol: "stethoscope",
                       wert: nil)
-                zeile(ziel: UeberSeite(einstellungen: einstellungen, cockpit: cockpit),
+                zeile(ziel: UeberSeite(einstellungen: einstellungen),
                       titel: String(localized: "Über"),
                       symbol: "info.circle",
                       wert: AppKennung.kurz)
@@ -104,6 +105,8 @@ private struct Inhalt: View {
                 Text("Alle Angaben bleiben auf diesem Gerät. Es gibt kein Konto bei AI Cockpit und keinen Server, der etwas davon zu sehen bekäme.")
             }
             .listRowBackground(palette.card)
+
+            zuruecksetzen(palette)
         }
         .scrollContentBackground(.hidden)
         .background(palette.background)
@@ -115,6 +118,63 @@ private struct Inhalt: View {
                 Button("Fertig") { schliesse() }
             }
         }
+    }
+
+    /// Der Weg zurück zum ersten Start.
+    ///
+    /// Er steht **hier**, in der Einstellungsliste, und nicht mehr unten auf der
+    /// Über-Seite. Dort war er richtig einsortiert und trotzdem am falschen
+    /// Platz: Wer die App zurücksetzen will, sucht das unter «Einstellungen».
+    ///
+    /// Ein eigener Abschnitt ganz unten, mit Abstand zum Rest — dieser Knopf
+    /// soll gefunden werden, wenn man ihn sucht, und nicht getroffen werden,
+    /// wenn man scrollt.
+    @ViewBuilder
+    private func zuruecksetzen(_ palette: Theme.Palette) -> some View {
+        Section {
+            Button(role: .destructive) {
+                fragtNachLoeschen = true
+            } label: {
+                Label(String(localized: "Alles zurücksetzen"), systemImage: "trash")
+                    .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                    // `role: .destructive` färbt nur die Schrift; das Zeichen
+                    // bliebe in der Akzentfarbe der Seite stehen. Ein blauer
+                    // Papierkorb neben rotem Text sagt zwei verschiedene Dinge
+                    // über denselben Knopf.
+                    .foregroundStyle(.red)
+            }
+            .confirmationDialog(Text("Wirklich alles löschen?"),
+                                isPresented: $fragtNachLoeschen,
+                                titleVisibility: .visible) {
+                Button("Abmelden und alles löschen", role: .destructive) { raeumeAuf() }
+                Button("Abbrechen", role: .cancel) { }
+            } message: {
+                // «Beide Anmeldungen», nicht nur die von Claude: `loescheAlles()`
+                // läuft über **alle** Einträge, und der ChatGPT-Zugang ist einer
+                // davon. Ein Warnhinweis, der weniger aufzählt, als der Knopf
+                // tut, ist an dieser Stelle der falsche Fehler.
+                Text("Entfernt beide Anmeldungen — Claude und ChatGPT — und alle drei API-Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen zurück und löscht den Stand, den das Widget zeigt. Bei den Diensten selbst ändert sich nichts — die Schlüssel bleiben dort gültig und müssten dort widerrufen werden.")
+            }
+        } footer: {
+            Text("Danach ist die App wieder so, wie sie beim ersten Start war. Rückgängig machen lässt sich das nicht.")
+        }
+        .listRowBackground(palette.card)
+    }
+
+    /// Räumt auf — und sorgt dafür, dass die Karten das sofort zeigen.
+    ///
+    /// Ohne den zweiten Teil bliebe die Liste mit Zahlen stehen, deren Grundlage
+    /// gerade gelöscht wurde. Das wäre die unangenehmste Art, an dieser Stelle
+    /// Vertrauen zu verlieren: Man drückt «alles löschen» und sieht weiter alles.
+    ///
+    /// Die ausgeblendeten Karten gehören dazu: `loescheAlles()` streicht die
+    /// Vorgabe, aber `Cockpit` hält seinen eigenen Stand — ohne diese Zeile
+    /// bliebe eine Karte verschwunden, für die es keine Einstellung mehr gibt.
+    private func raeumeAuf() {
+        einstellungen.loescheAlles()
+        cockpit.eingeklappteKarten = ""
+        cockpit.versteckteKarten = ""
+        Task { await cockpit.aktualisiere() }
     }
 
     /// Eine Zeile der Übersicht: Zeichen, Name, aktueller Wert.
@@ -162,7 +222,7 @@ private struct Inhalt: View {
     /// «alle» oder «3 von 5» — wer nur nachsehen will, ob etwas fehlt, soll
     /// dafür nicht hineingehen müssen.
     private var kartenKurzfassung: String {
-        let versteckt = Cockpit.versteckteKarten().count
+        let versteckt = cockpit.versteckteKennungen.count
         guard versteckt > 0 else { return String(localized: "alle") }
         return String(localized: "\(5 - versteckt) von 5")
     }

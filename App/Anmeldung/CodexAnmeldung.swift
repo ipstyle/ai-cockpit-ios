@@ -90,7 +90,10 @@ final class CodexAnmeldung: ObservableObject {
     /// dadurch bleibt die App im Vordergrund und behält ihren Zuhörer. Beim
     /// Sprung in Safari wäre sie im Hintergrund und der Socket weg.
     private func ueberRuecksprung(port: UInt16) async throws {
-        let server = try LoopbackCallbackServer(port: port)
+        // Der Pfad **muss** mitgegeben werden: Der Zuhörer hört sonst auf
+        // `/callback`, der Dienst springt aber auf `/auth/callback` zurück. Der
+        // Rücksprung käme an und gälte als fremde Anfrage.
+        let server = try LoopbackCallbackServer(port: port, pfad: CodexAuth.rueckwegPfad)
         defer { server.stop() }
         _ = try await server.start()
 

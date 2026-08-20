@@ -19,6 +19,13 @@ struct Card<Content: View>: View {
     var badge: String?
     var note: String?
     var updated: Date?
+    /// Wird für diese Karte gerade nachgeladen?
+    ///
+    /// Die Karte behält dabei ihre letzten Zahlen — ein Abruf, der eine Minute
+    /// braucht, soll die Anzeige nicht eine Minute lang leeren. Ohne ein
+    /// Zeichen dafür sähe der alte Stand allerdings aus wie der aktuelle: Das
+    /// Alter daneben liest niemand, solange nichts darauf hinweist.
+    var wirdGeholt = false
     /// Kurzfassung für den eingeklappten Zustand. `nil` heisst: nichts
     /// Sinnvolles zu zeigen — dann lässt sich die Karte auch nicht einklappen,
     /// eine leere Zeile zuzuklappen bringt niemandem etwas.
@@ -40,6 +47,7 @@ struct Card<Content: View>: View {
          badge: String? = nil,
          note: String? = nil,
          updated: Date? = nil,
+         wirdGeholt: Bool = false,
          summary: CardSummary? = nil,
          provider: Theme.Provider = .neutral,
          collapsed: Binding<Bool>? = nil,
@@ -49,6 +57,7 @@ struct Card<Content: View>: View {
         self.badge = badge
         self.note = note
         self.updated = updated
+        self.wirdGeholt = wirdGeholt
         self.summary = summary
         self.provider = provider
         self.collapsed = collapsed
@@ -147,8 +156,22 @@ struct Card<Content: View>: View {
         }
     }
 
-    @ViewBuilder
     private func trailing(palette: Theme.Palette) -> some View {
+        HStack(alignment: .center, spacing: 6) {
+            if wirdGeholt {
+                ProgressView()
+                    .controlSize(.mini)
+                    // Ein Kreisel ist für VoiceOver stumm. Ohne diese Zeile
+                    // wäre der Hinweis genau für die nicht da, die ihn am
+                    // wenigsten erraten können.
+                    .accessibilityLabel(Text("wird aktualisiert …"))
+            }
+            inhalt(palette: palette)
+        }
+    }
+
+    @ViewBuilder
+    private func inhalt(palette: Theme.Palette) -> some View {
         if isCollapsed, let summary {
             // Der Kern der Sache: Eine Warnung darf sich nicht wegklappen
             // lassen. Steht ein Fenster über der Schwelle, fällt die
