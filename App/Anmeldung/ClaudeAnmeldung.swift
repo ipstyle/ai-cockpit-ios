@@ -41,6 +41,7 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     /// einzige verfügbare Fehlerbeschreibung.
     @Published private(set) var protokoll: [String] = []
 
+    private var beobachter: NSObjectProtocol?
     private var sitzung: ASWebAuthenticationSession?
     /// Das Fenster, an dem das Anmeldefenster hängt. Wird beim Öffnen ermittelt,
     /// nicht beim Rückruf: Zu dem Zeitpunkt ist sicher, dass es eines gibt —
@@ -51,22 +52,51 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     func melde() {
         guard laufenderAuftrag == nil else { return }
         protokoll = []
+        horcheAufHintergrund()
         laufenderAuftrag = Task { await ablauf() }
+    }
+
+    /// Auf die Benachrichtigung hören statt auf `scenePhase`.
+    ///
+    /// `scenePhase` in der Ansicht sah richtig aus und griff nicht: Als die App
+    /// während einer laufenden Anmeldung in den Hintergrund ging, kam der
+    /// Abbruch nicht — die Anmeldung lief stumm ins Fünf-Minuten-Limit. Diese
+    /// Benachrichtigung kommt zuverlässig, unabhängig davon, in welcher Ansicht
+    /// die Anmeldung gerade steckt.
+    private func horcheAufHintergrund() {
+        guard beobachter == nil else { return }
+        beobachter = NotificationCenter.default.addObserver(
+            forName: UIApplication.didEnterBackgroundNotification,
+            object: nil, queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated { self?.brichAbWegenHintergrund() }
+        }
+    }
+
+    private func hoerAuf() {
+        if let beobachter { NotificationCenter.default.removeObserver(beobachter) }
+        beobachter = nil
     }
 
     /// Wird gerufen, wenn die App in den Hintergrund geht.
     ///
-    /// Dann ist der lokale Zuhörer verloren — das System nimmt suspendierten
-    /// Apps ihre Sockets weg. Ohne diesen Abbruch wartet die Anmeldung stumm
-    /// bis zum Zeitlimit von fünf Minuten, und der Nutzer sieht nichts als
-    /// einen Kreisel, der nie aufhört.
+    /// Hier stand einmal ein sofortiger Abbruch, mit der Begründung, ein
+    /// suspendierter Prozess verliere seine Sockets. Das stimmt — und war
+    /// trotzdem falsch: Claude schickt den Bestätigungscode per E-Mail, und wer
+    /// ihn holt, **muss** die App verlassen. Der Abbruch hätte genau den
+    /// gewöhnlichsten Anmeldeweg zerstört.
+    ///
+    /// Deshalb wird der Wechsel nur vermerkt. iOS lässt einer App nach dem
+    /// Wechsel noch etwas Zeit, und kommt sie rasch zurück, läuft alles weiter.
+    /// Bleibt sie zu lange weg, greift das Zeitlimit des Rückkanals — mit einer
+    /// Meldung, die den Grund nennt, statt mit einem Kreisel ohne Ende.
     func brichAbWegenHintergrund() {
         guard case .laeuft = zustand else { return }
-        notiere("App ging in den Hintergrund — Zuhörer verloren")
-        abbrechen(grund: "Die Anmeldung wurde unterbrochen. Bitte noch einmal versuchen.")
+        notiere("App im Hintergrund — Anmeldung läuft weiter")
     }
 
     private func abbrechen(grund: String) {
+        hoerAuf()
         laufenderAuftrag?.cancel(); laufenderAuftrag = nil
         sitzung?.cancel(); sitzung = nil
         zustand = .abgebrochen(grund: grund)
@@ -79,17 +109,30 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
             let tokens = try await ClaudeAuth().signIn { [weak self] url in
                 Task { @MainActor in self?.zeige(url) }
             }
+            hoerAuf()
             sitzung?.cancel(); sitzung = nil
             laufenderAuftrag = nil
             notiere("Token erhalten, gültig bis \(ablaufText(tokens))")
+
+            // Ohne diese Zeile bleibt die Anmeldung ein Bildschirmtext: Der
+            // Token lebt nur in dieser Ansicht, die Karten suchen ihn im
+            // Schlüsselbund und finden nichts. Genau so ist es beim ersten
+            // Feldtest gewesen — «angemeldet» hier, «nicht angemeldet» dort.
+            guard Zugaenge().schreibToken(tokens) else {
+                notiere("Token liess sich nicht im Schlüsselbund ablegen")
+                zustand = .fehler("Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen.")
+                return
+            }
+            notiere("Im Schlüsselbund abgelegt")
             zustand = .erfolg(abo: tokens.subscriptionType ?? "unbekannt")
         } catch is CancellationError {
             laufenderAuftrag = nil
         } catch {
+            hoerAuf()
             sitzung?.cancel(); sitzung = nil
             laufenderAuftrag = nil
-            notiere("Fehler: \(error.localizedDescription)")
-            zustand = .fehler(error.localizedDescription)
+            notiere("Fehler: \(Self.lesbar(error))")
+            zustand = .fehler(Self.lesbar(error))
         }
     }
 
@@ -128,6 +171,16 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
             notiere("Anmeldefenster liess sich nicht öffnen")
             zustand = .fehler("Das Anmeldefenster liess sich nicht öffnen.")
         }
+    }
+
+    /// Der Kern formuliert seine Fehler bereits für Menschen — `ProviderError`
+    /// trägt sie in `userMessage`. `localizedDescription` gibt davon nichts
+    /// weiter, sondern den Standardtext von Swift: «The operation couldn't be
+    /// completed. (AgentDeckCore.ProviderError error 2.)». Das stand hier eine
+    /// Zeit lang auf dem Bildschirm und sagte niemandem etwas.
+    private static func lesbar(_ fehler: Error) -> String {
+        if let anbieter = fehler as? ProviderError { return anbieter.userMessage }
+        return fehler.localizedDescription
     }
 
     private func ablaufText(_ tokens: OAuthTokens) -> String {
