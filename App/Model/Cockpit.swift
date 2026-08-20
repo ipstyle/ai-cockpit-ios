@@ -220,6 +220,8 @@ final class Cockpit {
             if case .nichtEingerichtet = codex { return .beiChatGPTAnmelden }
             if case .fehler = codex { return .erneutVersuchen(.chatgpt) }
         case .sitzungen:
+            // Die Karte gibt es hier nicht mehr; der Fall bleibt stehen, weil
+            // der Kern das Layout kennt und die Aufzählung teilt.
             return nil
         }
         return nil
@@ -244,9 +246,13 @@ final class Cockpit {
             chatgptKarte(),
             openAIKarte(),
             anthropicKarte(),
-            kimiKarte(),
-            brueckenKarte(.sitzungen, titel: String(localized: "Aktive Sitzungen"), provider: .sessions,
-                          erklaerung: String(localized: "Die laufenden Claude-Code-Sitzungen stehen in Dateien auf dem Mac. Sie kommen von dort herüber, sobald AI Cockpit läuft."))
+            kimiKarte()
+            // Keine Sitzungskarte: Die laufenden Claude-Code-Sitzungen stehen
+            // in Dateien auf dem Rechner, und dafür gibt es keinen
+            // Netz-Endpunkt. Sie über eine iCloud-Brücke vom Mac zu holen wäre
+            // machbar gewesen — für **eine** Karte hätte das die Mac-App
+            // iCloud-Rechte gekostet und damit eine neue Prüfrunde bei Apple.
+            // Bewusster Entscheid vom 20.08.2026.
         ]
     }
 
