@@ -361,6 +361,75 @@ struct AnmeldeHinweis: View {
     }
 }
 
+// MARK: - Die kompakte Liste
+
+/// Eine Zeile je Karte: Name links, Wert rechts.
+///
+/// Das Widget zeigte lange nur Claude, obwohl in der App fünf Karten standen.
+/// Diese Liste ist die Antwort — und sie ist bewusst **nur Text**: Fünf Balken
+/// auf einer mittleren Kachel wären fünf Zeilen mehr, als dort hingehen, und
+/// der Wert steht ohnehin ausgeschrieben daneben. Die Ampel trägt hier ein
+/// Zeichen vor dem Namen, keine Farbe allein — auf einem eingetönten Homescreen
+/// wäre Farbe gar nichts.
+struct QuellenListe: View {
+    let eintrag: UeberblickEintrag
+    var maximum = 5
+    /// Kleine Kachel und Sperrbildschirm: je Quelle **eine** Angabe. Der volle
+    /// Wert würde dort abgeschnitten, und ein halber Betrag ist keine Auskunft.
+    var knapp = false
+
+    @Environment(\.colorScheme) private var schema
+    @Environment(\.widgetRenderingMode) private var darstellung
+
+    private var sichtbare: ArraySlice<WidgetZustand.Quelle> { eintrag.quellen.prefix(maximum) }
+
+    var body: some View {
+        let ton = WidgetTon(schema, darstellung)
+
+        VStack(alignment: .leading, spacing: 4) {
+            ForEach(Array(sichtbare.enumerated()), id: \.offset) { _, quelle in
+                zeile(quelle, ton: ton)
+            }
+            if eintrag.quellen.count > maximum {
+                Text("+ \(eintrag.quellen.count - maximum) weitere in der App")
+                    .font(.caption2)
+                    .foregroundStyle(ton.leise)
+            }
+        }
+    }
+
+    private func zeile(_ quelle: WidgetZustand.Quelle, ton: WidgetTon) -> some View {
+        // Ohne Prozentsatz gibt es keine Stufe — Geldkarten führen kein
+        // Kontingent, und eine erfundene Ampel wäre schlimmer als keine.
+        let stufe = quelle.prozent.map { LimitThresholds.standard.level($0) }
+
+        return HStack(alignment: .firstTextBaseline, spacing: 4) {
+            if let symbol = stufe?.symbol {
+                Image(systemName: symbol)
+                    .widgetAccentedRenderingMode(.fullColor)
+                    .font(.system(size: 9))
+            }
+            Text(quelle.name)
+                .fontWeight(.medium)
+                .foregroundStyle(ton.neben)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .layoutPriority(1)
+            Spacer(minLength: 3)
+            Text(knapp ? quelle.kurz : quelle.wert)
+                .monospacedDigit()
+                .fontWeight(.semibold)
+                .foregroundStyle(stufe.map(ton.wert) ?? ton.haupt)
+                .lineLimit(1)
+                .minimumScaleFactor(0.55)
+        }
+        .font(knapp ? .system(size: 10) : .caption2)
+        .accessibilityElement(children: .combine)
+        // VoiceOver bekommt immer die volle Fassung — dort ist kein Platz knapp.
+        .accessibilityLabel("\(quelle.name): \(quelle.wert)")
+    }
+}
+
 // MARK: - Familien
 
 /// Klein: ein Ring, die Prozentzahl in der Mitte, darunter Kürzel und Stand.
@@ -374,7 +443,21 @@ struct KleineAnsicht: View {
     var body: some View {
         let ton = WidgetTon(schema, darstellung)
 
-        if let fenster = eintrag.hauptfenster {
+        if eintrag.quellen.count > 1 {
+            // Mehr als eine Quelle passt nicht in einen Ring. Die Liste ist
+            // dann die ehrlichere Kachel — vier Zeilen statt einer Zahl, die
+            // vier Fünftel des Bildes verschweigt.
+            VStack(alignment: .leading, spacing: 5) {
+                Text("AI Cockpit")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(ton.akzent)
+                QuellenListe(eintrag: eintrag, maximum: 4, knapp: true)
+                Spacer(minLength: 0)
+                StandZeile(eintrag: eintrag, kompakt: true)
+                if eintrag.anmeldungFaellig { AnmeldeHinweis(kompakt: true) }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        } else if let fenster = eintrag.hauptfenster {
             VStack(spacing: 4) {
                 UsageRing(percent: fenster.prozent,
                           provider: .claude,
@@ -420,11 +503,10 @@ struct MittlereAnsicht: View {
 
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
-                // Alle Fenster in `WidgetZustand` stammen heute aus dem
-                // Claude-Abo — die App schreibt nichts anderes hinein. Steht
-                // hier je eine zweite Quelle, gehört der Name ans Fenster und
-                // nicht in die Kopfzeile.
-                Text("Claude")
+                // Der Kopf trägt den Namen der App, sobald mehrere Quellen
+                // darunter stehen — «Claude» stimmte nur, solange die Kachel
+                // nichts anderes zeigte.
+                Text(eintrag.quellen.isEmpty ? "Claude" : "AI Cockpit")
                     .font(.footnote.weight(.semibold))
                     .foregroundStyle(ton.akzent)
                 Spacer(minLength: 8)
@@ -432,7 +514,21 @@ struct MittlereAnsicht: View {
                 StandZeile(eintrag: eintrag)
             }
 
-            if eintrag.fenster.isEmpty {
+            if !eintrag.quellen.isEmpty {
+                QuellenListe(eintrag: eintrag, maximum: maximum)
+                // Auf der grossen Kachel ist unter der Liste noch Platz für die
+                // Claude-Fenster mit Balken und Zurücksetzung. Auf der mittleren
+                // nicht — dort ist die Liste die ganze Auskunft.
+                if mitZuruecksetzung, !eintrag.fenster.isEmpty {
+                    Divider().opacity(0.4)
+                    VStack(alignment: .leading, spacing: 9) {
+                        ForEach(Array(eintrag.fenster.prefix(3).enumerated()), id: \.offset) { _, fenster in
+                            FensterZeile(fenster: fenster, zeigtZuruecksetzung: true)
+                        }
+                    }
+                }
+                Spacer(minLength: 0)
+            } else if eintrag.fenster.isEmpty {
                 EinladungsAnsicht(eintrag: eintrag)
             } else {
                 VStack(alignment: .leading, spacing: mitZuruecksetzung ? 9 : 7) {
@@ -541,7 +637,15 @@ struct RechteckigeAnsicht: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 1) {
-            if let erstes = eintrag.hauptfenster {
+            if eintrag.quellen.count > 1 {
+                // Drei Zeilen sind hier das Mass; der Stand gehört in die
+                // letzte, sonst stünde eine Zahl ohne ihr Alter da.
+                QuellenListe(eintrag: eintrag, maximum: 2, knapp: true)
+                HStack(spacing: 5) {
+                    if eintrag.anmeldungFaellig { AnmeldeHinweis(kompakt: true) }
+                    KurzStand(eintrag: eintrag)
+                }
+            } else if let erstes = eintrag.hauptfenster {
                 zeile(erstes, betont: true)
                 zweiteZeile
             } else {
@@ -626,7 +730,7 @@ struct UeberblickAnsicht: View {
         case .systemMedium:
             MittlereAnsicht(eintrag: eintrag)
         case .systemLarge:
-            MittlereAnsicht(eintrag: eintrag, maximum: 6, mitZuruecksetzung: true)
+            MittlereAnsicht(eintrag: eintrag, maximum: 5, mitZuruecksetzung: true)
         case .accessoryCircular:
             RundeAnsicht(eintrag: eintrag)
         case .accessoryRectangular:

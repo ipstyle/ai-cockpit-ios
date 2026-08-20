@@ -53,6 +53,23 @@
         }
       }
     },
+    "%@ verfügbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ verfügbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ available"
+          }
+        }
+      }
+    },
     "%@ — frühestens in %lld Minuten": {
       "extractionState": "manual",
       "localizations": {
@@ -83,6 +100,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ — at the earliest in one minute"
+          }
+        }
+      }
+    },
+    "%@: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: %@"
           }
         }
       }
@@ -383,6 +417,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Open AI Cockpit once, then the quotas will appear here."
+          }
+        }
+      }
+    },
+    "Alle eingeblendeten Karten auf einen Blick — mit dem Alter der Zahlen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle eingeblendeten Karten auf einen Blick — mit dem Alter der Zahlen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every card you keep visible, at a glance — with the age of the figures."
           }
         }
       }
@@ -812,23 +863,6 @@
         }
       }
     },
-    "Die Auslastung des Claude-Abos auf einen Blick — mit dem Alter der Zahlen.": {
-      "extractionState": "manual",
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die Auslastung des Claude-Abos auf einen Blick — mit dem Alter der Zahlen."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The usage of the Claude plan at a glance — including how old the figures are."
-          }
-        }
-      }
-    },
     "Dunkel": {
       "extractionState": "manual",
       "localizations": {
@@ -893,6 +927,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Light"
+          }
+        }
+      }
+    },
+    "Heute %@ · Monat %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute %@ · Monat %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today %@ · Month %@"
           }
         }
       }
@@ -1046,6 +1097,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "OpenAI is not accepting code-based sign-in right now. Please try again later."
+          }
+        }
+      }
+    },
+    "OpenAI-API": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-API"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-API"
           }
         }
       }

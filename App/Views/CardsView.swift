@@ -29,6 +29,13 @@ struct CockpitCard: Identifiable {
     /// von den einzelnen Kartenbauern — sie wissen nichts davon.
     var wirdGeholt = false
     var summary: CardSummary?
+    /// Der eine Wert für die kleinste Widget-Kachel.
+    ///
+    /// Nur dort, wo die Kurzfassung dafür zu lang ist: «Heute US$ 0.00 · Monat
+    /// US$ 3.05» wird auf 155 Punkten abgeschnitten, und ein halber Betrag ist
+    /// keine Auskunft. Bleibt er `nil`, nimmt das Widget die erste Zeile der
+    /// Kurzfassung — bei Kontingenten ist das genau richtig.
+    var widgetKurz: String?
     var limits: [CockpitLimit] = []
     var money: [CockpitMoney] = []
     var status: CardStatus?
@@ -42,6 +49,7 @@ struct CockpitCard: Identifiable {
          note: String? = nil,
          updated: Date? = nil,
          summary: CardSummary? = nil,
+         widgetKurz: String? = nil,
          limits: [CockpitLimit] = [],
          money: [CockpitMoney] = [],
          status: CardStatus? = nil,
@@ -53,6 +61,7 @@ struct CockpitCard: Identifiable {
         self.note = note
         self.updated = updated
         self.summary = summary
+        self.widgetKurz = widgetKurz
         self.limits = limits
         self.money = money
         self.status = status

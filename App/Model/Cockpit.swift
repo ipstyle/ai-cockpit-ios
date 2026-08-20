@@ -449,6 +449,7 @@ final class Cockpit {
     private func openAIKarte() -> CockpitCard {
         var updated: Date?
         var summary: CardSummary?
+        var kurzFuerWidget: String?
         var geld: [CockpitMoney] = []
         var status: CardStatus?
         var knopf: String?
@@ -479,10 +480,12 @@ final class Cockpit {
                              emphasised: true)
             ]
             summary = CardSummary(text: String(localized: "Heute \(Format.money(kosten.today, kosten.currency))\nMonat \(Format.money(kosten.month, kosten.currency))"))
+            kurzFuerWidget = Format.money(kosten.month, kosten.currency)
         }
 
         return CockpitCard(id: .openai, title: "OpenAI-API", provider: .openAI,
                            updated: updated, summary: summary,
+                           widgetKurz: kurzFuerWidget,
                            money: geld, status: status, actionTitle: knopf)
     }
 
@@ -494,6 +497,7 @@ final class Cockpit {
     private func anthropicKarte() -> CockpitCard {
         var updated: Date?
         var summary: CardSummary?
+        var kurzFuerWidget: String?
         var geld: [CockpitMoney] = []
         var status: CardStatus?
         var knopf: String?
@@ -519,10 +523,12 @@ final class Cockpit {
                              emphasised: true)
             ]
             summary = CardSummary(text: String(localized: "Heute \(Format.money(werte.today, werte.currency))\nMonat \(Format.money(werte.month, werte.currency))"))
+            kurzFuerWidget = Format.money(werte.month, werte.currency)
         }
 
         return CockpitCard(id: .anthropic, title: "Anthropic-API", provider: .claude,
                            updated: updated, summary: summary,
+                           widgetKurz: kurzFuerWidget,
                            money: geld, status: status, actionTitle: knopf)
     }
 
@@ -535,6 +541,7 @@ final class Cockpit {
         var badge: String?
         var updated: Date?
         var summary: CardSummary?
+        var kurzFuerWidget: String?
         var geld: [CockpitMoney] = []
         var status: CardStatus?
         var knopf: String?
@@ -566,12 +573,14 @@ final class Cockpit {
             ]
             summary = CardSummary(text: String(localized: "\(Format.money(werte.available, waehrung)) verfügbar"),
                                   warning: werte.available <= 0)
+            kurzFuerWidget = Format.money(werte.available, waehrung)
         }
 
         return CockpitCard(id: .kimi, title: "Kimi K3", provider: .kimi,
                            badge: badge,
                            note: String(localized: "kein Verbrauch über die Schnittstelle"),
                            updated: updated, summary: summary,
+                           widgetKurz: kurzFuerWidget,
                            money: geld, status: status, actionTitle: knopf)
     }
 
@@ -669,13 +678,45 @@ final class Cockpit {
 
     // MARK: - Widget versorgen
 
-    /// Legt die Claude-Fenster in die App Group.
+    /// Legt in die App Group, was das Widget zeigt.
     ///
-    /// Nur bei Erfolg: Ein fehlgeschlagener Abruf soll den letzten guten Stand
-    /// nicht wegwischen. Das Widget zeigt lieber eine Zahl von vorhin — mit
-    /// ihrem Alter daneben — als gar keine.
+    /// Zweierlei: die Claude-Fenster für Ring und Balken, und **eine Zeile je
+    /// eingeblendeter Karte mit Zahlen**. Letzteres fehlte lange — das Widget
+    /// zeigte Claude und sonst nichts, obwohl in der App fünf Karten standen.
+    ///
+    /// Geschrieben wird nur, was gemessen wurde. Eine Karte ohne Schlüssel oder
+    /// mitten im Abruf trägt einen Statushinweis; die gehört nicht aufs Widget,
+    /// wo für «nicht eingerichtet» weder Platz noch Anlass ist.
     private func schreibeWidgetZustand() {
-        guard case .daten(let werte) = claude else { return }
+        let quellen: [WidgetZustand.Quelle] = karten.compactMap { karte in
+            // `status == nil` heisst: Die Karte zeigt Zahlen und keinen
+            // Hinweis. Das ist dieselbe Regel, an der die Karte selbst
+            // entscheidet, ob sie eine Fussnote braucht.
+            guard karte.status == nil, let kurz = karte.summary else { return nil }
+            let zeilen = kurz.text.split(separator: "\n").map(String.init)
+            return WidgetZustand.Quelle(
+                name: karte.title,
+                // Die Kurzfassung bringt ihre Zeilen mit; auf dem Widget ist
+                // eine Zeile je Quelle das Mass, also wird umgehängt.
+                wert: zeilen.joined(separator: " · "),
+                // Auf die knappste Kachel passt **eine** Angabe. Bei einem
+                // Kontingent ist das die erste — das nächste Fenster, das
+                // zuschlägt. Bei Geld die letzte: der laufende Monat sagt mehr
+                // als der heutige Betrag, der morgens oft null ist.
+                kurz: karte.widgetKurz ?? zeilen.first ?? kurz.text,
+                prozent: karte.limits.first?.window.usedPercent,
+                warnung: kurz.warning,
+                stand: karte.updated ?? Date())
+        }
+
+        guard case .daten(let werte) = claude else {
+            // Ohne Claude gibt es keine Fenster für den Ring — die Liste der
+            // übrigen Quellen aber schon, und die soll nicht mit verschwinden.
+            guard !quellen.isEmpty else { return }
+            WidgetZustand(erhoben: quellen.map(\.stand).min() ?? Date(),
+                          fenster: [], quellen: quellen).schreib()
+            return
+        }
 
         var fenster: [WidgetZustand.Fenster] = []
         if let f = werte.fiveHour {
@@ -688,7 +729,11 @@ final class Cockpit {
             fenster.append(.init(name: f.label, prozent: f.usedPercent, zuruecksetzung: f.resetsAt))
         }
 
-        WidgetZustand(erhoben: werte.fetchedAt, fenster: fenster).schreib()
+        // **Der älteste Stand zählt.** Er steht als «vor x» auf der Kachel, und
+        // die Aussage muss für alles gelten, was dort steht — nicht nur für die
+        // Zeile, die zufällig zuletzt geholt wurde.
+        let aeltester = ([werte.fetchedAt] + quellen.map(\.stand)).min() ?? werte.fetchedAt
+        WidgetZustand(erhoben: aeltester, fenster: fenster, quellen: quellen).schreib()
     }
 
     // MARK: - Kleinkram

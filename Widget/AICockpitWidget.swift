@@ -29,6 +29,9 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
     /// Das Widget zeigt beides nie als dasselbe an.
     let stand: Date?
     let fenster: [WidgetZustand.Fenster]
+    /// Eine Zeile je eingeblendeter Karte mit Zahlen. Leer bei einem Stand aus
+    /// einer älteren Fassung — dann zeigt die Kachel wie früher die Fenster.
+    let quellen: [WidgetZustand.Quelle]
     /// Ob der Nutzer in die App muss, damit hier je wieder etwas Frisches
     /// erscheint (kein Token, abgelaufen oder unlesbar).
     let anmeldungFaellig: Bool
@@ -82,9 +85,10 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
     /// nie aus `getTimeline`. Eine Kachel auf dem Homescreen zeigt entweder
     /// Gemessenes oder eine Einladung.
     static func vorschau(am datum: Date = .now) -> UeberblickEintrag {
-        UeberblickEintrag(
+        let erhoben = datum.addingTimeInterval(-4 * 60)
+        return UeberblickEintrag(
             date: datum,
-            stand: datum.addingTimeInterval(-4 * 60),
+            stand: erhoben,
             fenster: [
                 .init(name: String(localized: "5 Stunden"), prozent: 42,
                       zuruecksetzung: datum.addingTimeInterval(2 * 3600)),
@@ -93,13 +97,29 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
                 .init(name: "Fable 5", prozent: 12,
                       zuruecksetzung: datum.addingTimeInterval(3 * 86400))
             ],
+            quellen: [
+                .init(name: "Claude", wert: "5 h: 42 % · 7 d: 78 %", prozent: 78,
+                      warnung: false, stand: erhoben),
+                .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", prozent: 21,
+                      warnung: false, stand: erhoben),
+                .init(name: String(localized: "OpenAI-API"),
+                      wert: String(localized: "Heute \(Format.money(0.4, "USD")) · Monat \(Format.money(12.3, "USD"))"),
+                      prozent: nil, warnung: false, stand: erhoben),
+                .init(name: "Kimi K3",
+                      wert: String(localized: "\(Format.money(9.9, "USD")) verfügbar"),
+                      prozent: nil, warnung: false, stand: erhoben)
+            ],
             anmeldungFaellig: false)
     }
 
     /// Nichts gemessen — die Einladung.
     static func leer(am datum: Date, anmeldungFaellig: Bool) -> UeberblickEintrag {
-        UeberblickEintrag(date: datum, stand: nil, fenster: [], anmeldungFaellig: anmeldungFaellig)
+        UeberblickEintrag(date: datum, stand: nil, fenster: [], quellen: [],
+                          anmeldungFaellig: anmeldungFaellig)
     }
+
+    /// Hat die Kachel überhaupt etwas zu zeigen?
+    var hatInhalt: Bool { !quellen.isEmpty || !fenster.isEmpty }
 }
 
 // MARK: - Der Anbieter
@@ -158,6 +178,7 @@ struct UeberblickAnbieter: TimelineProvider {
                     eintrag = UeberblickEintrag(date: jetzt,
                                                 stand: zustand.erhoben,
                                                 fenster: zustand.fenster,
+                                                quellen: zustand.quellen,
                                                 anmeldungFaellig: false)
                 }
                 // Fehlschlag: Der Zwischenstand bleibt stehen und altert
@@ -173,12 +194,14 @@ struct UeberblickAnbieter: TimelineProvider {
 
     private static func ausZwischenstand(_ jetzt: Date,
                                          anmeldungFaellig: Bool = false) -> UeberblickEintrag {
-        guard let zustand = WidgetZustand.lies(), !zustand.fenster.isEmpty else {
+        guard let zustand = WidgetZustand.lies(),
+              !zustand.fenster.isEmpty || !zustand.quellen.isEmpty else {
             return .leer(am: jetzt, anmeldungFaellig: anmeldungFaellig)
         }
         return UeberblickEintrag(date: jetzt,
                                  stand: zustand.erhoben,
                                  fenster: zustand.fenster,
+                                 quellen: zustand.quellen,
                                  anmeldungFaellig: anmeldungFaellig)
     }
 
@@ -216,11 +239,12 @@ struct UeberblickAnbieter: TimelineProvider {
                 eintraege.append(UeberblickEintrag(date: zeitpunkt,
                                                    stand: stand,
                                                    fenster: eintrag.fenster,
+                                                   quellen: eintrag.quellen,
                                                    anmeldungFaellig: eintrag.anmeldungFaellig))
             }
         }
 
-        let abstand = eintrag.fenster.isEmpty ? ruheabstand : wunschabstand
+        let abstand = eintrag.hatInhalt ? wunschabstand : ruheabstand
         return Timeline(entries: eintraege,
                         policy: .after(eintrag.date.addingTimeInterval(abstand)))
     }
@@ -234,7 +258,7 @@ struct UeberblickWidget: Widget {
             UeberblickAnsicht(eintrag: eintrag)
         }
         .configurationDisplayName("AI Cockpit")
-        .description("Die Auslastung des Claude-Abos auf einen Blick — mit dem Alter der Zahlen.")
+        .description("Alle eingeblendeten Karten auf einen Blick — mit dem Alter der Zahlen.")
         .supportedFamilies(Self.familien)
         // CarPlay abwählen: Dort landet ein Widget sonst automatisch in einem
         // Layout, das nie jemand geprüft hat — und im Auto ist die Auslastung
@@ -274,6 +298,16 @@ extension UeberblickEintrag {
                             .init(name: "Fable 5", prozent: 12, zuruecksetzung: .now.addingTimeInterval(3 * 86400)),
                             .init(name: "Opus", prozent: 33, zuruecksetzung: .now.addingTimeInterval(3 * 86400))
                           ],
+                          quellen: [
+                            .init(name: "Claude", wert: "5 h: 42 % · 7 d: 61 %", prozent: 61,
+                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", prozent: 21,
+                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "OpenAI-API", wert: "US$ 0.40 · US$ 12.30", prozent: nil,
+                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "Kimi K3", wert: "US$ 9.90", prozent: nil,
+                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60))
+                          ],
                           anmeldungFaellig: false)
     }
 
@@ -283,6 +317,12 @@ extension UeberblickEintrag {
                             .init(name: "5 Stunden", prozent: 94, zuruecksetzung: .now.addingTimeInterval(38 * 60)),
                             .init(name: "7 Tage", prozent: 81, zuruecksetzung: .now.addingTimeInterval(2 * 86400))
                           ],
+                          quellen: [
+                            .init(name: "Claude", wert: "5 h: 94 % · 7 d: 81 %", prozent: 94,
+                                  warnung: true, stand: .now.addingTimeInterval(-12 * 60)),
+                            .init(name: "ChatGPT", wert: "5 h: 88 %", prozent: 88,
+                                  warnung: true, stand: .now.addingTimeInterval(-12 * 60))
+                          ],
                           anmeldungFaellig: false)
     }
 
@@ -290,6 +330,7 @@ extension UeberblickEintrag {
     static var beispielVeraltet: UeberblickEintrag {
         UeberblickEintrag(date: .now, stand: .now.addingTimeInterval(-4 * 3600),
                           fenster: beispielRuhig.fenster,
+                          quellen: beispielRuhig.quellen,
                           anmeldungFaellig: false)
     }
 
@@ -301,6 +342,7 @@ extension UeberblickEintrag {
     static var beispielAnmeldungFaellig: UeberblickEintrag {
         UeberblickEintrag(date: .now, stand: .now.addingTimeInterval(-2 * 3600),
                           fenster: beispielKritisch.fenster,
+                          quellen: beispielKritisch.quellen,
                           anmeldungFaellig: true)
     }
 

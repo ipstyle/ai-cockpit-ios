@@ -45,18 +45,86 @@ struct WidgetZustand: Codable, Sendable, Equatable {
         }
     }
 
+    /// Eine Karte in einer Zeile — das, was das Widget als Liste zeigt.
+    ///
+    /// Lange stand hier nur `fenster`, und das waren ausschliesslich die
+    /// Claude-Fenster: Das Widget zeigte Claude und sonst nichts, obwohl in der
+    /// App fünf Karten standen. Diese Liste ist die Antwort darauf — **eine
+    /// Zeile je eingeblendeter Karte, die wirklich Zahlen hat.**
+    ///
+    /// Der Text kommt aus derselben Kurzfassung, die die eingeklappte Karte in
+    /// der App zeigt. Das ist kein Zufall, sondern der Punkt: Sie ist bereits
+    /// darauf gebaut, in eine Zeile zu passen, und sie an zwei Stellen
+    /// verschieden zu formulieren hiesse, zwei Fassungen zu pflegen.
+    struct Quelle: Codable, Sendable, Equatable {
+        /// «Claude», «ChatGPT», «OpenAI-API» — wie auf der Karte.
+        let name: String
+        /// «5 h: 64 % · 7 d: 57 %», «Heute US$ 0.00 · Monat US$ 3.05».
+        let wert: String
+        /// Dasselbe auf **eine** Angabe eingedampft — für die kleine Kachel und
+        /// den Sperrbildschirm, wo der volle Wert abgeschnitten würde. Und ein
+        /// abgeschnittener Betrag («US$ 0…») ist keine Auskunft, sondern eine
+        /// Falle.
+        let kurz: String
+        /// Für die Ampel. `nil` bei Karten, die kein Kontingent führen, sondern
+        /// Geld — dort gibt es keinen Prozentsatz, und einen zu erfinden wäre
+        /// schlimmer als keiner.
+        let prozent: Double?
+        let warnung: Bool
+        /// Wann **diese** Zahlen erhoben wurden. Je Quelle und nicht global:
+        /// Das Widget erneuert von sich aus nur Claude, die übrigen Zeilen sind
+        /// so alt wie der letzte Lauf der App.
+        let stand: Date
+
+        init(name: String, wert: String, kurz: String? = nil,
+             prozent: Double?, warnung: Bool, stand: Date) {
+            self.name = name
+            self.wert = wert
+            self.kurz = kurz ?? wert
+            self.prozent = prozent
+            self.warnung = warnung
+            self.stand = stand
+        }
+
+        /// Ältere Stände kennen `kurz` nicht — dort gilt der volle Wert.
+        init(from decoder: any Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            name = try c.decode(String.self, forKey: .name)
+            wert = try c.decode(String.self, forKey: .wert)
+            kurz = try c.decodeIfPresent(String.self, forKey: .kurz) ?? wert
+            prozent = try c.decodeIfPresent(Double.self, forKey: .prozent)
+            warnung = try c.decode(Bool.self, forKey: .warnung)
+            stand = try c.decode(Date.self, forKey: .stand)
+        }
+    }
+
     let version: Int
     /// Wann die Zahlen **erhoben** wurden — nicht, wann sie hier abgelegt
     /// wurden. Der Unterschied ist genau das, was auf dem Widget stehen muss:
     /// Ein Wert von vor drei Stunden ist eine andere Aussage als einer von
     /// eben, und die App darf ihn nicht durchs Hinschreiben verjüngen.
     let erhoben: Date
+    /// Die Claude-Fenster — sie tragen den Ring und die Balken.
     let fenster: [Fenster]
+    /// Eine Zeile je eingeblendeter Karte mit Zahlen. Leer bei einem Stand aus
+    /// einer älteren Fassung; dann zeigt das Widget wie früher nur `fenster`.
+    let quellen: [Quelle]
 
-    init(erhoben: Date, fenster: [Fenster]) {
+    init(erhoben: Date, fenster: [Fenster], quellen: [Quelle] = []) {
         self.version = Self.aktuelleVersion
         self.erhoben = erhoben
         self.fenster = fenster
+        self.quellen = quellen
+    }
+
+    /// Ein Stand aus einer älteren Fassung kennt `quellen` nicht. Ihn deswegen
+    /// zu verwerfen hiesse: leeres Widget bis zum nächsten Start der App.
+    init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        version = try c.decode(Int.self, forKey: .version)
+        erhoben = try c.decode(Date.self, forKey: .erhoben)
+        fenster = try c.decode([Fenster].self, forKey: .fenster)
+        quellen = try c.decodeIfPresent([Quelle].self, forKey: .quellen) ?? []
     }
 
     // MARK: - Lesen und Schreiben
@@ -117,7 +185,7 @@ struct WidgetZustand: Codable, Sendable, Equatable {
         let vorher = Self.lies(aus: vorgaben)
         vorgaben.set(daten, forKey: Self.schluessel)
 
-        guard stossAn, vorher?.fenster != fenster else { return false }
+        guard stossAn, vorher?.fenster != fenster || vorher?.quellen != quellen else { return false }
         WidgetCenter.shared.reloadAllTimelines()
         return true
     }

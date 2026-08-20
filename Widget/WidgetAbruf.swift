@@ -61,7 +61,38 @@ enum WidgetAbruf {
         // Eine Antwort ohne ein einziges Fenster ist kein Erfolg: Sie würde den
         // Zwischenstand durch nichts ersetzen.
         guard !fenster.isEmpty else { return .fehlgeschlagen }
-        return .frisch(WidgetZustand(erhoben: werte.fetchedAt, fenster: fenster))
+
+        // **Die übrigen Zeilen bleiben stehen.** Das Widget erneuert nur
+        // Claude; würde es den Stand mit einem reinen Claude-Zustand
+        // überschreiben, wären ChatGPT, OpenAI und Kimi bis zum nächsten Lauf
+        // der App aus der Kachel verschwunden.
+        //
+        // Die Claude-Zeile darin wird mitgezogen, sonst stünde neben dem
+        // frischen Ring eine alte Zahl desselben Kontos.
+        let bisher = WidgetZustand.lies()?.quellen ?? []
+        let claudeZeile = WidgetZustand.Quelle(
+            name: "Claude",
+            wert: fenster.prefix(2).map { "\($0.name): \(Format.percent($0.prozent))" }
+                         .joined(separator: " · "),
+            kurz: fenster.first.map { "\($0.name): \(Format.percent($0.prozent))" },
+            prozent: fenster.first?.prozent,
+            warnung: fenster.contains { $0.prozent >= LimitThresholds.standard.warn },
+            stand: werte.fetchedAt)
+        var quellen = bisher
+        if let stelle = quellen.firstIndex(where: { $0.name == "Claude" }) {
+            quellen[stelle] = claudeZeile
+        } else if quellen.isEmpty {
+            // Erster Lauf oder ein Stand aus einer älteren Fassung.
+            quellen = [claudeZeile]
+        }
+        // Fehlt Claude in einer nicht leeren Liste, ist die Karte in der App
+        // ausgeblendet. Dann gehört sie auch hier nicht hinein — der Ring zeigt
+        // sie ohnehin, aber die Liste ist die Auswahl des Nutzers.
+
+        // Der älteste Stand zählt: Er steht als «vor x» auf der Kachel und muss
+        // für alles gelten, was dort steht.
+        let aeltester = ([werte.fetchedAt] + quellen.map(\.stand)).min() ?? werte.fetchedAt
+        return .frisch(WidgetZustand(erhoben: aeltester, fenster: fenster, quellen: quellen))
     }
 
     /// Führt `arbeit` aus, aber höchstens `sekunden` lang.
