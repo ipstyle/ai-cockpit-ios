@@ -75,8 +75,10 @@ final class Einstellungen {
         static let warn = "warnThreshold"
         static let kritisch = "criticalThreshold"
         static let eingeklappteKarten = "collapsedCards"
+        static let kartenreihenfolge = "cardOrder"
 
-        static let alle = [darstellung, kimiRegion, warn, kritisch, eingeklappteKarten]
+        static let alle = [darstellung, kimiRegion, warn, kritisch,
+                           eingeklappteKarten, kartenreihenfolge]
     }
 
     var darstellung: AppAppearance {

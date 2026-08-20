@@ -30,6 +30,20 @@ struct DarstellungSeite: View {
             } footer: {
                 Text("Die Farben der Karten folgen der Wahl: Anthrazit im dunklen, warmes Papier im hellen Modus. «System» übernimmt, was das Gerät gerade vorgibt.")
             }
+
+            Section {
+                Button(role: .destructive) {
+                    UserDefaults.standard.removeObject(forKey: "cardOrder")
+                } label: {
+                    Label("Ursprüngliche Reihenfolge", systemImage: "arrow.uturn.backward")
+                        .frame(minHeight: 44)
+                }
+            } footer: {
+                // Den Knopf gibt es auch im Sortiermodus selbst. Hier steht er
+                // ein zweites Mal für alle, die ihn dort nicht vermuten — und
+                // weil «zurück zum Anfang» in die Einstellungen gehört.
+                Text("Stellt die Karten wieder in die Reihenfolge, in der die App sie anlegt. Was eingeklappt ist, bleibt.")
+            }
         }
     }
 }

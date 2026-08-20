@@ -492,14 +492,18 @@ final class Cockpit {
         var status: CardStatus?
         var knopf: String?
         var badge: String?
+        var summary: CardSummary?
 
         switch codex {
         case .laedt:
+            summary = CardSummary(text: String(localized: "wird geholt …"))
             status = .loading(String(localized: "Kontingente werden geholt …"))
         case .nichtEingerichtet:
+            summary = CardSummary(text: String(localized: "nicht angemeldet"))
             status = .missing(String(localized: "Noch nicht bei ChatGPT angemeldet. Die Anmeldung läuft über OpenAI selbst — diese App sieht dein Passwort nie."))
             knopf = String(localized: "Anmelden")
         case .fehler(let text):
+            summary = kurz(text)
             status = .failed(text)
             knopf = String(localized: "Erneut versuchen")
         case .daten(let werte):
@@ -510,13 +514,36 @@ final class Cockpit {
             // Kein Fenster in der Antwort heisst nicht «kein Verbrauch»,
             // sondern «nichts zu sagen» — das gehört unterschieden.
             if limits.isEmpty {
+                summary = CardSummary(text: String(localized: "keine Kontingente"))
                 status = .missing(String(localized: "ChatGPT nennt derzeit keine Kontingente für dieses Konto."))
+            } else {
+                summary = chatgptKurzfassung(werte)
             }
         }
 
         return CockpitCard(id: .chatgpt, title: "ChatGPT", provider: .chatGPT,
-                           badge: badge, updated: updated,
+                           badge: badge, updated: updated, summary: summary,
                            limits: limits, status: status, actionTitle: knopf)
+    }
+
+    /// Was von der Karte übrig bleibt, wenn sie zugeklappt ist.
+    ///
+    /// Ohne diese Kurzfassung lässt sich die Karte gar nicht zuklappen — die
+    /// Ansicht zeigt den Pfeil nur, wenn es etwas zu zeigen gibt. Genau daran
+    /// hat die ChatGPT-Karte eine Zeit lang gefehlt.
+    private func chatgptKurzfassung(_ werte: CodexLimits) -> CardSummary? {
+        var teile: [String] = []
+        var warnung = false
+        if let fenster = werte.fiveHour {
+            teile.append("5 h \(Format.percent(fenster.usedPercent))")
+            warnung = warnung || warnt(fenster)
+        }
+        if let fenster = werte.weekly {
+            teile.append("7 d \(Format.percent(fenster.usedPercent))")
+            warnung = warnung || warnt(fenster)
+        }
+        guard !teile.isEmpty else { return nil }
+        return CardSummary(text: teile.joined(separator: " · "), warning: warnung)
     }
 
     private func brueckenKarte(_ id: CardLayout.Card,

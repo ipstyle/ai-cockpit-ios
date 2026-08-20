@@ -30,7 +30,7 @@ struct UeberSeite: View {
                     Text("AI Cockpit")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(palette.primary)
-                    Text("developed by ipstyle")
+                    Text("Developed by Albert Frick / ipstyle")
                         .font(.callout)
                         .foregroundStyle(.secondary)
                     Text("Version \(AppKennung.version)")

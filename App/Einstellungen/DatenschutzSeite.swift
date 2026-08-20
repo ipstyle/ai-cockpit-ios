@@ -125,7 +125,7 @@ struct DatenschutzSeite: View {
     @ViewBuilder
     private var wasSonstAufDemGeraetLiegt: some View {
         Section {
-            Text("In den Benutzervorgaben der App stehen fünf Dinge: Erscheinungsbild, Kimi-Region, die beiden Schwellenwerte und welche Karten eingeklappt sind.")
+            Text("In den Benutzervorgaben der App stehen sechs Dinge: Erscheinungsbild, Kimi-Region, die beiden Schwellenwerte und welche Karten eingeklappt sind.")
             Text("Im gemeinsamen Ablageort von App und Widget liegt der Stand, den das Widget zeichnet — Beschriftung, Prozentwert, Zeitpunkt der Zurücksetzung und wann die Zahlen erhoben wurden. Keine Schlüssel, keine Token, keine Beträge.")
         } header: {
             Text("Was sonst auf dem Gerät liegt")
