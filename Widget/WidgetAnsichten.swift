@@ -491,7 +491,8 @@ struct KleineAnsicht: View {
 /// Mittel: bis zu drei Balken mit Titel und Prozentzahl, plus Stand.
 struct MittlereAnsicht: View {
     let eintrag: UeberblickEintrag
-    /// Grosse Kachel: mehr Zeilen, dazu die Zurücksetzung.
+    /// Wie viele Zeilen die Liste zeigt. Balken brauchen mehr Platz als
+    /// Textzeilen — für den Rückfall auf die Fensterliste bleibt es bei drei.
     var maximum = 3
     var mitZuruecksetzung = false
 
@@ -532,14 +533,14 @@ struct MittlereAnsicht: View {
                 EinladungsAnsicht(eintrag: eintrag)
             } else {
                 VStack(alignment: .leading, spacing: mitZuruecksetzung ? 9 : 7) {
-                    ForEach(Array(eintrag.fenster.prefix(maximum).enumerated()), id: \.offset) { _, fenster in
+                    ForEach(Array(eintrag.fenster.prefix(3).enumerated()), id: \.offset) { _, fenster in
                         FensterZeile(fenster: fenster, zeigtZuruecksetzung: mitZuruecksetzung)
                     }
                 }
                 // Weitere Fenster verschweigen wäre eine halbe Auskunft: Die
                 // Kachel zeigt die ersten drei und sagt, dass es mehr gibt.
-                if eintrag.fenster.count > maximum {
-                    Text("+ \(eintrag.fenster.count - maximum) weitere in der App")
+                if eintrag.fenster.count > 3 {
+                    Text("+ \(eintrag.fenster.count - 3) weitere in der App")
                         .font(.caption2)
                         .foregroundStyle(ton.leise)
                 }
@@ -728,7 +729,10 @@ struct UeberblickAnsicht: View {
         case .systemSmall:
             KleineAnsicht(eintrag: eintrag)
         case .systemMedium:
-            MittlereAnsicht(eintrag: eintrag)
+            // Fünf statt der früheren drei: Die Liste führt eine Zeile je
+            // Karte, und «+ 2 weitere in der App» auf einer Kachel, auf der
+            // fünf Zeilen Platz haben, wäre eine selbstgemachte Lücke.
+            MittlereAnsicht(eintrag: eintrag, maximum: 5)
         case .systemLarge:
             MittlereAnsicht(eintrag: eintrag, maximum: 5, mitZuruecksetzung: true)
         case .accessoryCircular:

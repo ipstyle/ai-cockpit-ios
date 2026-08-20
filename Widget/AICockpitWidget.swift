@@ -98,15 +98,20 @@ struct UeberblickEintrag: TimelineEntry, Sendable, Equatable {
                       zuruecksetzung: datum.addingTimeInterval(3 * 86400))
             ],
             quellen: [
-                .init(name: "Claude", wert: "5 h: 42 % · 7 d: 78 %", prozent: 78,
-                      warnung: false, stand: erhoben),
-                .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", prozent: 21,
-                      warnung: false, stand: erhoben),
+                // Auch die Vorschau trägt die Kurzfassungen — sonst zeigte die
+                // Galerie auf der kleinen Kachel einen abgeschnittenen Betrag,
+                // also genau das Bild, das die App gerade nicht abgibt.
+                .init(name: "Claude", wert: "5 h: 42 % · 7 d: 78 %", kurz: "5 h: 42 %",
+                      prozent: 78, warnung: false, stand: erhoben),
+                .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
+                      prozent: 21, warnung: false, stand: erhoben),
                 .init(name: String(localized: "OpenAI-API"),
                       wert: String(localized: "Heute \(Format.money(0.4, "USD")) · Monat \(Format.money(12.3, "USD"))"),
+                      kurz: Format.money(12.3, "USD"),
                       prozent: nil, warnung: false, stand: erhoben),
                 .init(name: "Kimi K3",
                       wert: String(localized: "\(Format.money(9.9, "USD")) verfügbar"),
+                      kurz: Format.money(9.9, "USD"),
                       prozent: nil, warnung: false, stand: erhoben)
             ],
             anmeldungFaellig: false)
@@ -299,14 +304,15 @@ extension UeberblickEintrag {
                             .init(name: "Opus", prozent: 33, zuruecksetzung: .now.addingTimeInterval(3 * 86400))
                           ],
                           quellen: [
-                            .init(name: "Claude", wert: "5 h: 42 % · 7 d: 61 %", prozent: 61,
-                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", prozent: 21,
-                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "OpenAI-API", wert: "US$ 0.40 · US$ 12.30", prozent: nil,
-                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
-                            .init(name: "Kimi K3", wert: "US$ 9.90", prozent: nil,
-                                  warnung: false, stand: .now.addingTimeInterval(-3 * 60))
+                            .init(name: "Claude", wert: "5 h: 42 % · 7 d: 61 %", kurz: "5 h: 42 %",
+                                  prozent: 61, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "ChatGPT", wert: "5 h: 8 % · 7 d: 21 %", kurz: "5 h: 8 %",
+                                  prozent: 21, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "OpenAI-API", wert: "Heute US$ 0.40 · Monat US$ 12.30",
+                                  kurz: "US$ 12.30",
+                                  prozent: nil, warnung: false, stand: .now.addingTimeInterval(-3 * 60)),
+                            .init(name: "Kimi K3", wert: "US$ 9.90 verfügbar", kurz: "US$ 9.90",
+                                  prozent: nil, warnung: false, stand: .now.addingTimeInterval(-3 * 60))
                           ],
                           anmeldungFaellig: false)
     }
@@ -318,10 +324,10 @@ extension UeberblickEintrag {
                             .init(name: "7 Tage", prozent: 81, zuruecksetzung: .now.addingTimeInterval(2 * 86400))
                           ],
                           quellen: [
-                            .init(name: "Claude", wert: "5 h: 94 % · 7 d: 81 %", prozent: 94,
-                                  warnung: true, stand: .now.addingTimeInterval(-12 * 60)),
-                            .init(name: "ChatGPT", wert: "5 h: 88 %", prozent: 88,
-                                  warnung: true, stand: .now.addingTimeInterval(-12 * 60))
+                            .init(name: "Claude", wert: "5 h: 94 % · 7 d: 81 %", kurz: "5 h: 94 %",
+                                  prozent: 94, warnung: true, stand: .now.addingTimeInterval(-12 * 60)),
+                            .init(name: "ChatGPT", wert: "5 h: 88 %", kurz: "5 h: 88 %",
+                                  prozent: 88, warnung: true, stand: .now.addingTimeInterval(-12 * 60))
                           ],
                           anmeldungFaellig: false)
     }
