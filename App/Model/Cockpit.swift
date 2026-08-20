@@ -335,15 +335,15 @@ final class Cockpit {
         var teile: [String] = []
         var warnung = false
         if let fenster = werte.fiveHour {
-            teile.append("5 h \(Format.percent(fenster.usedPercent))")
+            teile.append("5 h: \(Format.percent(fenster.usedPercent))")
             warnung = warnung || warnt(fenster)
         }
         if let fenster = werte.weekly {
-            teile.append("7 d \(Format.percent(fenster.usedPercent))")
+            teile.append("7 d: \(Format.percent(fenster.usedPercent))")
             warnung = warnung || warnt(fenster)
         }
         for fenster in werte.weeklyScoped where warnt(fenster) {
-            teile.append("\(fenster.label) \(Format.percent(fenster.usedPercent))")
+            teile.append("\(fenster.label): \(Format.percent(fenster.usedPercent))")
             warnung = true
         }
         guard !teile.isEmpty else { return nil }
@@ -551,11 +551,11 @@ final class Cockpit {
         var teile: [String] = []
         var warnung = false
         if let fenster = werte.fiveHour {
-            teile.append("5 h \(Format.percent(fenster.usedPercent))")
+            teile.append("5 h: \(Format.percent(fenster.usedPercent))")
             warnung = warnung || warnt(fenster)
         }
         if let fenster = werte.weekly {
-            teile.append("7 d \(Format.percent(fenster.usedPercent))")
+            teile.append("7 d: \(Format.percent(fenster.usedPercent))")
             warnung = warnung || warnt(fenster)
         }
         guard !teile.isEmpty else { return nil }
