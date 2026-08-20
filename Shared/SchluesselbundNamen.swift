@@ -14,6 +14,7 @@ public enum SchluesselbundNamen {
     public static let dienst = "AI Cockpit Mobile"
 
     public static let claudeOAuth = "claude-oauth"
+    public static let codexOAuth = "codex-oauth"
     public static let openAIAdminKey = "openai-admin-key"
     public static let anthropicAdminKey = "anthropic-admin-key"
     public static let kimiAPIKey = "kimi-api-key"

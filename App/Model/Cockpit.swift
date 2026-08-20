@@ -91,6 +91,7 @@ final class Cockpit {
     // MARK: - Zustand je Quelle
 
     private var claude: Quellenstand<ClaudeLimits> = .laedt
+    private var codex: Quellenstand<CodexLimits> = .laedt
     private var openAI: Quellenstand<OpenAIUsageClient.Snapshot> = .laedt
     private var anthropic: Quellenstand<AnthropicCosts> = .laedt
     private var kimi: Quellenstand<KimiClient.Balance> = .laedt
@@ -126,12 +127,14 @@ final class Cockpit {
         let region = Self.kimiRegion()
 
         async let claudeLauf = Abruf.claude()
+        async let codexLauf = Abruf.codex()
         async let openAILauf = Abruf.openAI()
         async let anthropicLauf = Abruf.anthropic()
         async let kimiLauf = Abruf.kimi(region: region)
 
-        let (c, o, a, k) = await (claudeLauf, openAILauf, anthropicLauf, kimiLauf)
+        let (c, x, o, a, k) = await (claudeLauf, codexLauf, openAILauf, anthropicLauf, kimiLauf)
         claude = c
+        codex = x
         openAI = o
         anthropic = a
         kimi = k
@@ -171,8 +174,11 @@ final class Cockpit {
             anthropic = await Abruf.anthropic()
         case .kimi:
             kimi = await Abruf.kimi(region: Self.kimiRegion())
-        case .chatgpt, .sitzungen:
-            // Die beiden hängen am Mac, nicht an einer Abfrage von hier.
+        case .chatgpt:
+            codex = await Abruf.codex()
+        case .sitzungen:
+            // Die einzige Karte, die tatsächlich am Mac hängt: Die laufenden
+            // Sitzungen stehen in Dateien, für die es keinen Netz-Endpunkt gibt.
             return
         }
         baueKarten()
@@ -183,13 +189,12 @@ final class Cockpit {
 
     /// Was der Knopf einer Karte auslösen soll.
     ///
-    /// Absichtlich nur die zwei Fälle, für die es heute ein Ziel gibt. Ein
-    /// dritter («Einrichten» für die drei API-Schlüssel) hätte keines: Ein
-    /// Einstellungsfenster gibt es noch nicht, und ein Knopf, der ins Leere
-    /// führt, ist schlimmer als kein Knopf. Die Karten dieser Dienste laden
-    /// deshalb im Text ein statt mit einer Fläche.
+    /// Die drei API-Schlüssel haben bewusst keinen eigenen Fall: Ihre Karten
+    /// laden im Text zu den Einstellungen ein, statt mit einer Fläche, die
+    /// dasselbe noch einmal sagt.
     enum Kartenaktion: Equatable, Sendable {
         case anmelden
+        case beiChatGPTAnmelden
         case erneutVersuchen(CardLayout.Card)
     }
 
@@ -204,7 +209,10 @@ final class Cockpit {
             if case .fehler = anthropic { return .erneutVersuchen(.anthropic) }
         case .kimi:
             if case .fehler = kimi { return .erneutVersuchen(.kimi) }
-        case .chatgpt, .sitzungen:
+        case .chatgpt:
+            if case .nichtEingerichtet = codex { return .beiChatGPTAnmelden }
+            if case .fehler = codex { return .erneutVersuchen(.chatgpt) }
+        case .sitzungen:
             return nil
         }
         return nil
@@ -226,8 +234,7 @@ final class Cockpit {
     private func baueKarten() {
         karten = [
             claudeKarte(),
-            brueckenKarte(.chatgpt, titel: "ChatGPT", provider: .chatGPT,
-                          erklaerung: String(localized: "Die ChatGPT-Kontingente gibt der Codex-Dienst nur einem Programm auf demselben Rechner heraus. Sie kommen vom Mac herüber, sobald AI Cockpit dort läuft.")),
+            chatgptKarte(),
             openAIKarte(),
             anthropicKarte(),
             kimiKarte(),
@@ -446,6 +453,46 @@ final class Cockpit {
     /// - Parameter stand: Wann der Mac zuletzt geschrieben hat. Bleibt `nil`,
     ///   bis die Gegenseite in Etappe E4 steht — die Karte trägt den Wert dann
     ///   in der Kopfzeile als Alter, ohne dass hier etwas zu ändern wäre.
+    // MARK: ChatGPT
+
+    /// Die ChatGPT-Karte holt ihre Zahlen selbst.
+    ///
+    /// Lange stand hier, das ginge nicht: Der Codex-Dienst gebe die
+    /// Kontingente nur einem Programm auf demselben Rechner heraus. Das war
+    /// ein Irrtum — es gibt einen Netz-Endpunkt, siehe `CodexUsageClient`.
+    private func chatgptKarte() -> CockpitCard {
+        var updated: Date?
+        var limits: [CockpitLimit] = []
+        var status: CardStatus?
+        var knopf: String?
+        var badge: String?
+
+        switch codex {
+        case .laedt:
+            status = .loading(String(localized: "Kontingente werden geholt …"))
+        case .nichtEingerichtet:
+            status = .missing(String(localized: "Noch nicht bei ChatGPT angemeldet. Die Anmeldung läuft über OpenAI selbst — diese App sieht dein Passwort nie."))
+            knopf = String(localized: "Anmelden")
+        case .fehler(let text):
+            status = .failed(text)
+            knopf = String(localized: "Erneut versuchen")
+        case .daten(let werte):
+            updated = werte.observedAt
+            badge = werte.planType
+            if let f = werte.fiveHour { limits.append(CockpitLimit(title: f.label, window: f)) }
+            if let w = werte.weekly { limits.append(CockpitLimit(title: w.label, window: w)) }
+            // Kein Fenster in der Antwort heisst nicht «kein Verbrauch»,
+            // sondern «nichts zu sagen» — das gehört unterschieden.
+            if limits.isEmpty {
+                status = .missing(String(localized: "ChatGPT nennt derzeit keine Kontingente für dieses Konto."))
+            }
+        }
+
+        return CockpitCard(id: .chatgpt, title: "ChatGPT", provider: .chatGPT,
+                           badge: badge, updated: updated,
+                           limits: limits, status: status, actionTitle: knopf)
+    }
+
     private func brueckenKarte(_ id: CardLayout.Card,
                                titel: String,
                                provider: Theme.Provider,
@@ -566,6 +613,53 @@ private enum Abruf {
                 // die längst behobene erste Ursache.
                 return .fehler(meldung(error))
             }
+        } catch {
+            return .fehler(meldung(error))
+        }
+    }
+
+    // MARK: ChatGPT
+
+    /// Wie `claude()`, nur beim anderen Dienst — und mit demselben Grundsatz:
+    /// **genau einmal** erneuern. Ein zweiter Anlauf im selben Durchgang löste
+    /// denselben Schlüssel ein zweites Mal ein.
+    static func codex() async -> Quellenstand<CodexLimits> {
+        let zugaenge = Zugaenge()
+        var token: CodexToken
+
+        switch zugaenge.pruefeCodexToken() {
+        case .fehlt:
+            return .nichtEingerichtet
+        case .verweigert(let status):
+            return .fehler(String(localized: "Der Schlüsselbund gibt die ChatGPT-Anmeldung nicht heraus (Status \(status))."))
+        case .unlesbar:
+            return .fehler(String(localized: "Die gespeicherte ChatGPT-Anmeldung ist unlesbar — bitte abmelden und neu anmelden."))
+        case .token(let gefunden):
+            token = gefunden
+        }
+
+        let auth = CodexAuth()
+        let usage = CodexUsageClient()
+        // **Genau einmal**, aus demselben Grund wie bei Claude: Ein zweiter
+        // Anlauf im selben Durchgang löste denselben Schlüssel ein zweites Mal
+        // ein, und die Anmeldung sähe kaputt aus, obwohl sie es nicht ist.
+        var schonErneuert = false
+
+        do {
+            if token.isExpired {
+                token = try await auth.erneuere(token)
+                zugaenge.schreibCodexToken(token)
+                schonErneuert = true
+            }
+            return .daten(try await usage.fetch(token: token))
+        } catch let fehler as ProviderError {
+            guard case .notSignedIn = fehler, !schonErneuert,
+                  let erneuert = try? await auth.erneuere(token) else {
+                return .fehler(fehler.userMessage)
+            }
+            zugaenge.schreibCodexToken(erneuert)
+            do { return .daten(try await usage.fetch(token: erneuert)) }
+            catch { return .fehler(meldung(error)) }
         } catch {
             return .fehler(meldung(error))
         }

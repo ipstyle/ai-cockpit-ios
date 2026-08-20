@@ -33,6 +33,14 @@ struct Zugaenge: Sendable {
     enum Zugang: String, Sendable, CaseIterable {
         /// JSON mit access/refresh-Token der App-eigenen Claude-Anmeldung.
         case claudeOAuth = "claude-oauth"
+        /// JSON mit den Token der App-eigenen ChatGPT-/Codex-Anmeldung.
+        ///
+        /// Ein **eigener** Eintrag neben `claudeOAuth`, obwohl beides
+        /// OAuth-Anmeldungen sind: Es sind zwei Konten bei zwei Anbietern, und
+        /// wer sich bei einem abmeldet, will beim anderen angemeldet bleiben.
+        /// Der Inhalt ist ein `CodexToken`, nicht ein `OAuthTokens` — die
+        /// beiden tragen verschiedene Felder.
+        case codexOAuth = "codex-oauth"
         /// OpenAI-Organization-Admin-Key für die Costs-API.
         case openAIAdminKey = "openai-admin-key"
         /// Anthropic-Admin-Schlüssel (`sk-ant-admin…`) für die Kosten der API —
@@ -159,8 +167,11 @@ extension Zugaenge {
         case unlesbar
     }
 
-    func pruefeToken() -> TokenFund {
-        switch pruefe(.claudeOAuth) {
+    /// Welcher Dienst gemeint ist, steht im Aufruf. Die Vorgabe ist Claude,
+    /// weil das der Weg ist, den fast alle Aufrufer meinen — die ChatGPT-Seite
+    /// muss ihn ausdrücklich nennen.
+    func pruefeToken(_ zugang: Zugang = .claudeOAuth) -> TokenFund {
+        switch pruefe(zugang) {
         case .fehlt:
             return .fehlt
         case .verweigert(let status):
@@ -173,14 +184,54 @@ extension Zugaenge {
         }
     }
 
-    func liesToken() -> OAuthTokens? {
-        if case .token(let token) = pruefeToken() { return token }
+    func liesToken(_ zugang: Zugang = .claudeOAuth) -> OAuthTokens? {
+        if case .token(let token) = pruefeToken(zugang) { return token }
         return nil
     }
 
     @discardableResult
-    func schreibToken(_ token: OAuthTokens) -> Bool {
+    func schreibToken(_ token: OAuthTokens, nach zugang: Zugang = .claudeOAuth) -> Bool {
         guard let daten = try? JSONEncoder().encode(token) else { return false }
-        return schreib(daten, nach: .claudeOAuth)
+        return schreib(daten, nach: zugang)
+    }
+}
+
+// MARK: - ChatGPT-/Codex-Token
+
+extension Zugaenge {
+
+    /// Dieselben vier Fälle wie bei `TokenFund` — und aus demselben Grund
+    /// getrennt: Ein vorhandener, aber unlesbarer Eintrag ist etwas anderes
+    /// als gar keiner.
+    enum CodexFund: Sendable {
+        case token(CodexToken)
+        case fehlt
+        case verweigert(OSStatus)
+        case unlesbar
+    }
+
+    func pruefeCodexToken() -> CodexFund {
+        switch pruefe(.codexOAuth) {
+        case .fehlt:
+            return .fehlt
+        case .verweigert(let status):
+            return .verweigert(status)
+        case .gefunden(let daten):
+            guard let token = try? JSONDecoder().decode(CodexToken.self, from: daten) else {
+                return .unlesbar
+            }
+            return .token(token)
+        }
+    }
+
+    func liesCodexToken() -> CodexToken? {
+        if case .token(let token) = pruefeCodexToken() { return token }
+        return nil
+    }
+
+    @discardableResult
+    func schreibCodexToken(_ token: CodexToken) -> Bool {
+        guard let daten = try? JSONEncoder().encode(token) else { return false }
+        return schreib(daten, nach: .codexOAuth)
     }
 }

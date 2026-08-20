@@ -26,6 +26,7 @@ struct WurzelAnsicht: View {
     /// Getrennt vom Einstellungs-Sheet: Wer auf der Claude-Karte «Anmelden»
     /// tippt, will sich anmelden — nicht erst durch die Einstellungen suchen.
     @State private var zeigtAnmeldung = false
+    @State private var zeigtChatGPTAnmeldung = false
     @Environment(\.scenePhase) private var phase
 
     var body: some View {
@@ -61,6 +62,11 @@ struct WurzelAnsicht: View {
             } content: {
                 AnmeldeAnsicht()
             }
+            .sheet(isPresented: $zeigtChatGPTAnmeldung) {
+                Task { await cockpit.aktualisiere() }
+            } content: {
+                CodexAnmeldeAnsicht()
+            }
             .onChange(of: phase) { _, neu in
                 // Zurück aus dem Hintergrund. Die Schwelle verhindert, dass
                 // zehn kurze Blicke am Tag zehn volle Kostenläufe auslösen.
@@ -73,6 +79,8 @@ struct WurzelAnsicht: View {
         switch cockpit.aktion(fuer: karte) {
         case .anmelden:
             zeigtAnmeldung = true
+        case .beiChatGPTAnmelden:
+            zeigtChatGPTAnmeldung = true
         case .erneutVersuchen(let quelle):
             Task { await cockpit.versucheErneut(quelle) }
         case nil:
