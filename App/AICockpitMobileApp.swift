@@ -25,8 +25,12 @@ struct GeruestAnsicht: View {
                  : "Ohne App Group bleibt das Widget leer — Entitlements prüfen.")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+
+            Divider().padding(.vertical, 4)
+            AnmeldeAnsicht()
         }
-        .padding(24)
+        .padding(.horizontal, 24)
+        .padding(.top, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 

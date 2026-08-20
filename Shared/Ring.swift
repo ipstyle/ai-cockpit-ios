@@ -121,7 +121,6 @@ struct UsageRing: View {
             }
             .padding(inset)
             .frame(width: side, height: side)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             // Die Warnung sitzt aussen auf dem Ring, nicht in ihm: In der Mitte
             // stünde sie gegen die Ziffern, und genau die will man behalten.
             .overlay(alignment: .topTrailing) {
@@ -132,6 +131,7 @@ struct UsageRing: View {
                         .background(palette.background, in: Circle())
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .aspectRatio(1, contentMode: .fit)
         .accessibilityElement(children: .ignore)
@@ -151,7 +151,7 @@ struct UsageRing: View {
             // muss sich mit ihr skalieren. Vorgelesen wird ohnehin der Wert aus
             // `accessibilityValue`, und `minimumScaleFactor` fängt lange
             // Zahlen ab.
-            Text(percent.map { Format.percent($0).replacingOccurrences(of: " %", with: "") } ?? "–")
+            Text(percent.map { Format.percentDigits($0) } ?? "–")
                 .font(.system(size: clear * 0.62, weight: .semibold))
                 .monospacedDigit()
                 .minimumScaleFactor(0.5)

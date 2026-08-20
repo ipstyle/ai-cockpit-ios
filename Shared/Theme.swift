@@ -177,7 +177,14 @@ enum Format {
     /// Programm. Ein Prozentwert ist es nicht wert, eine App abzuschiessen.
     static func percent(_ value: Double) -> String {
         guard value.isFinite else { return "–" }
-        return "\(Int(min(max(value, 0), 9999).rounded())) %"
+        return "\(percentDigits(value)) %"
+    }
+
+    /// Nur die Ziffern — für den Ring, in dessen Mitte das Zeichen «%» keinen
+    /// Platz hat und auch nichts erklärt: Ein Ring zeigt nie etwas anderes.
+    static func percentDigits(_ value: Double) -> String {
+        guard value.isFinite else { return "–" }
+        return "\(Int(min(max(value, 0), 9999).rounded()))"
     }
 
     /// «1.2 M», «340 k», «812» — kurz genug für eine Kachel.

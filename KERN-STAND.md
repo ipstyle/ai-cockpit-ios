@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `de2b56079d351c39e791bc434522bc2611750aca` |
-| kurz | `de2b560` |
-| Betreff | Let the core build for iOS as well |
+| Commit | `5b26d5472b2a0423d5e5beeef902447f4e065113` |
+| kurz | `5b26d54` |
+| Betreff | Guard the OAuth callback against resuming twice |
 | festgehalten | 20.08.2026 |
