@@ -162,14 +162,15 @@ struct Card<Content: View>: View {
                 }
                 Text(summary.text)
                     .font(.callout).monospacedDigit()
-                    // Bis zu zwei Zeilen und notfalls etwas kleiner. Eine
-                    // einzelne Zeile reichte nicht: «5 h: 75 % · 7 d: 48 %»
-                    // neben dem Titel wurde zu «7 d: 48…» abgeschnitten, und
-                    // eine halbe Zahl ist schlimmer als gar keine. Der
-                    // Zeilenumbruch bricht an den Trennzeichen, nicht mitten
-                    // im Wert.
-                    .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
-                    .minimumScaleFactor(0.75)
+                    // Eine Zeile, und lieber kleiner als umgebrochen: Die
+                    // Kurzfassung ist eine Zeile Zahlen, und über zwei Zeilen
+                    // verteilt liest sie sich schlechter, nicht besser.
+                    // Abschneiden ist trotzdem keine Möglichkeit — «7 d: 48…»
+                    // ist eine halbe Zahl, und die ist schlimmer als keine.
+                    // Erst bei den Schriftgrössen für Sehbehinderte darf sie
+                    // umbrechen; dort ist Platz das kleinere Übel.
+                    .lineLimit(typeSize.isAccessibilitySize ? nil : 1)
+                    .minimumScaleFactor(0.6)
                     .multilineTextAlignment(.trailing)
                     .fixedSize(horizontal: false, vertical: true)
             }
