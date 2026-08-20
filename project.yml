@@ -1,0 +1,77 @@
+# Das Xcode-Projekt entsteht aus dieser Datei — `xcodegen generate`.
+# Deshalb steht `*.xcodeproj` in der .gitignore: Zwei Leute, die dieselbe
+# Projektdatei bearbeiten, erzeugen einen Konflikt, den niemand auflösen mag.
+# Hier ist er unmöglich.
+name: AICockpitMobile
+options:
+  bundleIdPrefix: com.ip-style
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+# Der Kern wird nicht kopiert, sondern aus dem Mac-Projekt gelesen — dasselbe
+# Swift, dieselben 188 Tests. Der Pfad ist bewusst relativ: beide Ordner liegen
+# im selben iCloud-Verzeichnis nebeneinander. Gegen welchen Stand gebaut wurde,
+# hält `KERN-STAND.md` fest; `Tools/kern-stand.sh` schreibt ihn fort.
+packages:
+  AgentDeckCore:
+    path: ../../APP_AICockpit/02_Git-Repo
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    SWIFT_STRICT_CONCURRENCY: complete
+
+targets:
+  AICockpitMobile:
+    type: application
+    platform: iOS
+    # iPhone und iPad aus einem Ziel — 1 = iPhone, 2 = iPad.
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        PRODUCT_BUNDLE_IDENTIFIER: com.ip-style.aicockpitmobile
+        INFOPLIST_FILE: App/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: App/Resources/AICockpitMobile.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: AgentDeckCore
+        product: AgentDeckCore
+      - target: AICockpitWidget
+        embed: true
+
+  AICockpitWidget:
+    type: app-extension
+    platform: iOS
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        PRODUCT_BUNDLE_IDENTIFIER: com.ip-style.aicockpitmobile.widget
+        INFOPLIST_FILE: Widget/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Widget/Resources/AICockpitWidget.entitlements
+    sources:
+      - path: Widget
+      - path: Shared
+    dependencies:
+      - package: AgentDeckCore
+        product: AgentDeckCore
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+
+schemes:
+  AICockpitMobile:
+    build:
+      targets:
+        AICockpitMobile: all
+    run:
+      config: Debug
+    test:
+      config: Debug

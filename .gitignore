@@ -1,0 +1,25 @@
+# --- Build-Artefakte: gehören nie ins Repo ---
+DerivedData/
+build/
+.build/
+*.xcarchive
+*.xcuserstate
+xcuserdata/
+
+# --- Von XcodeGen erzeugt (aus project.yml) ---
+*.xcodeproj
+
+# --- Privates: NIE committen ---
+CLAUDE.md
+SUMMARY.html
+ZUSAMMENFASSUNG.html
+01_Admin/
+AppStore/
+*.p8
+*.mobileprovision
+*.p12
+Signing.xcconfig
+.env
+
+# --- System ---
+.DS_Store
