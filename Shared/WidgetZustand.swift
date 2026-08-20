@@ -101,10 +101,30 @@ struct WidgetZustand: Codable, Sendable, Equatable {
             self.stand = stand
         }
 
-        /// Der Anbieter als Aufzählung. Unbekannte Rohwerte werden `.neutral`
-        /// statt zu einem Absturz — der Wert kommt aus einer abgelegten Datei,
-        /// die eine ältere Fassung geschrieben haben kann.
-        var alsAnbieter: Theme.Provider { Theme.Provider(rawValue: anbieter) ?? .neutral }
+        /// Der Anbieter als Aufzählung.
+        ///
+        /// **Mit Reparatur für Zeilen aus einer älteren Fassung.** Die trugen
+        /// noch keinen Anbieter, und das Widget nimmt beim eigenen Nachladen
+        /// nur die Claude-Zeile neu auf — die übrigen wandern unverändert mit.
+        /// Ohne diese Zuordnung standen ChatGPT und Kimi so lange in einer
+        /// fremden Farbe, bis die App das nächste Mal lief. Am Gerät gesehen,
+        /// nicht ausgedacht.
+        ///
+        /// Der Name taugt dafür, weil er aus unseren eigenen Kartentiteln
+        /// kommt und nicht aus einer Netzantwort.
+        var alsAnbieter: Theme.Provider {
+            if let bekannt = Theme.Provider(rawValue: anbieter), bekannt != .neutral { return bekannt }
+            switch name {
+            case "Claude": return .claude
+            case "ChatGPT": return .chatGPT
+            case let n where n.hasPrefix("Kimi"): return .kimi
+            case let n where n.hasPrefix("OpenAI"): return .openAI
+            // Die Anthropic-Karte trägt in der App Claudes Farbe: derselbe
+            // Anbieter, zwei Zugänge.
+            case let n where n.hasPrefix("Anthropic"): return .claude
+            default: return .neutral
+            }
+        }
 
         /// Ältere Stände kennen `kurz` nicht — dort gilt der volle Wert.
         init(from decoder: any Decoder) throws {

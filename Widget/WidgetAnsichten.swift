@@ -55,7 +55,12 @@ struct WidgetTon {
     /// nichts mehr unterscheidet — dort verwirft das System jeden Farbton, und
     /// nur Deckkraft und Zeichen überleben.
     func farbe(fuer anbieter: Theme.Provider) -> Color {
-        einfarbig ? .primary : palette.color(for: anbieter)
+        guard !einfarbig else { return .primary }
+        // **«Kein Anbieter» darf keine Marke ausleihen.** `palette.color(for:)`
+        // gibt für `.neutral` die Akzentfarbe zurück — im dunklen Modus ein
+        // helles Blau. Auf der Kachel sah das aus, als gehörte die Zeile zu
+        // irgendeinem Dienst. Grau ist die ehrliche Auskunft.
+        return anbieter == .neutral ? neben : palette.color(for: anbieter)
     }
 
     /// Der Wert eines Fensters: Anbieterfarbe, solange es ruhig ist — Warnfarbe,
