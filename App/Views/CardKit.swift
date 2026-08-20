@@ -155,11 +155,22 @@ struct Card<Content: View>: View {
             // Kurzfassung auf — mit Zeichen, nicht nur mit Farbe.
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 if summary.warning {
-                    Image(systemName: "exclamationmark.triangle.fill").font(.caption2)
+                    // Das Zeichen darf nicht schrumpfen, wenn der Text es tut.
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.caption2)
+                        .layoutPriority(1)
                 }
                 Text(summary.text)
                     .font(.callout).monospacedDigit()
-                    .lineLimit(typeSize.isAccessibilitySize ? nil : 1)
+                    // Bis zu zwei Zeilen und notfalls etwas kleiner. Eine
+                    // einzelne Zeile reichte nicht: «5 h: 75 % · 7 d: 48 %»
+                    // neben dem Titel wurde zu «7 d: 48…» abgeschnitten, und
+                    // eine halbe Zahl ist schlimmer als gar keine. Der
+                    // Zeilenumbruch bricht an den Trennzeichen, nicht mitten
+                    // im Wert.
+                    .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
+                    .minimumScaleFactor(0.75)
+                    .multilineTextAlignment(.trailing)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .foregroundStyle(summary.warning ? palette.warning : palette.secondary)

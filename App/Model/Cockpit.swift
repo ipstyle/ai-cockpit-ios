@@ -126,18 +126,39 @@ final class Cockpit {
         claudeAbo = Self.abostufe()
         let region = Self.kimiRegion()
 
-        async let claudeLauf = Abruf.claude()
-        async let codexLauf = Abruf.codex()
-        async let openAILauf = Abruf.openAI()
-        async let anthropicLauf = Abruf.anthropic()
-        async let kimiLauf = Abruf.kimi(region: region)
-
-        let (c, x, o, a, k) = await (claudeLauf, codexLauf, openAILauf, anthropicLauf, kimiLauf)
-        claude = c
-        codex = x
-        openAI = o
-        anthropic = a
-        kimi = k
+        // **Jede Quelle zeigt ihr Ergebnis, sobald sie es hat.**
+        //
+        // Vorher wurden alle fünf zusammen abgewartet, und damit hing die ganze
+        // Anzeige an der langsamsten. Das ist keine theoretische Sorge: Der
+        // OpenAI-Kostenabruf geht über bis zu zwölf Seiten mal mehrere
+        // Endpunkte, und bis der durch war, stand auf **allen** Karten «wird
+        // geholt …» — auch auf Claude, dessen Zahlen längst da waren.
+        //
+        // Die Karten werden nach jeder eintreffenden Quelle neu gebaut. Das ist
+        // ein paarmal mehr Arbeit für die Ansicht und der Grund, warum man
+        // überhaupt etwas sieht, während der Rest noch läuft.
+        await withTaskGroup(of: Void.self) { gruppe in
+            gruppe.addTask { [weak self] in
+                let w = await Abruf.claude()
+                await MainActor.run { self?.uebernimm { $0.claude = w } }
+            }
+            gruppe.addTask { [weak self] in
+                let w = await Abruf.codex()
+                await MainActor.run { self?.uebernimm { $0.codex = w } }
+            }
+            gruppe.addTask { [weak self] in
+                let w = await Abruf.openAI()
+                await MainActor.run { self?.uebernimm { $0.openAI = w } }
+            }
+            gruppe.addTask { [weak self] in
+                let w = await Abruf.anthropic()
+                await MainActor.run { self?.uebernimm { $0.anthropic = w } }
+            }
+            gruppe.addTask { [weak self] in
+                let w = await Abruf.kimi(region: region)
+                await MainActor.run { self?.uebernimm { $0.kimi = w } }
+            }
+        }
 
         zuletztAktualisiert = Date()
         baueKarten()
@@ -147,6 +168,15 @@ final class Cockpit {
         // — hier wird nur gesagt, was es Neues gibt.
         await Mitteilungen.geteilt.melde(claude: claude.wert, chatgpt: codex.wert,
                                          schwellen: schwellen)
+    }
+
+    /// Nimmt das Ergebnis einer Quelle entgegen und zeichnet neu.
+    ///
+    /// Der Zeitstempel bleibt hier unangetastet: «Aktualisiert vor x» meint den
+    /// Abschluss des ganzen Durchgangs, nicht den der schnellsten Quelle.
+    private func uebernimm(_ setze: (Cockpit) -> Void) {
+        setze(self)
+        baueKarten()
     }
 
     /// Aktualisiert nur, wenn die Zahlen alt genug sind.
