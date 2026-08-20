@@ -56,6 +56,21 @@ private struct Inhalt: View {
                       titel: String(localized: "Darstellung"),
                       symbol: "circle.lefthalf.filled",
                       wert: einstellungen.darstellung.title)
+
+                zeile(ziel: KartenSeite(),
+                      titel: String(localized: "Karten"),
+                      symbol: "rectangle.stack",
+                      wert: kartenKurzfassung)
+                // Eigene Zeile statt eines Abschnitts unter «Darstellung»:
+                // Wer die App in einer Sprache vor sich hat, die er nicht
+                // liest, muss die Zeile finden, ohne das Wort «Darstellung»
+                // zu verstehen. Der Wert rechts steht deshalb im eigenen
+                // Namen der Sprache — «Deutsch», «English» —, und das ist in
+                // dieser Liste das Einzige, was ohne Übersetzung trägt.
+                zeile(ziel: SpracheSeite(),
+                      titel: String(localized: "Sprache"),
+                      symbol: "globe",
+                      wert: Sprachwahl.aktuellerName)
                 zeile(ziel: SchwellenSeite(einstellungen: einstellungen),
                       titel: String(localized: "Schwellenwerte"),
                       symbol: "speedometer",
@@ -142,6 +157,14 @@ private struct Inhalt: View {
         case (false, true): return String(localized: "neues Fenster")
         case (true, true): return String(localized: "Limit · neues Fenster")
         }
+    }
+
+    /// «alle» oder «3 von 5» — wer nur nachsehen will, ob etwas fehlt, soll
+    /// dafür nicht hineingehen müssen.
+    private var kartenKurzfassung: String {
+        let versteckt = Cockpit.versteckteKarten().count
+        guard versteckt > 0 else { return String(localized: "alle") }
+        return String(localized: "\(5 - versteckt) von 5")
     }
 
     private var kontenKurzfassung: String {

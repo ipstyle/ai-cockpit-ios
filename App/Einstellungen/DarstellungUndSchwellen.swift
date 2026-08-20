@@ -1,7 +1,9 @@
 import SwiftUI
+import UIKit
 import AgentDeckCore
 
-// Zwei kurze Seiten: wie es aussieht, und ab wann es drückt.
+// Drei kurze Seiten: wie es aussieht, in welcher Sprache es dasteht, und ab
+// wann es drückt.
 
 // MARK: - Darstellung
 
@@ -43,6 +45,85 @@ struct DarstellungSeite: View {
                 // ein zweites Mal für alle, die ihn dort nicht vermuten — und
                 // weil «zurück zum Anfang» in die Einstellungen gehört.
                 Text("Stellt die Karten wieder in die Reihenfolge, in der die App sie anlegt. Was eingeklappt ist, bleibt.")
+            }
+        }
+    }
+}
+
+// MARK: - Sprache
+
+/// Woher die App weiss, in welcher Sprache sie gerade läuft.
+///
+/// `Bundle.main.preferredLocalizations` und nicht `Locale.current`: Gefragt ist
+/// nicht, welche Sprache das Gerät bevorzugt, sondern welche Sprachdatei die
+/// App tatsächlich geladen hat. Wer sein iPhone auf Französisch stellt, sieht
+/// hier Englisch — und genau das soll die Zeile dann auch sagen.
+enum Sprachwahl {
+    /// «de», «en» — das Kürzel der geladenen Sprachdatei.
+    static var aktuellesKuerzel: String {
+        Bundle.main.preferredLocalizations.first ?? "en"
+    }
+
+    /// Der Name der Sprache **in dieser Sprache selbst**: «Deutsch», «English».
+    ///
+    /// Absichtlich nicht in der laufenden Oberflächensprache. Wer die App
+    /// versehentlich auf Englisch stehen hat, erkennt «Deutsch» auch dann,
+    /// wenn er die Zeile daneben nicht liest — und darum geht es bei dieser
+    /// einen Zeile.
+    static var aktuellerName: String { name(fuer: aktuellesKuerzel) }
+
+    static func name(fuer kuerzel: String) -> String {
+        let sprache = Locale(identifier: kuerzel)
+        let roh = sprache.localizedString(forLanguageCode: kuerzel) ?? kuerzel
+        return roh.prefix(1).uppercased() + roh.dropFirst()
+    }
+
+    /// Führt in die Systemeinstellungen dieser App.
+    ///
+    /// Dieselbe Zeile steht in `MitteilungenErlaubnis`. Sie bleibt dort, wo sie
+    /// ist: Der Erlaubnistyp der Mitteilungen soll nicht die allgemeine
+    /// Anlaufstelle für jeden Weg in die Systemeinstellungen werden.
+    @MainActor
+    static func oeffneSystemeinstellungen() {
+        guard let ziel = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(ziel)
+    }
+}
+
+/// Die Sprachseite — und der Grund, warum hier kein Schalter steht.
+///
+/// iOS lädt die Sprachdateien einer App beim Start. Ein Umschalter in der App
+/// könnte den nächsten Start vorbereiten, aber nicht die Ansicht ändern, in der
+/// er sitzt: Zurück auf der Kartenliste stünde weiter die alte Sprache, und
+/// dass das kein Fehler ist, müsste ein Beipackzettel erklären. Ein Schalter,
+/// der umgelegt aussieht und nichts bewirkt, ist eine Lüge — dieselbe Regel wie
+/// bei den Mitteilungen, und dieselbe Antwort: sagen, was gilt, und den Weg
+/// dorthin zeigen, wo es tatsächlich geht.
+///
+/// In den Systemeinstellungen bietet iOS seit Version 13 eine Sprachwahl je
+/// App an. Sie wirkt sofort, weil das System die App dabei neu startet.
+struct SpracheSeite: View {
+
+    var body: some View {
+        EinstellungsForm(titel: String(localized: "Sprache")) {
+            Section {
+                ZustandsZeile(text: String(localized: "Die App läuft auf \(Sprachwahl.aktuellerName)."),
+                              symbol: "globe")
+            } footer: {
+                Text("Deutsch und Englisch sind vollständig übersetzt. Steht das Gerät auf einer anderen Sprache, erscheint die App auf Englisch.")
+            }
+
+            Section {
+                Button {
+                    Sprachwahl.oeffneSystemeinstellungen()
+                } label: {
+                    Label(String(localized: "Systemeinstellungen öffnen"), systemImage: "arrow.up.forward.app")
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                }
+            } header: {
+                Text("Umstellen")
+            } footer: {
+                Text("iOS lädt die Sprachdateien beim Start der App. Ein Schalter an dieser Stelle könnte deshalb erst beim nächsten Start greifen — bis dahin stünde die Oberfläche weiter in der alten Sprache. In den Systemeinstellungen steht dieselbe Wahl unter «Sprache», und das System startet AI Cockpit dabei gleich neu. Deshalb führt der Weg dorthin.")
             }
         }
     }

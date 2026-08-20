@@ -50,12 +50,12 @@ final class CodexAnmeldung: ObservableObject {
         auftrag?.cancel(); auftrag = nil
         sitzung?.cancel(); sitzung = nil
         code = nil
-        notiere("Vom Nutzer abgebrochen")
+        notiere(String(localized: "Vom Nutzer abgebrochen"))
         zustand = .abgebrochen(grund: String(localized: "Die Anmeldung wurde abgebrochen."))
     }
 
     private func ablauf() async {
-        notiere("Anmeldung gestartet")
+        notiere(String(localized: "Anmeldung gestartet"))
         // Erst der bequeme Weg. Klappt er nicht, weil beide Häfen belegt sind,
         // kommt der Gerätecode — und zwar mit einer Meldung, die den Grund
         // nennt, statt kommentarlos etwas anderes zu tun.
@@ -65,18 +65,21 @@ final class CodexAnmeldung: ObservableObject {
                 return
             } catch let fehler as ProviderError {
                 auftrag = nil
-                notiere("Fehler: \(fehler.userMessage)")
+                notiere(String(localized: "Fehler: \(fehler.userMessage)"))
                 zustand = .fehler(fehler.userMessage)
                 return
             } catch is CancellationError {
                 auftrag = nil
                 return
             } catch {
-                notiere("Port \(port) nicht verfügbar")
+                // `String(port)` und nicht die Zahl selbst: `String(localized:)`
+                // formatiert eingesetzte Zahlen nach Landesart — aus Port 1455
+                // würde «1'455», und das ist keine Portnummer mehr.
+                notiere(String(localized: "Port \(String(port)) nicht verfügbar"))
                 continue
             }
         }
-        notiere("Kein Rücksprung möglich — weiter über den Gerätecode")
+        notiere(String(localized: "Kein Rücksprung möglich — weiter über den Gerätecode"))
         await ueberGeraetecode()
     }
 
@@ -92,13 +95,13 @@ final class CodexAnmeldung: ObservableObject {
         _ = try await server.start()
 
         let anmeldung = try CodexAuth.beginneRuecksprung(port: port)
-        notiere("Rückkanal auf Port \(port) offen")
+        notiere(String(localized: "Rückkanal auf Port \(String(port)) offen"))
         zustand = .laeuft(schritt: String(localized: "Anmeldeseite geöffnet"))
         zeige(anmeldung.adresse)
 
         let rueckgabe = try await server.waitForCallback()
         sitzung?.cancel(); sitzung = nil
-        notiere("Rücksprung angekommen")
+        notiere(String(localized: "Rücksprung angekommen"))
         zustand = .laeuft(schritt: String(localized: "Zugriffsschlüssel wird geholt"))
 
         let token = try await auth.tausche(code: rueckgabe.code, state: rueckgabe.state, anmeldung: anmeldung)
@@ -112,7 +115,7 @@ final class CodexAnmeldung: ObservableObject {
         do {
             let geraetecode = try await auth.fordereCode()
             code = geraetecode
-            notiere("Code erhalten — Eingabe auf \(geraetecode.adresse.host() ?? "der Seite von OpenAI")")
+            notiere(String(localized: "Code erhalten — Eingabe auf \(geraetecode.adresse.host() ?? String(localized: "der Seite von OpenAI"))"))
             zustand = .laeuft(schritt: String(localized: "Warte auf die Eingabe des Codes"))
 
             let freigabe = try await warteAufFreigabe(geraetecode)
@@ -128,7 +131,7 @@ final class CodexAnmeldung: ObservableObject {
             auftrag = nil
             code = nil
             let text = (error as? ProviderError)?.userMessage ?? error.localizedDescription
-            notiere("Fehler: \(text)")
+            notiere(String(localized: "Fehler: \(text)"))
             zustand = .fehler(text)
         }
     }
@@ -139,13 +142,13 @@ final class CodexAnmeldung: ObservableObject {
     /// lebte nur hier, die Karte suchte ihn im Schlüsselbund und fände nichts.
     /// Genau so ist es bei der Claude-Anmeldung einmal gewesen.
     private func sichere(_ token: CodexToken) {
-        notiere("Zugriffsschlüssel erhalten")
+        notiere(String(localized: "Zugriffsschlüssel erhalten"))
         guard Zugaenge().schreibCodexToken(token) else {
-            notiere("Schlüssel liess sich nicht im Schlüsselbund ablegen")
+            notiere(String(localized: "Schlüssel liess sich nicht im Schlüsselbund ablegen"))
             zustand = .fehler(String(localized: "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen."))
             return
         }
-        notiere("Im Schlüsselbund abgelegt")
+        notiere(String(localized: "Im Schlüsselbund abgelegt"))
         zustand = .erfolg(abo: token.planType)
     }
 
@@ -163,7 +166,7 @@ final class CodexAnmeldung: ObservableObject {
         s.prefersEphemeralWebBrowserSession = false
         sitzung = s
         if s.start() == false {
-            notiere("Anmeldefenster liess sich nicht öffnen")
+            notiere(String(localized: "Anmeldefenster liess sich nicht öffnen"))
             zustand = .fehler(String(localized: "Das Anmeldefenster liess sich nicht öffnen."))
         }
     }
@@ -182,7 +185,7 @@ final class CodexAnmeldung: ObservableObject {
             try await Task.sleep(nanoseconds: UInt64(code.takt * 1_000_000_000))
             versuche += 1
             if case .freigegeben(let freigabe) = try await auth.frageNach(code) {
-                notiere("Freigabe erhalten nach \(versuche) Nachfragen")
+                notiere(String(localized: "Freigabe erhalten nach \(versuche) Nachfragen"))
                 return freigabe
             }
         }

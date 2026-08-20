@@ -96,7 +96,7 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     /// Meldung, die den Grund nennt, statt mit einem Kreisel ohne Ende.
     func brichAbWegenHintergrund() {
         guard case .laeuft = zustand else { return }
-        notiere("App im Hintergrund — Anmeldung läuft weiter")
+        notiere(String(localized: "App im Hintergrund — Anmeldung läuft weiter"))
     }
 
     private func abbrechen(grund: String) {
@@ -107,8 +107,8 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     }
 
     private func ablauf() async {
-        zustand = .laeuft(schritt: "Rückkanal öffnen")
-        notiere("Anmeldung gestartet")
+        zustand = .laeuft(schritt: String(localized: "Rückkanal öffnen"))
+        notiere(String(localized: "Anmeldung gestartet"))
         do {
             let tokens = try await ClaudeAuth().signIn { [weak self] url in
                 Task { @MainActor in self?.zeige(url) }
@@ -116,18 +116,18 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
             hoerAuf()
             sitzung?.cancel(); sitzung = nil
             laufenderAuftrag = nil
-            notiere("Token erhalten, gültig bis \(ablaufText(tokens))")
+            notiere(String(localized: "Token erhalten, gültig bis \(ablaufText(tokens))"))
 
             // Ohne diese Zeile bleibt die Anmeldung ein Bildschirmtext: Der
             // Token lebt nur in dieser Ansicht, die Karten suchen ihn im
             // Schlüsselbund und finden nichts. Genau so ist es beim ersten
             // Feldtest gewesen — «angemeldet» hier, «nicht angemeldet» dort.
             guard Zugaenge().schreibToken(tokens) else {
-                notiere("Token liess sich nicht im Schlüsselbund ablegen")
-                zustand = .fehler("Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen.")
+                notiere(String(localized: "Token liess sich nicht im Schlüsselbund ablegen"))
+                zustand = .fehler(String(localized: "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen."))
                 return
             }
-            notiere("Im Schlüsselbund abgelegt")
+            notiere(String(localized: "Im Schlüsselbund abgelegt"))
             zustand = .erfolg(abo: tokens.subscriptionType)
         } catch is CancellationError {
             laufenderAuftrag = nil
@@ -135,7 +135,7 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
             hoerAuf()
             sitzung?.cancel(); sitzung = nil
             laufenderAuftrag = nil
-            notiere("Fehler: \(Self.lesbar(error))")
+            notiere(String(localized: "Fehler: \(Self.lesbar(error))"))
             zustand = .fehler(Self.lesbar(error))
         }
     }
@@ -144,14 +144,14 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
         let szenen = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
         let szene = szenen.first { $0.activationState == .foregroundActive } ?? szenen.first
         guard let fenster = szene?.keyWindow ?? szene?.windows.first else {
-            notiere("Kein Fenster gefunden, an dem das Anmeldefenster hängen könnte")
-            zustand = .fehler("Das Anmeldefenster liess sich nicht öffnen.")
+            notiere(String(localized: "Kein Fenster gefunden, an dem das Anmeldefenster hängen könnte"))
+            zustand = .fehler(String(localized: "Das Anmeldefenster liess sich nicht öffnen."))
             return
         }
         anker = fenster
 
-        notiere("Rückkanal offen, Anmeldeseite wird geöffnet")
-        zustand = .laeuft(schritt: "Anmeldeseite geöffnet")
+        notiere(String(localized: "Rückkanal offen, Anmeldeseite wird geöffnet"))
+        zustand = .laeuft(schritt: String(localized: "Anmeldeseite geöffnet"))
 
         // Das Schema greift nie: Der Rücksprung geht nach `http://localhost`,
         // und darauf kann eine Rückruf-Sitzung nicht lauschen. Es steht hier,
@@ -162,8 +162,8 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
             // Erfolgsfall kommt über den Zuhörer, nicht über diesen Rückruf.
             if let fehler = fehler as? ASWebAuthenticationSessionError,
                fehler.code == .canceledLogin, case .laeuft = self.zustand {
-                self.notiere("Anmeldefenster vom Nutzer geschlossen")
-                self.abbrechen(grund: "Die Anmeldung wurde abgebrochen.")
+                self.notiere(String(localized: "Anmeldefenster vom Nutzer geschlossen"))
+                self.abbrechen(grund: String(localized: "Die Anmeldung wurde abgebrochen."))
             }
         }
         s.presentationContextProvider = self
@@ -172,8 +172,8 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
         s.prefersEphemeralWebBrowserSession = false
         sitzung = s
         if s.start() == false {
-            notiere("Anmeldefenster liess sich nicht öffnen")
-            zustand = .fehler("Das Anmeldefenster liess sich nicht öffnen.")
+            notiere(String(localized: "Anmeldefenster liess sich nicht öffnen"))
+            zustand = .fehler(String(localized: "Das Anmeldefenster liess sich nicht öffnen."))
         }
     }
 
@@ -188,7 +188,7 @@ final class ClaudeAnmeldung: NSObject, ObservableObject {
     }
 
     private func ablaufText(_ tokens: OAuthTokens) -> String {
-        guard let ms = tokens.expiresAt else { return "unbekannt" }
+        guard let ms = tokens.expiresAt else { return String(localized: "unbekannt") }
         return Date(timeIntervalSince1970: ms / 1000).formatted(date: .abbreviated, time: .shortened)
     }
 

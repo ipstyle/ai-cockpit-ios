@@ -250,7 +250,19 @@ final class Cockpit {
         DemoDaten.widgetZustand().schreib()
     }
 
+    /// Welche Karten der Nutzer ausgeblendet hat.
+    ///
+    /// Dasselbe Format wie bei den eingeklappten Karten und der Reihenfolge:
+    /// eine Liste von Kennungen in den Benutzervorgaben. Ausblenden ist etwas
+    /// anderes als Einklappen — eine eingeklappte Karte wird weiter abgerufen
+    /// und zeigt ihre Kurzfassung, eine ausgeblendete gibt es nicht mehr.
+    static func versteckteKarten() -> Set<String> {
+        let roh = UserDefaults.standard.string(forKey: "hiddenCards") ?? ""
+        return Set(roh.split(separator: ",").map(String.init).filter { $0.isEmpty == false })
+    }
+
     private func baueKarten() {
+        let versteckt = Self.versteckteKarten()
         karten = [
             claudeKarte(),
             chatgptKarte(),
@@ -264,6 +276,10 @@ final class Cockpit {
             // iCloud-Rechte gekostet und damit eine neue Prüfrunde bei Apple.
             // Bewusster Entscheid vom 20.08.2026.
         ]
+        // Erst bauen, dann aussieben: Eine ausgeblendete Karte soll trotzdem
+        // abgerufen worden sein — wer sie wieder einblendet, will nicht auf den
+        // nächsten Durchgang warten.
+        .filter { versteckt.contains($0.id.rawValue) == false }
     }
 
     // MARK: Claude

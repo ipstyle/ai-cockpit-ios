@@ -86,12 +86,15 @@ struct AnmeldeAnsicht: View {
         return false
     }
 
+    // Vier feste Texte, alle durch `String(localized:)`: Ein blosses
+    // Zeichenkettenliteral in einer `String`-Rückgabe geht am Katalog vorbei
+    // und stünde in jeder Sprache deutsch da.
     private var knopfText: String {
         switch anmeldung.zustand {
-        case .bereit: return "Anmelden"
-        case .laeuft: return "Läuft …"
-        case .erfolg: return "Erneut anmelden"
-        case .abgebrochen, .fehler: return "Noch einmal versuchen"
+        case .bereit: return String(localized: "Anmelden")
+        case .laeuft: return String(localized: "Läuft …")
+        case .erfolg: return String(localized: "Erneut anmelden")
+        case .abgebrochen, .fehler: return String(localized: "Noch einmal versuchen")
         }
     }
 }

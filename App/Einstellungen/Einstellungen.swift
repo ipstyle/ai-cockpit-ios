@@ -76,9 +76,10 @@ final class Einstellungen {
         static let kritisch = "criticalThreshold"
         static let eingeklappteKarten = "collapsedCards"
         static let kartenreihenfolge = "cardOrder"
+        static let versteckteKarten = "hiddenCards"
 
         static let alle = [darstellung, kimiRegion, warn, kritisch,
-                           eingeklappteKarten, kartenreihenfolge]
+                           eingeklappteKarten, kartenreihenfolge, versteckteKarten]
     }
 
     var darstellung: AppAppearance {
@@ -279,69 +280,95 @@ final class Einstellungen {
     ///
     /// Was **nicht** darin steht: irgendein Schlüsselwert. Nur die letzten vier
     /// Zeichen, und die stehen auch in der Oberfläche.
+    /// Die Spalten stehen **nicht** mehr über handgezählte Leerzeichen,
+    /// sondern über `spalte(_:_:)`: Sobald dieselbe Beschriftung auf Englisch
+    /// eine andere Länge hat, wäre jede feste Einrückung schief. Gemessen wird
+    /// je Block, damit nicht der längste Text der Seite alle Spalten aufbläht.
     func diagnoseText(zuletztAktualisiert: Date?) -> String {
         var zeilen: [String] = []
-        zeilen.append("AI Cockpit (iOS) — Diagnose")
-        zeilen.append("Erstellt: \(Self.zeitstempel(Date()))")
-        zeilen.append("Version: \(AppKennung.version)")
+        zeilen.append(String(localized: "AI Cockpit (iOS) — Diagnose"))
+        zeilen.append(String(localized: "Erstellt: \(Self.zeitstempel(Date()))"))
+        zeilen.append(String(localized: "Version: \(AppKennung.version)"))
         zeilen.append("")
 
+        // «App Group» bleibt stehen: Das ist Apples eigener Begriff und in den
+        // Berechtigungsdateien genau so geschrieben.
         zeilen.append("App Group")
-        zeilen.append("  Kennung:    \(AppGruppe.kennung)")
-        zeilen.append("  Erreichbar: \(AppGruppe.erreichbar ? "ja" : "nein")")
-        if !AppGruppe.erreichbar {
-            zeilen.append("  Hinweis:    Die Kennung steht nicht in beiden Berechtigungsdateien — das Widget bleibt leer.")
-        }
+        let gruppe: [(String, String)] = [
+            (String(localized: "Kennung:"), AppGruppe.kennung),
+            (String(localized: "Erreichbar:"), AppGruppe.erreichbar
+                ? String(localized: "ja") : String(localized: "nein"))
+        ] + (AppGruppe.erreichbar ? [] : [(String(localized: "Hinweis:"),
+                String(localized: "Die Kennung steht nicht in beiden Berechtigungsdateien — das Widget bleibt leer."))])
+        zeilen.append(contentsOf: Self.spalten(gruppe))
         zeilen.append("")
 
-        zeilen.append("Schlüsselbund (Dienst «\(Zugaenge.dienst)»)")
-        zeilen.append("  \(Zugaenge.Zugang.claudeOAuth.rawValue.padding(toLength: 20, withPad: " ", startingAt: 0)) \(Self.beschreibe(claudeZustand))")
+        zeilen.append(String(localized: "Schlüsselbund (Dienst «\(Zugaenge.dienst)»)"))
+        // Die Schlüsselnamen sind Kennungen und bleiben, wie sie im
+        // Schlüsselbund stehen — übersetzt wäre die Zeile nicht mehr
+        // nachschlagbar.
+        var eintraege: [(String, String)] = [
+            (Zugaenge.Zugang.claudeOAuth.rawValue, Self.beschreibe(claudeZustand))
+        ]
         for zugang in Self.schluesselDienste {
-            let name = zugang.rawValue.padding(toLength: 20, withPad: " ", startingAt: 0)
-            zeilen.append("  \(name) \(Self.beschreibe(zustand(zugang)))")
+            eintraege.append((zugang.rawValue, Self.beschreibe(zustand(zugang))))
         }
+        zeilen.append(contentsOf: Self.spalten(eintraege))
         zeilen.append("")
 
-        zeilen.append("Daten")
-        if let zuletztAktualisiert {
-            zeilen.append("  Zuletzt aktualisiert: \(Self.zeitstempel(zuletztAktualisiert)) (\(Theme.ago(zuletztAktualisiert)))")
-        } else {
-            zeilen.append("  Zuletzt aktualisiert: noch nie")
-        }
-        if let stand = WidgetZustand.lies() {
-            zeilen.append("  Widget-Stand:         \(stand.fenster.count) Fenster, erhoben \(Self.zeitstempel(stand.erhoben))")
-        } else {
-            zeilen.append("  Widget-Stand:         keiner abgelegt")
-        }
+        zeilen.append(String(localized: "Daten"))
+        let daten: [(String, String)] = [
+            // Nur Zeitstempel und Altersangabe in Klammern — daran ist kein
+            // Wort zu übersetzen, deshalb geht die Zeile nicht durch den
+            // Katalog. Ein Schlüssel «%@ (%@)» wäre dort auch für niemanden
+            // deutbar.
+            (String(localized: "Zuletzt aktualisiert:"), zuletztAktualisiert.map {
+                "\(Self.zeitstempel($0)) (\(Theme.ago($0)))"
+            } ?? String(localized: "noch nie")),
+            (String(localized: "Widget-Stand:"), WidgetZustand.lies().map {
+                String(localized: "\($0.fenster.count) Fenster, erhoben \(Self.zeitstempel($0.erhoben))")
+            } ?? String(localized: "keiner abgelegt"))
+        ]
+        zeilen.append(contentsOf: Self.spalten(daten))
         zeilen.append("")
 
-        zeilen.append("Einstellungen")
-        zeilen.append("  Darstellung:    \(darstellung.rawValue)")
-        zeilen.append("  Kimi-Plattform: \(kimiRegion.rawValue) (\(kimiRegion.apiHost))")
-        zeilen.append("  Schwellen:      Warnung \(Int(warnSchwelle)) %, kritisch \(Int(kritischeSchwelle)) %")
+        zeilen.append(String(localized: "Einstellungen"))
+        let werte: [(String, String)] = [
+            (String(localized: "Darstellung:"), darstellung.rawValue),
+            (String(localized: "Kimi-Plattform:"), "\(kimiRegion.rawValue) (\(kimiRegion.apiHost))"),
+            (String(localized: "Schwellen:"), String(localized: "Warnung \(Int(warnSchwelle)) %, kritisch \(Int(kritischeSchwelle)) %"))
+        ]
+        zeilen.append(contentsOf: Self.spalten(werte))
 
         return zeilen.joined(separator: "\n")
     }
 
+    /// Beschriftung links, Wert rechts — die Spaltenbreite ergibt sich aus der
+    /// längsten Beschriftung dieses Blocks.
+    private static func spalten(_ paare: [(String, String)]) -> [String] {
+        let breite = paare.map(\.0.count).max() ?? 0
+        return paare.map { "  \($0.0.padding(toLength: breite, withPad: " ", startingAt: 0))  \($0.1)" }
+    }
+
     private static func beschreibe(_ zustand: SchluesselZustand) -> String {
         switch zustand {
-        case .fehlt: return "fehlt"
-        case .hinterlegt(let endung): return "vorhanden (…\(endung))"
-        case .verweigert(let status): return "verweigert (Status \(status))"
+        case .fehlt: return String(localized: "fehlt")
+        case .hinterlegt(let endung): return String(localized: "vorhanden (…\(endung))")
+        case .verweigert(let status): return String(localized: "verweigert (Status \(status))")
         }
     }
 
     private static func beschreibe(_ zustand: ClaudeZustand) -> String {
         switch zustand {
         case .nichtAngemeldet:
-            return "fehlt (nicht angemeldet)"
+            return String(localized: "fehlt (nicht angemeldet)")
         case .angemeldet(let ablauf, let abo):
-            let bis = ablauf.map(zeitstempel) ?? "unbekannt"
-            return "vorhanden (Abo \(abo ?? "unbekannt"), gültig bis \(bis))"
+            let bis = ablauf.map(zeitstempel) ?? String(localized: "unbekannt")
+            return String(localized: "vorhanden (Abo \(abo ?? String(localized: "unbekannt")), gültig bis \(bis))")
         case .verweigert(let status):
-            return "verweigert (Status \(status))"
+            return String(localized: "verweigert (Status \(status))")
         case .unlesbar:
-            return "vorhanden, aber unlesbar"
+            return String(localized: "vorhanden, aber unlesbar")
         }
     }
 

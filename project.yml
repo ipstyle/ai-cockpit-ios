@@ -5,9 +5,12 @@
 name: AICockpitMobile
 options:
   bundleIdPrefix: com.ip-style
-  # Ohne diese Angabe hält iOS die App für einsprachig englisch und formatiert
-  # Datum und Dauer entsprechend — deutscher Text neben «in 2 hours».
-  developmentLanguage: de
+  # Englisch ist die Primärsprache: Was im Katalog keine Übersetzung hat,
+  # erscheint englisch, nicht deutsch. Die Angabe muss buchstabengleich zu
+  # `CFBundleDevelopmentRegion` in App/Resources/Info.plist stehen — sonst
+  # streiten sich Projektdatei und Info-Datei darüber, welche Sprache
+  # einspringt, und iOS glaubt der Info-Datei.
+  developmentLanguage: en
   deploymentTarget:
     iOS: "26.0"
   createIntermediateGroups: true

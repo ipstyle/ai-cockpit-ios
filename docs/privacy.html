@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datenschutzerklärung — AI Cockpit Mobile</title>
+<style>
+:root{--bg:#F6EEDF;--karte:#ECE1CA;--rand:#CDBD9D;--t1:#29211A;--t2:#4D4033;--t3:#7A6E5C;--akzent:#0D4C9E}
+@media (prefers-color-scheme:dark){:root{--bg:#1C1F24;--karte:#252A31;--rand:#343A43;--t1:#F5F5F5;--t2:#B4BAC2;--t3:#838B95;--akzent:#6BB5FF}}
+*{box-sizing:border-box}
+body{margin:0;padding:40px 20px 80px;background:var(--bg);color:var(--t1);
+     font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto}
+h1{font-size:30px;font-weight:600;margin:0 0 6px}
+.unter{color:var(--t3);font-size:14px;margin:0 0 36px}
+h2{font-size:20px;font-weight:600;margin:36px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--rand)}
+p,li{color:var(--t2)}
+p{margin:0 0 14px}
+ul{margin:0 0 14px;padding-left:22px}
+li{margin:0 0 6px}
+table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);color:var(--t2);vertical-align:top}
+th{color:var(--t1);font-weight:600}
+code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--karte);padding:1px 6px;border-radius:4px}
+.kasten{background:var(--karte);border:1px solid var(--rand);border-radius:10px;padding:14px 16px;margin:0 0 18px;border-left:3px solid var(--akzent)}
+a{color:var(--akzent)}
+.sprache{font-size:14px;margin:0 0 28px}
+</style>
+<main>
+<h1>Datenschutzerklärung</h1>
+<p class="unter">AI Cockpit Mobile für iPhone und iPad · Stand 20. August 2026</p>
+<p class="sprache"><a href="#english">English version below</a></p>
+
+<div class="kasten">
+<p style="margin:0"><strong>Kurz:</strong> Diese App hat keinen Server. Es gibt kein Konto beim Anbieter der App, keine Analyse, keine Werbung und keine Weitergabe. Alles, was die App anzeigt, holt sie direkt bei den Diensten, bei denen Sie selbst ein Konto haben.</p>
+</div>
+
+<h2>Wer diese Erklärung betrifft</h2>
+<p>Sie gilt für die App <strong>AI Cockpit Mobile</strong> auf iPhone und iPad. Für die macOS-Fassung gilt eine <a href="https://aicockpit.info/privacy.html">eigene Erklärung</a> — die beiden Fassungen sind verschiedene Programme auf verschiedenen Systemen, und diese Seite beschreibt ausschliesslich die iOS-Fassung.</p>
+
+<h2>Welche Daten erhoben werden</h2>
+<p><strong>Keine.</strong> Der Anbieter dieser App erhebt keinerlei Daten, weder personenbezogen noch anonym. Es gibt keinen Server, der etwas entgegennehmen könnte, und in der App steckt kein fremder Baustein zur Messung, Werbung oder Fehlerberichterstattung.</p>
+
+<h2>Wohin die App Verbindungen aufbaut</h2>
+<p>Ausschliesslich zu den Diensten, deren Zahlen sie anzeigt — direkt, ohne Zwischenstation:</p>
+<table>
+<tr><th>Adresse</th><th>Wofür</th><th>Voraussetzung</th></tr>
+<tr><td><code>claude.com</code><br><code>platform.claude.com</code></td><td>Anmeldung bei Claude</td><td>Ihr Claude-Abo</td></tr>
+<tr><td><code>api.anthropic.com</code></td><td>Nutzungsfenster des Abos; getrennt davon die Kosten der Programmierschnittstelle</td><td>Anmeldung bzw. Admin-Schlüssel</td></tr>
+<tr><td><code>auth.openai.com</code></td><td>Anmeldung bei ChatGPT</td><td>Ihr ChatGPT-Abo</td></tr>
+<tr><td><code>chatgpt.com</code></td><td>Kontingente des ChatGPT-Abos</td><td>Anmeldung</td></tr>
+<tr><td><code>api.openai.com</code></td><td>Kosten und Tokenverbrauch der Programmierschnittstelle</td><td>Admin-Schlüssel, freiwillig</td></tr>
+<tr><td><code>api.moonshot.ai</code> oder <code>api.moonshot.cn</code><br><code>api.kimi.com</code></td><td>Kontostand und Kontingent bei Kimi</td><td>API-Schlüssel, freiwillig</td></tr>
+</table>
+<p>Alle Verbindungen laufen über HTTPS. Die App folgt keinen Weiterleitungen, speichert keine Cookies und legt keinen Zwischenspeicher an.</p>
+
+<h2>Wo Ihre Zugangsdaten liegen</h2>
+<p>Im <strong>Schlüsselbund Ihres Geräts</strong> — dort, wo iOS auch Passwörter verwahrt. Sie verlassen das Gerät nur als Anmeldung gegenüber dem jeweiligen Dienst, für den sie gedacht sind.</p>
+<p>Ein Punkt, der dazugehört: Die Einträge sind so abgelegt, dass sie <strong>nach der ersten Entsperrung des Geräts</strong> lesbar sind (<code>kSecAttrAccessibleAfterFirstUnlock</code>). Das ist nötig, damit das Widget die Zahlen auch bei gesperrtem Bildschirm aktualisieren kann. Die strengere Alternative würde bedeuten, dass das Widget nach jedem Neustart leer bleibt.</p>
+<p>Bei der Anmeldung sieht die App Ihr Passwort <strong>nie</strong>: Sie öffnet die Anmeldeseite des Anbieters und bekommt von dort nur einen Zugriffsschlüssel.</p>
+
+<h2>Was sonst auf dem Gerät liegt</h2>
+<ul>
+<li>Ihre Einstellungen — Erscheinungsbild, Schwellenwerte, Kartenreihenfolge, welche Hinweise Sie wünschen.</li>
+<li>Die zuletzt geholten Zahlen, damit das Widget sie zeigen kann, ohne selbst nachzufragen.</li>
+<li>Ein Vermerk, welche Hinweise bereits gemeldet wurden — damit derselbe Hinweis nicht bei jedem Blick erneut erscheint.</li>
+</ul>
+<p>Nichts davon verlässt das Gerät.</p>
+
+<h2>Löschen</h2>
+<p>In den Einstellungen unter «Über» steht <strong>«Abmelden und alle lokalen Daten löschen»</strong>. Das entfernt beide Anmeldungen, alle hinterlegten Schlüssel, sämtliche Einstellungen und die zwischengespeicherten Zahlen. Danach ist die App im Auslieferungszustand. Ein Löschen der App entfernt ebenfalls alles.</p>
+
+<h2>Mitteilungen</h2>
+<p>Die App kann Sie darauf hinweisen, dass ein Limit erreicht wurde oder ein neues Zeitfenster begonnen hat. Diese Hinweise entstehen <strong>auf dem Gerät</strong>; es gibt keinen Server, der sie verschickt. Sie sind einzeln abschaltbar und zu Beginn ausgeschaltet.</p>
+
+<h2>Ihre Rechte</h2>
+<p>Da keine Daten erhoben werden, gibt es beim Anbieter dieser App nichts, worüber Auskunft erteilt, was berichtigt oder gelöscht werden könnte. Für die Daten in Ihren Konten bei Claude, OpenAI, Anthropic und Moonshot gelten deren eigene Datenschutzerklärungen.</p>
+
+<h2>Keine Verbindung zu den Anbietern</h2>
+<p>AI Cockpit Mobile ist ein unabhängiges Programm und steht in keiner Verbindung zu Anthropic, OpenAI oder Moonshot AI. Die genannten Namen dienen ausschliesslich der Beschreibung, welche Dienste die App auslesen kann.</p>
+
+<h2 id="english">English</h2>
+<p><strong>In short:</strong> This app has no server. There is no account with the app's publisher, no analytics, no advertising and no sharing. Everything it shows is fetched directly from the services where you hold an account.</p>
+<p><strong>Data collected: none.</strong> The publisher collects no data of any kind. There is no server to receive it, and the app contains no third-party component for measurement, advertising or crash reporting.</p>
+<p><strong>Connections</strong> go only to the services whose figures are displayed — Claude, Anthropic, OpenAI, ChatGPT and Moonshot — over HTTPS, with no intermediary. The exact addresses are listed in the German table above.</p>
+<p><strong>Credentials</strong> live in your device's keychain. They leave the device only as authentication towards the service they belong to. They are stored so that they remain readable after the device's first unlock, which is what allows the widget to refresh on a locked screen. The app never sees your password: sign-in happens on the provider's own page, and the app receives only an access token.</p>
+<p><strong>Also on the device:</strong> your settings, the figures fetched most recently so the widget can display them, and a note of which alerts have already been shown. None of it leaves the device.</p>
+<p><strong>Deletion:</strong> Settings → About → “Sign out and delete all local data” removes both sign-ins, every stored key, all settings and the cached figures. Deleting the app removes everything as well.</p>
+<p><strong>Notifications</strong> are generated on the device; no server sends them. Each can be switched off, and both start out off.</p>
+<p><strong>No affiliation:</strong> AI Cockpit Mobile is an independent app and is not affiliated with Anthropic, OpenAI or Moonshot AI. Those names appear solely to describe which services the app can read.</p>
+</main>
+</html>

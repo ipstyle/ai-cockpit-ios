@@ -7,9 +7,8 @@ OpenAI- und Anthropic-Schnittstellen, Kimi, ChatGPT/Codex und die laufenden
 Claude-Code-Sitzungen.
 
 Das ist die iOS-Fassung von [AI Cockpit für macOS](https://apps.apple.com/app/id6802014255).
-Sie ist **kostenlos**, aber **nicht quelloffen**: Der Quellcode ist derselbe
-wie bei der kostenpflichtigen macOS-Fassung und bleibt geschlossen.
-
+Sie ist **kostenlos**. Der Quellcode liegt offen, damit nachlesbar ist, was die
+App mit Zugangsdaten tut — eine freie Lizenz ist das nicht, siehe [LICENSE](LICENSE).
 > **Stand: in Entwicklung.** Es gibt noch nichts herunterzuladen.
 
 ## Voraussetzungen
@@ -79,3 +78,17 @@ Alle Netzwerkziele stehen in [PRIVACY.md](PRIVACY.md).
 ## Lizenz
 
 Kostenlos nutzbar, nicht quelloffen — siehe [LICENSE](LICENSE). © 2026 ipstyle
+
+## Warum dieses Repo öffentlich ist, die App aber nicht quelloffen
+
+Diese App liest Zugangsdaten aus und zeigt Verbrauchszahlen an. Wer so etwas
+installiert, sollte nachlesen können, was damit geschieht — deshalb liegt der
+Quellcode offen. **Quelloffen im Sinne einer freien Lizenz ist die App
+trotzdem nicht**; was erlaubt ist, steht in [LICENSE](LICENSE).
+
+## Bauen
+
+**Dieses Repo allein lässt sich nicht bauen.** Der gemeinsame Kern
+(`AgentDeckCore`) liegt im Projekt der macOS-Fassung und ist nicht Teil dieser
+Veröffentlichung. `project.yml` bindet ihn über einen relativen Pfad ein. Ohne
+ihn meldet Xcode ein fehlendes Paket — das ist kein Fehler, sondern Absicht.

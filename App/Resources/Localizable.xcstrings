@@ -1,0 +1,6380 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "%@\n\n%@\n\nFreiwillig: Ohne diesen Schlüssel bleibt nur diese eine Karte leer, alles andere läuft weiter.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@\n\n%@\n\nFreiwillig: Ohne diesen Schlüssel bleibt nur diese eine Karte leer, alles andere läuft weiter."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@\n\n%@\n\nOptional: without this key only this one card stays empty, everything else keeps working."
+          }
+        }
+      }
+    },
+    "%@ antwortete mit HTTP %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ antwortete mit HTTP %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ responded with HTTP %lld"
+          }
+        }
+      }
+    },
+    "%@ bei %lld %%": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ bei %lld %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ at %lld%%"
+          }
+        }
+      }
+    },
+    "%@ drosselt gerade — zu viele Anfragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ drosselt gerade — zu viele Anfragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is throttling right now — too many requests"
+          }
+        }
+      }
+    },
+    "%@ fast aufgebraucht": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ fast aufgebraucht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ almost used up"
+          }
+        }
+      }
+    },
+    "%@ fehlgeschlagen (HTTP %lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ fehlgeschlagen (HTTP %lld)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ failed (HTTP %lld)"
+          }
+        }
+      }
+    },
+    "%@ verfügbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ verfügbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ available"
+          }
+        }
+      }
+    },
+    "%@ zurückgesetzt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ zurückgesetzt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ reset"
+          }
+        }
+      }
+    },
+    "%@ · %lld von 3 Schlüsseln": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld von 3 Schlüsseln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld of 3 keys"
+          }
+        }
+      }
+    },
+    "%@ · reicht über die Zurücksetzung hinaus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · reicht über die Zurücksetzung hinaus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · lasts beyond the reset"
+          }
+        }
+      }
+    },
+    "%@ · voll um %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · voll um %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · full by %@"
+          }
+        }
+      }
+    },
+    "%@ — frühestens in %lld Minuten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — frühestens in %lld Minuten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — at the earliest in %lld minutes"
+          }
+        }
+      }
+    },
+    "%@ — frühestens in einer Minute": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — frühestens in einer Minute"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — at the earliest in one minute"
+          }
+        }
+      }
+    },
+    "%@ — vor der Zurücksetzung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — vor der Zurücksetzung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ — before the reset"
+          }
+        }
+      }
+    },
+    "%@: Schlüssel ungültig — gehört er zur gewählten Plattform?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: Schlüssel ungültig — gehört er zur gewählten Plattform?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@: key invalid — does it belong to the selected platform?"
+          }
+        }
+      }
+    },
+    "%lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
+    },
+    "%lld %%": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld %%"
+          }
+        }
+      }
+    },
+    "%lld Fenster, erhoben %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Fenster, erhoben %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%#@arg1@, collected %2$@"
+          },
+          "substitutions": {
+            "arg1": {
+              "argNum": 1,
+              "formatSpecifier": "lld",
+              "variations": {
+                "plural": {
+                  "one": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%lld window"
+                    }
+                  },
+                  "other": {
+                    "stringUnit": {
+                      "state": "translated",
+                      "value": "%lld windows"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Minuten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Minute"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Minuten"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld minute"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld minutes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Prozent": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Prozent"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld percent"
+          }
+        }
+      }
+    },
+    "%lld Stunden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Stunde"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Stunden"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld hour"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld hours"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld Tage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Tag"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Tage"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld days"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "**Diese Fassung ist neu. Für sie gibt es bis heute keinen dokumentierten Prüfdurchgang.** Die vier Selbstprüfungen, die auf der Projektseite genannt sind, betreffen die Mac-Fassung und sagen über diese App nichts aus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**Diese Fassung ist neu. Für sie gibt es bis heute keinen dokumentierten Prüfdurchgang.** Die vier Selbstprüfungen, die auf der Projektseite genannt sind, betreffen die Mac-Fassung und sagen über diese App nichts aus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "**This edition is new. To this day there is no documented review of it.** The four self-reviews named on the project site concern the Mac edition and say nothing about this app."
+          }
+        }
+      }
+    },
+    "100": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100"
+          }
+        }
+      }
+    },
+    "3 Sitzungen · 1 arbeitet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 Sitzungen · 1 arbeitet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 sessions · 1 working"
+          }
+        }
+      }
+    },
+    "5 Stunden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Stunden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 hours"
+          }
+        }
+      }
+    },
+    "5 Stunden · Demo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 Stunden · Demo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 hours · demo"
+          }
+        }
+      }
+    },
+    "5-Stunden-Fenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5-Stunden-Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5-hour window"
+          }
+        }
+      }
+    },
+    "7 Tage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days"
+          }
+        }
+      }
+    },
+    "7 Tage · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage · %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days · %@"
+          }
+        }
+      }
+    },
+    "7 Tage · Demo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 Tage · Demo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days · demo"
+          }
+        }
+      }
+    },
+    "7-Tage-Fenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-Tage-Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-day window"
+          }
+        }
+      }
+    },
+    "AI Cockpit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit"
+          }
+        }
+      }
+    },
+    "AI Cockpit (iOS) — Diagnose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit (iOS) — Diagnose"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit (iOS) — diagnostics"
+          }
+        }
+      }
+    },
+    "AI Cockpit für macOS": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit für macOS"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit for macOS"
+          }
+        }
+      }
+    },
+    "AI Cockpit ist ein eigenständiges Werkzeug und **nicht** mit Anthropic, OpenAI oder Moonshot AI verbunden — weder betrieben noch beauftragt noch gebilligt. Die Namen stehen auf den Karten, weil dort deren Zahlen stehen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit ist ein eigenständiges Werkzeug und **nicht** mit Anthropic, OpenAI oder Moonshot AI verbunden — weder betrieben noch beauftragt noch gebilligt. Die Namen stehen auf den Karten, weil dort deren Zahlen stehen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AI Cockpit is an independent tool and is **not** connected to Anthropic, OpenAI or Moonshot AI — neither operated nor commissioned nor endorsed by them. Their names appear on the cards because their figures do."
+          }
+        }
+      }
+    },
+    "API-Schlüssel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API key"
+          }
+        }
+      }
+    },
+    "Abbrechen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "Abgrenzung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abgrenzung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not affiliated"
+          }
+        }
+      }
+    },
+    "Ablauf": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ablauf"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log"
+          }
+        }
+      }
+    },
+    "Ablauf des Zugriffsschlüssels unbekannt · wird bei Bedarf erneuert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ablauf des Zugriffsschlüssels unbekannt · wird bei Bedarf erneuert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access token expiry unknown · renewed when needed"
+          }
+        }
+      }
+    },
+    "Abmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out"
+          }
+        }
+      }
+    },
+    "Abmelden und alle lokalen Daten löschen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden und alle lokalen Daten löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out and delete all local data"
+          }
+        }
+      }
+    },
+    "Abmelden und alles löschen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden und alles löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out and delete everything"
+          }
+        }
+      }
+    },
+    "Admin-Schlüssel (sk-admin-…)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Schlüssel (sk-admin-…)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin key (sk-admin-…)"
+          }
+        }
+      }
+    },
+    "Admin-Schlüssel (sk-ant-admin-…)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin-Schlüssel (sk-ant-admin-…)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Admin key (sk-ant-admin-…)"
+          }
+        }
+      }
+    },
+    "Adresse öffnen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse öffnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open address"
+          }
+        }
+      }
+    },
+    "Aktive Sitzungen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktive Sitzungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active sessions"
+          }
+        }
+      }
+    },
+    "Aktualisiert %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktualisiert %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updated %@"
+          }
+        }
+      }
+    },
+    "Alle Angaben bleiben auf diesem Gerät. Es gibt kein Konto bei AI Cockpit und keinen Server, der etwas davon zu sehen bekäme.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Angaben bleiben auf diesem Gerät. Es gibt kein Konto bei AI Cockpit und keinen Server, der etwas davon zu sehen bekäme."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything stays on this device. There is no AI Cockpit account and no server that would get to see any of it."
+          }
+        }
+      }
+    },
+    "Alle Karten aufklappen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Karten aufklappen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expand all cards"
+          }
+        }
+      }
+    },
+    "Alle Karten einklappen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Karten einklappen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collapse all cards"
+          }
+        }
+      }
+    },
+    "Alle Netzwerkziele, Ablage und Prüfstand": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Netzwerkziele, Ablage und Prüfstand"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All network destinations, storage and review status"
+          }
+        }
+      }
+    },
+    "Angemeldet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angemeldet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signed in"
+          }
+        }
+      }
+    },
+    "Angemeldet — Abo %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angemeldet — Abo %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signed in — plan %@"
+          }
+        }
+      }
+    },
+    "Angemeldet — Abo: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angemeldet — Abo: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signed in — plan: %@"
+          }
+        }
+      }
+    },
+    "Anmeldeadresse liess sich nicht bilden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldeadresse liess sich nicht bilden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the sign-in address could not be built"
+          }
+        }
+      }
+    },
+    "Anmeldefenster liess sich nicht öffnen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldefenster liess sich nicht öffnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in sheet could not be opened"
+          }
+        }
+      }
+    },
+    "Anmeldefenster vom Nutzer geschlossen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldefenster vom Nutzer geschlossen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in sheet closed by the user"
+          }
+        }
+      }
+    },
+    "Anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in"
+          }
+        }
+      }
+    },
+    "Anmelden …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmelden …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in …"
+          }
+        }
+      }
+    },
+    "Anmeldeseite geöffnet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldeseite geöffnet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in page opened"
+          }
+        }
+      }
+    },
+    "Anmeldung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in"
+          }
+        }
+      }
+    },
+    "Anmeldung beim ChatGPT-Konto für die Codex-Kontingente. Läuft über OpenAI selbst.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung beim ChatGPT-Konto für die Codex-Kontingente. Läuft über OpenAI selbst."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signing in to the ChatGPT account for the Codex quotas. Handled by OpenAI itself."
+          }
+        }
+      }
+    },
+    "Anmeldung beim Claude-Abo. Die Seite gehört Anthropic; die App sieht dein Passwort nie, sie bekommt am Ende nur einen Token.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung beim Claude-Abo. Die Seite gehört Anthropic; die App sieht dein Passwort nie, sie bekommt am Ende nur einen Token."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signing in to the Claude plan. The page belongs to Anthropic; the app never sees your password, in the end it only receives a token."
+          }
+        }
+      }
+    },
+    "Anmeldung fehlgeschlagen (HTTP %lld) %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung fehlgeschlagen (HTTP %lld) %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in failed (HTTP %lld) %@"
+          }
+        }
+      }
+    },
+    "Anmeldung gestartet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung gestartet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in started"
+          }
+        }
+      }
+    },
+    "Anthropic bietet diesen Kostenbericht für dieses Konto nicht an": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic bietet diesen Kostenbericht für dieses Konto nicht an"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic does not offer this cost report for this account"
+          }
+        }
+      }
+    },
+    "Anthropic-Admin-Schlüssel ungültig": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic-Admin-Schlüssel ungültig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anthropic admin key invalid"
+          }
+        }
+      }
+    },
+    "App im Hintergrund — Anmeldung läuft weiter": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App im Hintergrund — Anmeldung läuft weiter"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App in the background — sign-in continues"
+          }
+        }
+      }
+    },
+    "Auch bei der Mac-Fassung waren es dokumentierte Selbstprüfungen, kein externes Audit. Diese Unterscheidung gehört dazu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auch bei der Mac-Fassung waren es dokumentierte Selbstprüfungen, kein externes Audit. Diese Unterscheidung gehört dazu."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Even for the Mac edition these were documented self-reviews, not an external audit. That distinction belongs here."
+          }
+        }
+      }
+    },
+    "Auslastung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auslastung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usage"
+          }
+        }
+      }
+    },
+    "Balken: belegtes Kontextfenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Balken: belegtes Kontextfenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bar: context window in use"
+          }
+        }
+      }
+    },
+    "Bei ChatGPT anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei ChatGPT anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to ChatGPT"
+          }
+        }
+      }
+    },
+    "Bei Claude anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei Claude anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to Claude"
+          }
+        }
+      }
+    },
+    "Bei den Diensten selbst ändert sich dadurch nichts. Die Schlüssel bleiben dort gültig und müssten in der jeweiligen Konsole widerrufen werden — diese App kann das nicht für dich tun.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei den Diensten selbst ändert sich dadurch nichts. Die Schlüssel bleiben dort gültig und müssten in der jeweiligen Konsole widerrufen werden — diese App kann das nicht für dich tun."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing changes at the services themselves. The keys stay valid there and would have to be revoked in the respective console — this app cannot do that for you."
+          }
+        }
+      }
+    },
+    "Bei der Warn- und bei der kritischen Schwelle — einmal je Überschreitung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bei der Warn- und bei der kritischen Schwelle — einmal je Überschreitung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "At the warning and at the critical threshold — once each time one is crossed."
+          }
+        }
+      }
+    },
+    "Beide Hinweise sind einzeln abschaltbar und stehen zu Beginn auf «aus» — beim ersten Einschalten fragt iOS um Erlaubnis. Die Schwellen selbst stehen unter «Schwellenwerte».": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beide Hinweise sind einzeln abschaltbar und stehen zu Beginn auf «aus» — beim ersten Einschalten fragt iOS um Erlaubnis. Die Schwellen selbst stehen unter «Schwellenwerte»."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both alerts can be switched off separately and start out “off” — the first time one is switched on, iOS asks for permission. The thresholds themselves are under “Thresholds”."
+          }
+        }
+      }
+    },
+    "Beides bleibt hier. Die App schreibt nichts nach iCloud und nichts in eine Sicherung ausserhalb der üblichen Gerätesicherung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beides bleibt hier. Die App schreibt nichts nach iCloud und nichts in eine Sicherung ausserhalb der üblichen Gerätesicherung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Both stay here. The app writes nothing to iCloud and nothing into any backup beyond the ordinary device backup."
+          }
+        }
+      }
+    },
+    "Beim Abmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Abmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When you sign out"
+          }
+        }
+      }
+    },
+    "Beispiel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beispiel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Example"
+          }
+        }
+      }
+    },
+    "Beispielzahlen — keine echten Konten.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beispielzahlen — keine echten Konten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample figures — not real accounts."
+          }
+        }
+      }
+    },
+    "ChatGPT antwortete mit HTTP %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT antwortete mit HTTP %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT responded with HTTP %lld"
+          }
+        }
+      }
+    },
+    "ChatGPT drosselt gerade — zu viele Anfragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT drosselt gerade — zu viele Anfragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT is throttling right now — too many requests"
+          }
+        }
+      }
+    },
+    "ChatGPT nennt derzeit keine Kontingente für dieses Konto.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT nennt derzeit keine Kontingente für dieses Konto."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT currently reports no quotas for this account."
+          }
+        }
+      }
+    },
+    "ChatGPT-Anmeldung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT-Anmeldung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT sign-in"
+          }
+        }
+      }
+    },
+    "ChatGPT-Anmeldung abgelaufen — bitte neu anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT-Anmeldung abgelaufen — bitte neu anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ChatGPT sign-in has expired — please sign in again"
+          }
+        }
+      }
+    },
+    "Claude": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude"
+          }
+        }
+      }
+    },
+    "Claude drosselt gerade — zu viele Anfragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude drosselt gerade — zu viele Anfragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude is throttling right now — too many requests"
+          }
+        }
+      }
+    },
+    "Claude · 7 Tage · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude · 7 Tage · %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude · 7 days · %@"
+          }
+        }
+      }
+    },
+    "Claude-Anmeldung abgelaufen — bitte neu anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Anmeldung abgelaufen — bitte neu anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude sign-in has expired — please sign in again"
+          }
+        }
+      }
+    },
+    "Claude-Anmeldung, Admin-Schlüssel einzeln": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Anmeldung, Admin-Schlüssel einzeln"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude sign-in, admin key separately"
+          }
+        }
+      }
+    },
+    "Claude-Usage antwortete mit HTTP %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Usage antwortete mit HTTP %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude usage responded with HTTP %lld"
+          }
+        }
+      }
+    },
+    "Code erhalten — Eingabe auf %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code erhalten — Eingabe auf %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code received — enter it at %@"
+          }
+        }
+      }
+    },
+    "Code kopieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code kopieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy code"
+          }
+        }
+      }
+    },
+    "Code wird angefordert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code wird angefordert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requesting the code"
+          }
+        }
+      }
+    },
+    "Codeanforderung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codeanforderung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code request"
+          }
+        }
+      }
+    },
+    "Danach ist die App wieder so, wie sie beim ersten Start war. Rückgängig machen lässt sich das nicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danach ist die App wieder so, wie sie beim ersten Start war. Rückgängig machen lässt sich das nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afterwards the app is back the way it was on first launch. This cannot be undone."
+          }
+        }
+      }
+    },
+    "Darstellung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darstellung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
+    "Darstellung:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darstellung:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance:"
+          }
+        }
+      }
+    },
+    "Das Anmeldefenster liess sich nicht öffnen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Anmeldefenster liess sich nicht öffnen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in sheet could not be opened."
+          }
+        }
+      }
+    },
+    "Das Fenster ist abgelaufen — das Kontingent steht wieder offen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Fenster ist abgelaufen — das Kontingent steht wieder offen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The window has expired — the quota is open again."
+          }
+        }
+      }
+    },
+    "Das Kontingent ist zu %lld %% ausgeschöpft.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Kontingent ist zu %lld %% ausgeschöpft."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The quota is %lld%% used up."
+          }
+        }
+      }
+    },
+    "Das Kontingent steht wieder bei %lld %%.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Kontingent steht wieder bei %lld %%."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The quota is back at %lld%%."
+          }
+        }
+      }
+    },
+    "Das System lieferte keinen Zufall (Status %d)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das System lieferte keinen Zufall (Status %d)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The system supplied no randomness (status %d)"
+          }
+        }
+      }
+    },
+    "Das Widget fragt eine dieser Adressen selbst ab — die Nutzungsfenster bei api.anthropic.com —, damit es nicht darauf warten muss, dass jemand die App öffnet. Es benutzt dafür denselben Token und dieselbe Verbindung wie die App.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Widget fragt eine dieser Adressen selbst ab — die Nutzungsfenster bei api.anthropic.com —, damit es nicht darauf warten muss, dass jemand die App öffnet. Es benutzt dafür denselben Token und dieselbe Verbindung wie die App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The widget queries one of these addresses itself — the usage windows at api.anthropic.com — so that it does not have to wait for someone to open the app. It uses the same token and the same connection as the app."
+          }
+        }
+      }
+    },
+    "Daten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
+          }
+        }
+      }
+    },
+    "Datenschutz": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        }
+      }
+    },
+    "Datenschutz und Sicherheit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz und Sicherheit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy and Security"
+          }
+        }
+      }
+    },
+    "Demo ansehen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo ansehen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View demo"
+          }
+        }
+      }
+    },
+    "Demo verlassen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo verlassen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leave demo"
+          }
+        }
+      }
+    },
+    "Demodaten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demodaten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo data"
+          }
+        }
+      }
+    },
+    "Der Code gilt 15 Minuten. Danach fängt die Anmeldung von vorn an.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Code gilt 15 Minuten. Danach fängt die Anmeldung von vorn an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The code is valid for 15 minutes. After that the sign-in starts over."
+          }
+        }
+      }
+    },
+    "Der Code wurde nicht innerhalb von 15 Minuten eingegeben": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Code wurde nicht innerhalb von 15 Minuten eingegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the code was not entered within 15 minutes"
+          }
+        }
+      }
+    },
+    "Der Eintrag verschwindet aus dem Schlüsselbund dieses Geräts. Die Karte bleibt danach leer, bis wieder einer da ist.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Eintrag verschwindet aus dem Schlüsselbund dieses Geräts. Die Karte bleibt danach leer, bis wieder einer da ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The entry disappears from this device’s keychain. The card then stays empty until there is another one."
+          }
+        }
+      }
+    },
+    "Der Kontostand bei Kimi. Welcher der beiden Rechner gefragt wird, entscheidet die Region auf der Kontenseite.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Kontostand bei Kimi. Welcher der beiden Rechner gefragt wird, entscheidet die Region auf der Kontenseite."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The account balance at Kimi. Which of the two hosts is asked is decided by the region on the accounts page."
+          }
+        }
+      }
+    },
+    "Der Schlüssel darf keine Kostendaten lesen — es braucht einen Admin-Schlüssel aus der Claude-Konsole": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüssel darf keine Kostendaten lesen — es braucht einen Admin-Schlüssel aus der Claude-Konsole"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The key may not read cost data — an admin key from the Claude console is required"
+          }
+        }
+      }
+    },
+    "Der Schlüssel hat keine Leseberechtigung für Nutzungsdaten — es braucht einen Admin-Schlüssel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüssel hat keine Leseberechtigung für Nutzungsdaten — es braucht einen Admin-Schlüssel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The key has no read permission for usage data — an admin key is required"
+          }
+        }
+      }
+    },
+    "Der Schlüssel liess sich nicht im Schlüsselbund ablegen. Bitte noch einmal versuchen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüssel liess sich nicht im Schlüsselbund ablegen. Bitte noch einmal versuchen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The key could not be stored in the keychain. Please try again."
+          }
+        }
+      }
+    },
+    "Der Schlüsselbund gibt die Anmeldung nicht heraus (Status %d).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüsselbund gibt die Anmeldung nicht heraus (Status %d)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The keychain will not release the sign-in (status %d)."
+          }
+        }
+      }
+    },
+    "Der Schlüsselbund gibt die Anmeldung nicht heraus (Status %d). Das ist ein Fehler im Bau der App, nicht in deiner Eingabe.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüsselbund gibt die Anmeldung nicht heraus (Status %d). Das ist ein Fehler im Bau der App, nicht in deiner Eingabe."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The keychain will not release the sign-in (status %d). That is a fault in how the app was built, not in what you entered."
+          }
+        }
+      }
+    },
+    "Der Schlüsselbund gibt die ChatGPT-Anmeldung nicht heraus (Status %d).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüsselbund gibt die ChatGPT-Anmeldung nicht heraus (Status %d)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The keychain will not release the ChatGPT sign-in (status %d)."
+          }
+        }
+      }
+    },
+    "Der Schlüsselbund weist den Zugriff ab (Status %d). Ein Schlüssel kann hinterlegt sein und trotzdem nicht gelesen werden — das ist ein Fehler im Bau der App.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Schlüsselbund weist den Zugriff ab (Status %d). Ein Schlüssel kann hinterlegt sein und trotzdem nicht gelesen werden — das ist ein Fehler im Bau der App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The keychain denies access (status %d). A key can be stored and still not be readable — that is a fault in how the app was built."
+          }
+        }
+      }
+    },
+    "Der Text enthält keine Schlüssel und keine Token — nur Zustände und die letzten vier Zeichen, die auch oben stehen. Er lässt sich bedenkenlos weitergeben.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Text enthält keine Schlüssel und keine Token — nur Zustände und die letzten vier Zeichen, die auch oben stehen. Er lässt sich bedenkenlos weitergeben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The text contains no keys and no tokens — only states and the last four characters, which are shown above as well. It can be passed on without concern."
+          }
+        }
+      }
+    },
+    "Deutsch und Englisch sind vollständig übersetzt. Steht das Gerät auf einer anderen Sprache, erscheint die App auf Englisch.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deutsch und Englisch sind vollständig übersetzt. Steht das Gerät auf einer anderen Sprache, erscheint die App auf Englisch."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "German and English are fully translated. If the device is set to any other language, the app appears in English."
+          }
+        }
+      }
+    },
+    "Developed by Albert Frick / ipstyle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developed by Albert Frick / ipstyle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developed by Albert Frick / ipstyle"
+          }
+        }
+      }
+    },
+    "Diagnose": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics"
+          }
+        }
+      }
+    },
+    "Die Anmeldung gehört nicht zu dieser Anfrage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung gehört nicht zu dieser Anfrage"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in does not belong to this request"
+          }
+        }
+      }
+    },
+    "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung hat geklappt, aber der Zugriffsschlüssel liess sich nicht sichern. Bitte noch einmal versuchen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in worked, but the access token could not be saved. Please try again."
+          }
+        }
+      }
+    },
+    "Die Anmeldung läuft über Anthropic selbst — diese App sieht dein Passwort nie. Sie bekommt einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt und den sie selbsttätig erneuert. Ohne Anmeldung bleibt die Claude-Karte leer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung läuft über Anthropic selbst — diese App sieht dein Passwort nie. Sie bekommt einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt und den sie selbsttätig erneuert. Ohne Anmeldung bleibt die Claude-Karte leer."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in is handled by Anthropic itself — this app never sees your password. It receives an access token that stays in this device’s keychain and that it renews on its own. Without a sign-in the Claude card stays empty."
+          }
+        }
+      }
+    },
+    "Die Anmeldung läuft über Claude selbst. Diese App sieht dein Passwort nie — sie bekommt nur einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung läuft über Claude selbst. Diese App sieht dein Passwort nie — sie bekommt nur einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in is handled by Claude itself. This app never sees your password — it only receives an access token that stays in this device’s keychain."
+          }
+        }
+      }
+    },
+    "Die Anmeldung läuft über OpenAI selbst. Diese App sieht dein Passwort nie — sie bekommt nur einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung läuft über OpenAI selbst. Diese App sieht dein Passwort nie — sie bekommt nur einen Zugriffsschlüssel, der im Schlüsselbund dieses Geräts bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in is handled by OpenAI itself. This app never sees your password — it only receives an access token that stays in this device’s keychain."
+          }
+        }
+      }
+    },
+    "Die Anmeldung wurde abgebrochen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde abgebrochen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in was cancelled."
+          }
+        }
+      }
+    },
+    "Die Anmeldung wurde abgewiesen (HTTP %lld).": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde abgewiesen (HTTP %lld)."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in was rejected (HTTP %lld)."
+          }
+        }
+      }
+    },
+    "Die Anmeldung wurde nicht innerhalb von %lld Minuten abgeschlossen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Anmeldung wurde nicht innerhalb von %lld Minuten abgeschlossen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The sign-in was not completed within %lld minutes"
+          }
+        }
+      }
+    },
+    "Die Antwort gehört nicht zu dieser Anmeldung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Antwort gehört nicht zu dieser Anmeldung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the response does not belong to this sign-in"
+          }
+        }
+      }
+    },
+    "Die App läuft auf %@.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die App läuft auf %@."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app is running in %@."
+          }
+        }
+      }
+    },
+    "Die Claude-Anmeldung, die ChatGPT-Anmeldung und die drei API-Schlüssel liegen im Schlüsselbund dieses Geräts — unter einem eigenen Dienstnamen, getrennt von der Mac-Fassung. Sie stehen nie in den Benutzervorgaben, nie im gemeinsamen Ablageort des Widgets und in keiner Protokollzeile.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Claude-Anmeldung, die ChatGPT-Anmeldung und die drei API-Schlüssel liegen im Schlüsselbund dieses Geräts — unter einem eigenen Dienstnamen, getrennt von der Mac-Fassung. Sie stehen nie in den Benutzervorgaben, nie im gemeinsamen Ablageort des Widgets und in keiner Protokollzeile."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Claude sign-in, the ChatGPT sign-in and the three API keys are kept in this device’s keychain — under a service name of their own, separate from the Mac edition. They never appear in the app’s user defaults, never in the shared store the widget reads, and in no log line."
+          }
+        }
+      }
+    },
+    "Die Einträge sind so abgelegt, dass sie **nach der ersten Entsperrung** des Geräts lesbar sind, auch bei gesperrtem Bildschirm. Das ist eine bewusste Abwägung: Das Widget wird vom System geweckt, wann es will, und käme sonst regelmässig nicht an die Zahlen. Vor der ersten Entsperrung nach einem Neustart kommt niemand heran.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Einträge sind so abgelegt, dass sie **nach der ersten Entsperrung** des Geräts lesbar sind, auch bei gesperrtem Bildschirm. Das ist eine bewusste Abwägung: Das Widget wird vom System geweckt, wann es will, und käme sonst regelmässig nicht an die Zahlen. Vor der ersten Entsperrung nach einem Neustart kommt niemand heran."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The entries are stored so that they are readable **after the first unlock** of the device, including while the screen is locked. That is a deliberate trade-off: the widget is woken by the system whenever the system likes, and would otherwise regularly fail to reach the figures. Before the first unlock after a restart, nobody can get at them."
+          }
+        }
+      }
+    },
+    "Die Farben der Karten folgen der Wahl: Anthrazit im dunklen, warmes Papier im hellen Modus. «System» übernimmt, was das Gerät gerade vorgibt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Farben der Karten folgen der Wahl: Anthrazit im dunklen, warmes Papier im hellen Modus. «System» übernimmt, was das Gerät gerade vorgibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The card colours follow this choice: charcoal in dark mode, warm paper in light mode. “System” takes whatever the device currently specifies."
+          }
+        }
+      }
+    },
+    "Die Hinweise entstehen auf diesem Gerät. Es gibt keinen Server, der mitliest, und nichts wird versendet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Hinweise entstehen auf diesem Gerät. Es gibt keinen Server, der mitliest, und nichts wird versendet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The alerts are produced on this device. There is no server reading along, and nothing is sent anywhere."
+          }
+        }
+      }
+    },
+    "Die Kennung steht nicht in beiden Berechtigungsdateien — das Widget bleibt leer.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kennung steht nicht in beiden Berechtigungsdateien — das Widget bleibt leer."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The identifier is not in both entitlement files — the widget stays empty."
+          }
+        }
+      }
+    },
+    "Die Kontingente des angemeldeten ChatGPT-Kontos.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Kontingente des angemeldeten ChatGPT-Kontos."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The quotas of the signed-in ChatGPT account."
+          }
+        }
+      }
+    },
+    "Die Nutzungsfenster des Abos — und, wenn ein Admin-Schlüssel hinterlegt ist, die Kosten der Anthropic-Schnittstelle.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Nutzungsfenster des Abos — und, wenn ein Admin-Schlüssel hinterlegt ist, die Kosten der Anthropic-Schnittstelle."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The usage windows of the plan — and, if an admin key is stored, the cost of the Anthropic API."
+          }
+        }
+      }
+    },
+    "Die Projektseite beschreibt zurzeit die Mac-Fassung; ein Teil für diese App entsteht noch. Die macOS-Fassung ist kostenpflichtig und teilt sich mit dieser App den Quellcode, wird aber getrennt gezählt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Projektseite beschreibt zurzeit die Mac-Fassung; ein Teil für diese App entsteht noch. Die macOS-Fassung ist kostenpflichtig und teilt sich mit dieser App den Quellcode, wird aber getrennt gezählt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The project site currently describes the Mac edition; a part for this app is still being written. The macOS edition is a paid app that shares its source code with this one, but is counted separately."
+          }
+        }
+      }
+    },
+    "Die Schlüssel der beiden Plattformen sind nicht austauschbar: Über Kreuz antwortet Kimi mit 401 — was aussieht wie ein falscher Schlüssel und keiner ist.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Schlüssel der beiden Plattformen sind nicht austauschbar: Über Kreuz antwortet Kimi mit 401 — was aussieht wie ein falscher Schlüssel und keiner ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The keys of the two platforms are not interchangeable: used crosswise, Kimi answers with 401 — which looks like a wrong key and is not one."
+          }
+        }
+      }
+    },
+    "Die gespeicherte Anmeldung ist unlesbar — bitte abmelden und neu anmelden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die gespeicherte Anmeldung ist unlesbar — bitte abmelden und neu anmelden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The stored sign-in cannot be read — please sign out and sign in again."
+          }
+        }
+      }
+    },
+    "Die gespeicherte Anmeldung ist unlesbar. Abmelden und neu anmelden räumt das auf.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die gespeicherte Anmeldung ist unlesbar. Abmelden und neu anmelden räumt das auf."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The stored sign-in cannot be read. Signing out and signing in again clears this up."
+          }
+        }
+      }
+    },
+    "Die gespeicherte ChatGPT-Anmeldung ist unlesbar — bitte abmelden und neu anmelden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die gespeicherte ChatGPT-Anmeldung ist unlesbar — bitte abmelden und neu anmelden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The stored ChatGPT sign-in cannot be read — please sign out and sign in again."
+          }
+        }
+      }
+    },
+    "Die kritische Schwelle kann nicht unter die Warnschwelle rutschen — sie wird mitgezogen. Vorgabe sind 75 und 90 Prozent, dieselben Werte wie in der Mac-Fassung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die kritische Schwelle kann nicht unter die Warnschwelle rutschen — sie wird mitgezogen. Vorgabe sind 75 und 90 Prozent, dieselben Werte wie in der Mac-Fassung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The critical threshold cannot slip below the warning threshold — it is pulled along. The defaults are 75 and 90 percent, the same values as in the Mac edition."
+          }
+        }
+      }
+    },
+    "Die zwei feinen Marken auf dem Balken zeigen, wo die Schwellen liegen — sie sagen es ohne Farbe, und damit auch in einem eingefärbten Widget.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die zwei feinen Marken auf dem Balken zeigen, wo die Schwellen liegen — sie sagen es ohne Farbe, und damit auch in einem eingefärbten Widget."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The two fine marks on the bar show where the thresholds lie — they say it without colour, and therefore also in a tinted widget."
+          }
+        }
+      }
+    },
+    "Diese App hat keinen Server. Sie spricht ausschliesslich mit den Diensten, für die du selbst einen Zugang hinterlegt hast, und holt dort Kontingente, Kosten und Kontostände — nichts sonst. Es gibt kein Konto bei AI Cockpit, keine Anmeldung beim Entwickler und keine Stelle, an der jemand mitliest.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App hat keinen Server. Sie spricht ausschliesslich mit den Diensten, für die du selbst einen Zugang hinterlegt hast, und holt dort Kontingente, Kosten und Kontostände — nichts sonst. Es gibt kein Konto bei AI Cockpit, keine Anmeldung beim Entwickler und keine Stelle, an der jemand mitliest."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app has no server. It talks only to the services for which you have stored access yourself, and fetches quotas, costs and balances there — nothing else. There is no AI Cockpit account, no sign-in with the developer and no place where anyone reads along."
+          }
+        }
+      }
+    },
+    "Diese App spricht mit keinem Server, der ihr gehört: Es gibt keinen. Sie fragt ausschliesslich die Dienste ab, für die du selbst einen Zugang hinterlegt hast, und zeigt deren Antwort an. Es gibt kein Konto bei AI Cockpit, keine Anmeldung bei uns, keine Analyse, keine Werbekennung und keine Weitergabe an Dritte.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese App spricht mit keinem Server, der ihr gehört: Es gibt keinen. Sie fragt ausschliesslich die Dienste ab, für die du selbst einen Zugang hinterlegt hast, und zeigt deren Antwort an. Es gibt kein Konto bei AI Cockpit, keine Anmeldung bei uns, keine Analyse, keine Werbekennung und keine Weitergabe an Dritte."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app talks to no server of its own: there is none. It queries only the services for which you have stored access yourself, and shows their answer. There is no AI Cockpit account, no sign-in with us, no analytics, no advertising identifier and no sharing with third parties."
+          }
+        }
+      }
+    },
+    "Dunkel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dunkel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        }
+      }
+    },
+    "Einrichten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einrichten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set up"
+          }
+        }
+      }
+    },
+    "Einstellungen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "Eintragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eintragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add key"
+          }
+        }
+      }
+    },
+    "Entfernt beide Anmeldungen — Claude und ChatGPT — und alle drei API-Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen zurück und löscht den Stand, den das Widget zeigt. Bei den Diensten selbst ändert sich nichts — die Schlüssel bleiben dort gültig und müssten dort widerrufen werden.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt beide Anmeldungen — Claude und ChatGPT — und alle drei API-Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen zurück und löscht den Stand, den das Widget zeigt. Bei den Diensten selbst ändert sich nichts — die Schlüssel bleiben dort gültig und müssten dort widerrufen werden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removes both sign-ins — Claude and ChatGPT — and all three API keys from the keychain, resets appearance, region and thresholds, and deletes the figures the widget shows. Nothing changes at the services themselves — the keys stay valid there and would have to be revoked there."
+          }
+        }
+      }
+    },
+    "Erneuerung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneuerung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renewal"
+          }
+        }
+      }
+    },
+    "Erneut anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in again"
+          }
+        }
+      }
+    },
+    "Erneut versuchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        }
+      }
+    },
+    "Erreichbar:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreichbar:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reachable:"
+          }
+        }
+      }
+    },
+    "Erscheinungsbild": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheinungsbild"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        }
+      }
+    },
+    "Ersetzen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ersetzen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace"
+          }
+        }
+      }
+    },
+    "Erstellt: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellt: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created: %@"
+          }
+        }
+      }
+    },
+    "Fehler": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
+          }
+        }
+      }
+    },
+    "Fehler: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fehler: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error: %@"
+          }
+        }
+      }
+    },
+    "Fenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Window"
+          }
+        }
+      }
+    },
+    "Ferienplaner — %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferienplaner — %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Holiday planner — %@"
+          }
+        }
+      }
+    },
+    "Fertig": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fertig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "Freigabe erhalten nach %lld Nachfragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Freigabe erhalten nach %lld Nachfrage"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Freigabe erhalten nach %lld Nachfragen"
+                }
+              }
+            }
+          }
+        },
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Approved after %lld check"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Approved after %lld checks"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Geprüft — und was aussteht": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geprüft — und was aussteht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewed — and what is still open"
+          }
+        }
+      }
+    },
+    "Gesamt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
+          }
+        }
+      }
+    },
+    "Haiku · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haiku · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haiku · month"
+          }
+        }
+      }
+    },
+    "Hell": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hell"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        }
+      }
+    },
+    "Heute": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today"
+          }
+        }
+      }
+    },
+    "Heute %@ · Monat %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heute %@ · Monat %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today %@ · month %@"
+          }
+        }
+      }
+    },
+    "Hinweis:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweis:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note:"
+          }
+        }
+      }
+    },
+    "Hinweise": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinweise"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerts"
+          }
+        }
+      }
+    },
+    "Im Schlüsselbund abgelegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im Schlüsselbund abgelegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stored in the keychain"
+          }
+        }
+      }
+    },
+    "Im gemeinsamen Ablageort von App und Widget liegt der Stand, den das Widget zeichnet — Beschriftung, Prozentwert, Zeitpunkt der Zurücksetzung und wann die Zahlen erhoben wurden. Keine Schlüssel, keine Token, keine Beträge.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im gemeinsamen Ablageort von App und Widget liegt der Stand, den das Widget zeichnet — Beschriftung, Prozentwert, Zeitpunkt der Zurücksetzung und wann die Zahlen erhoben wurden. Keine Schlüssel, keine Token, keine Beträge."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The store shared by app and widget holds the figures the widget draws — label, percentage, time of the reset and when the figures were collected. No keys, no tokens, no amounts."
+          }
+        }
+      }
+    },
+    "In den Benutzervorgaben der App stehen sechs Dinge: Erscheinungsbild, Kimi-Region, die beiden Schwellenwerte und welche Karten eingeklappt sind.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Benutzervorgaben der App stehen sechs Dinge: Erscheinungsbild, Kimi-Region, die beiden Schwellenwerte und welche Karten eingeklappt sind."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app’s user defaults hold six things: appearance, Kimi region, the two thresholds and which cards are collapsed."
+          }
+        }
+      }
+    },
+    "In die Zwischenablage": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Zwischenablage"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy to clipboard"
+          }
+        }
+      }
+    },
+    "In die Zwischenablage gelegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Zwischenablage gelegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied to clipboard"
+          }
+        }
+      }
+    },
+    "Inhalte deiner Unterhaltungen sieht die App nie. Die abgefragten Schnittstellen geben Zahlen heraus, keine Texte.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inhalte deiner Unterhaltungen sieht die App nie. Die abgefragten Schnittstellen geben Zahlen heraus, keine Texte."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app never sees the content of your conversations. The APIs it queries hand out figures, not text."
+          }
+        }
+      }
+    },
+    "Jetzt aktualisieren": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt aktualisieren"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refresh now"
+          }
+        }
+      }
+    },
+    "Jetzt neu abfragen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt neu abfragen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Query again now"
+          }
+        }
+      }
+    },
+    "Kein Admin-Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist — sie ist keine Voraussetzung für die übrigen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Admin-Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist — sie ist keine Voraussetzung für die übrigen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No admin key stored. This card stays empty until there is one — it is not a prerequisite for the others."
+          }
+        }
+      }
+    },
+    "Kein Admin-Schlüssel hinterlegt. Zeigt die Kosten der Anthropic-API — nicht das Abo darüber.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Admin-Schlüssel hinterlegt. Zeigt die Kosten der Anthropic-API — nicht das Abo darüber."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No admin key stored. Shows the cost of the Anthropic API — not the plan above it."
+          }
+        }
+      }
+    },
+    "Kein Code erhalten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Code erhalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No code received"
+          }
+        }
+      }
+    },
+    "Kein Fenster gefunden, an dem das Anmeldefenster hängen könnte": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Fenster gefunden, an dem das Anmeldefenster hängen könnte"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No window found to attach the sign-in sheet to"
+          }
+        }
+      }
+    },
+    "Kein Refresh-Token vorhanden — bitte neu anmelden": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Refresh-Token vorhanden — bitte neu anmelden"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No refresh token available — please sign in again"
+          }
+        }
+      }
+    },
+    "Kein Rücksprung möglich — weiter über den Gerätecode": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Rücksprung möglich — weiter über den Gerätecode"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No callback possible — continuing with the device code"
+          }
+        }
+      }
+    },
+    "Kein Schlüssel hinterlegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Schlüssel hinterlegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No key stored"
+          }
+        }
+      }
+    },
+    "Kein Schlüssel hinterlegt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Schlüssel hinterlegt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No key stored."
+          }
+        }
+      }
+    },
+    "Kein Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Schlüssel hinterlegt. Diese Karte bleibt leer, bis einer da ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No key stored. This card stays empty until there is one."
+          }
+        }
+      }
+    },
+    "Kein Zugriff auf Standort, Kontakte, Fotos, Kalender, Mikrofon oder Kamera — die App fragt keine dieser Berechtigungen an.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Zugriff auf Standort, Kontakte, Fotos, Kalender, Mikrofon oder Kamera — die App fragt keine dieser Berechtigungen an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No access to location, contacts, photos, calendar, microphone or camera — the app requests none of these permissions."
+          }
+        }
+      }
+    },
+    "Kein eingebauter Browser: Anmeldungen laufen im geschützten Anmeldefenster des Systems, Verweise öffnen sich in deinem Browser.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein eingebauter Browser: Anmeldungen laufen im geschützten Anmeldefenster des Systems, Verweise öffnen sich in deinem Browser."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No built-in browser: sign-ins run in the system’s protected sign-in sheet, links open in your own browser."
+          }
+        }
+      }
+    },
+    "Keine Analyse, keine Nutzungsstatistik, keine Absturzberichte an Dritte.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Analyse, keine Nutzungsstatistik, keine Absturzberichte an Dritte."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No analytics, no usage statistics, no crash reports to third parties."
+          }
+        }
+      }
+    },
+    "Keine In-App-Käufe und kein Abonnement in der App.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine In-App-Käufe und kein Abonnement in der App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No in-app purchases and no subscription inside the app."
+          }
+        }
+      }
+    },
+    "Keine Karten eingeschaltet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Karten eingeschaltet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No cards enabled."
+          }
+        }
+      }
+    },
+    "Keine Weitergabe an Dritte und kein Datenhandel.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Weitergabe an Dritte und kein Datenhandel."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No sharing with third parties and no data trading."
+          }
+        }
+      }
+    },
+    "Keine Werbung und keine Werbekennung.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Werbung und keine Werbekennung."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No advertising and no advertising identifier."
+          }
+        }
+      }
+    },
+    "Kennung:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kennung:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identifier:"
+          }
+        }
+      }
+    },
+    "Kimi-Plattform:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimi-Plattform:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimi platform:"
+          }
+        }
+      }
+    },
+    "Kimi-Schlüssel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimi-Schlüssel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kimi key"
+          }
+        }
+      }
+    },
+    "Klappt die Karte auf oder zu": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klappt die Karte auf oder zu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expands or collapses the card"
+          }
+        }
+      }
+    },
+    "Kommt zum Zeitpunkt der Zurücksetzung, auch bei geschlossener App.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kommt zum Zeitpunkt der Zurücksetzung, auch bei geschlossener App."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrives at the moment of the reset, even when the app is closed."
+          }
+        }
+      }
+    },
+    "Konten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accounts"
+          }
+        }
+      }
+    },
+    "Kontingente werden geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontingente werden geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching quotas …"
+          }
+        }
+      }
+    },
+    "Kontostand wird geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontostand wird geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching balance …"
+          }
+        }
+      }
+    },
+    "Kopiert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopiert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
+          }
+        }
+      }
+    },
+    "Kosten je Modell nicht abrufbar: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten je Modell nicht abrufbar: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cost per model not retrievable: %@"
+          }
+        }
+      }
+    },
+    "Kosten werden geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten werden geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching costs …"
+          }
+        }
+      }
+    },
+    "Kosten, Token und Ausgabengrenzen der OpenAI-Organisation.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten, Token und Ausgabengrenzen der OpenAI-Organisation."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cost, tokens and spending limits of the OpenAI organisation."
+          }
+        }
+      }
+    },
+    "Kritisch ab": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kritisch ab"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critical from"
+          }
+        }
+      }
+    },
+    "Kurz": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurz"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In short"
+          }
+        }
+      }
+    },
+    "Laufender Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laufender Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current month"
+          }
+        }
+      }
+    },
+    "Lesen dürfen die Einträge genau zwei Programme: diese App und ihr Widget. Beide sind über dieselbe Zugriffsgruppe signiert; eine andere App auf dem Gerät kann sie nicht öffnen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lesen dürfen die Einträge genau zwei Programme: diese App und ihr Widget. Beide sind über dieselbe Zugriffsgruppe signiert; eine andere App auf dem Gerät kann sie nicht öffnen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exactly two programs may read the entries: this app and its widget. Both are signed with the same access group; no other app on the device can open them."
+          }
+        }
+      }
+    },
+    "Limit": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit"
+          }
+        }
+      }
+    },
+    "Limit · neues Fenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit · neues Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit · new window"
+          }
+        }
+      }
+    },
+    "Läuft …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working …"
+          }
+        }
+      }
+    },
+    "Löschen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "Mac App Store": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac App Store"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac App Store"
+          }
+        }
+      }
+    },
+    "Max 5×": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max 5×"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max 5×"
+          }
+        }
+      }
+    },
+    "Mehr Adressen gibt es nicht. Jede Verbindung geht direkt von diesem Gerät zum genannten Dienst — keine Zwischenstation, kein Umweg über den Entwickler. Für die Verbindungen selbst gelten die Datenschutzbestimmungen des jeweiligen Anbieters.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehr Adressen gibt es nicht. Jede Verbindung geht direkt von diesem Gerät zum genannten Dienst — keine Zwischenstation, kein Umweg über den Entwickler. Für die Verbindungen selbst gelten die Datenschutzbestimmungen des jeweiligen Anbieters."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no further addresses. Every connection goes directly from this device to the named service — no relay, no detour via the developer. For the connections themselves, the privacy policy of the respective provider applies."
+          }
+        }
+      }
+    },
+    "Mitteilungen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        }
+      }
+    },
+    "Mitteilungen sind für AI Cockpit im System ausgeschaltet. Solange das so ist, kommt kein Hinweis an — auch nicht, wenn hier etwas eingeschaltet wäre.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mitteilungen sind für AI Cockpit im System ausgeschaltet. Solange das so ist, kommt kein Hinweis an — auch nicht, wenn hier etwas eingeschaltet wäre."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications are switched off for AI Cockpit in the system settings. As long as that is the case, no alert arrives — not even if something were switched on here."
+          }
+        }
+      }
+    },
+    "Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Month"
+          }
+        }
+      }
+    },
+    "Nach oben": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach oben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move up"
+          }
+        }
+      }
+    },
+    "Nach unten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach unten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move down"
+          }
+        }
+      }
+    },
+    "Nachprüfbar im Code ist heute: Beide Anmeldungen laufen als Autorisierungscode-Ablauf mit PKCE (S256) im geschützten Anmeldefenster des Systems — die App bekommt dein Passwort nie zu sehen. Jede Anfrage geht über eine Verbindung ohne Zwischenspeicher und ohne Kekse, und Weiterleitungen werden abgewiesen, damit kein Dienst eine Anfrage samt Token auf einen fremden Rechner umlenken kann. Jede Verbindung, die das Gerät verlässt, läuft über HTTPS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nachprüfbar im Code ist heute: Beide Anmeldungen laufen als Autorisierungscode-Ablauf mit PKCE (S256) im geschützten Anmeldefenster des Systems — die App bekommt dein Passwort nie zu sehen. Jede Anfrage geht über eine Verbindung ohne Zwischenspeicher und ohne Kekse, und Weiterleitungen werden abgewiesen, damit kein Dienst eine Anfrage samt Token auf einen fremden Rechner umlenken kann. Jede Verbindung, die das Gerät verlässt, läuft über HTTPS."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What can be verified in the code today: both sign-ins run as an authorisation code flow with PKCE (S256) in the system’s protected sign-in sheet — the app never gets to see your password. Every request goes over a connection without cache and without cookies, and redirects are refused so that no service can divert a request together with its token to some other host. Every connection that leaves the device runs over HTTPS."
+          }
+        }
+      }
+    },
+    "Nicht angemeldet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht angemeldet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not signed in"
+          }
+        }
+      }
+    },
+    "Noch %lld %% übrig.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch %lld %% übrig."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%% left."
+          }
+        }
+      }
+    },
+    "Noch einmal versuchen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch einmal versuchen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try once more"
+          }
+        }
+      }
+    },
+    "Noch nicht angemeldet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht angemeldet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not signed in yet"
+          }
+        }
+      }
+    },
+    "Noch nicht bei ChatGPT angemeldet. Die Anmeldung läuft über OpenAI selbst — diese App sieht dein Passwort nie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht bei ChatGPT angemeldet. Die Anmeldung läuft über OpenAI selbst — diese App sieht dein Passwort nie."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not signed in to ChatGPT yet. The sign-in is handled by OpenAI itself — this app never sees your password."
+          }
+        }
+      }
+    },
+    "Noch nicht bei Claude angemeldet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noch nicht bei Claude angemeldet."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not signed in to Claude yet."
+          }
+        }
+      }
+    },
+    "Offen ist eine dokumentierte Prüfung dieser Fassung gegen OWASP ASVS 4.0, OWASP MASVS, den Apple Secure Coding Guide, RFC 8252/7636 und die CWE Top 25. Sie ist vor der Einreichung im App Store vorgesehen. Bis sie vorliegt, steht hier nichts anderes.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offen ist eine dokumentierte Prüfung dieser Fassung gegen OWASP ASVS 4.0, OWASP MASVS, den Apple Secure Coding Guide, RFC 8252/7636 und die CWE Top 25. Sie ist vor der Einreichung im App Store vorgesehen. Bis sie vorliegt, steht hier nichts anderes."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still open is a documented review of this edition against OWASP ASVS 4.0, OWASP MASVS, the Apple Secure Coding Guide, RFC 8252/7636 and the CWE Top 25. It is planned before submission to the App Store. Until it exists, nothing else will stand here."
+          }
+        }
+      }
+    },
+    "OpenAI antwortete mit HTTP %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI antwortete mit HTTP %lld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI responded with HTTP %lld"
+          }
+        }
+      }
+    },
+    "OpenAI nimmt die Anmeldung per Code gerade nicht an. Bitte später noch einmal versuchen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI nimmt die Anmeldung per Code gerade nicht an. Bitte später noch einmal versuchen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI is not accepting code-based sign-in right now. Please try again later."
+          }
+        }
+      }
+    },
+    "OpenAI-Admin-Schlüssel": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-Admin-Schlüssel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI admin key"
+          }
+        }
+      }
+    },
+    "OpenAI-Schlüssel ungültig": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI-Schlüssel ungültig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI key invalid"
+          }
+        }
+      }
+    },
+    "Opus · Demo": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opus · Demo"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opus · demo"
+          }
+        }
+      }
+    },
+    "Opus · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opus · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opus · month"
+          }
+        }
+      }
+    },
+    "Plattform": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plattform"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platform"
+          }
+        }
+      }
+    },
+    "Plus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus"
+          }
+        }
+      }
+    },
+    "Port %@ nicht verfügbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ nicht verfügbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %@ not available"
+          }
+        }
+      }
+    },
+    "Projekte nicht abrufbar: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projekte nicht abrufbar: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projects not retrievable: %@"
+          }
+        }
+      }
+    },
+    "Projektseite": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projektseite"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Project site"
+          }
+        }
+      }
+    },
+    "Prozent des Kontingents": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozent des Kontingents"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Percent of the quota"
+          }
+        }
+      }
+    },
+    "Reihenfolge ändern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reihenfolge ändern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change order"
+          }
+        }
+      }
+    },
+    "Rezeptsammlung — %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rezeptsammlung — %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recipe collection — %@"
+          }
+        }
+      }
+    },
+    "Rückkanal auf Port %@ offen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückkanal auf Port %@ offen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Callback listener open on port %@"
+          }
+        }
+      }
+    },
+    "Rückkanal bereits geschlossen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückkanal bereits geschlossen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Callback listener already closed"
+          }
+        }
+      }
+    },
+    "Rückkanal offen, Anmeldeseite wird geöffnet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückkanal offen, Anmeldeseite wird geöffnet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Callback listener open, opening the sign-in page"
+          }
+        }
+      }
+    },
+    "Rückkanal öffnen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückkanal öffnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opening the callback listener"
+          }
+        }
+      }
+    },
+    "Rücksprung angekommen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rücksprung angekommen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Callback received"
+          }
+        }
+      }
+    },
+    "Schlüssel für %@ löschen?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel für %@ löschen?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete the key for %@?"
+          }
+        }
+      }
+    },
+    "Schlüssel hinterlegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel hinterlegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key stored"
+          }
+        }
+      }
+    },
+    "Schlüssel hinterlegt · endet auf %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel hinterlegt · endet auf %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key stored · ends in %@"
+          }
+        }
+      }
+    },
+    "Schlüssel liess sich nicht im Schlüsselbund ablegen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüssel liess sich nicht im Schlüsselbund ablegen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key could not be stored in the keychain"
+          }
+        }
+      }
+    },
+    "Schlüsselbund (Dienst «%@»)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schlüsselbund (Dienst «%@»)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keychain (service “%@”)"
+          }
+        }
+      }
+    },
+    "Schwellen:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwellen:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thresholds:"
+          }
+        }
+      }
+    },
+    "Schwellenwerte": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwellenwerte"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thresholds"
+          }
+        }
+      }
+    },
+    "Sichern": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichern"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
+    "Sichtbar sind sie auch in der App nicht. Die Kontenseite zeigt, **dass** ein Schlüssel hinterlegt ist, und höchstens seine letzten vier Zeichen — genug, um zwei auseinanderzuhalten, zu wenig zum Mitlesen über die Schulter. Derselbe Massstab gilt für den Diagnosetext.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sichtbar sind sie auch in der App nicht. Die Kontenseite zeigt, **dass** ein Schlüssel hinterlegt ist, und höchstens seine letzten vier Zeichen — genug, um zwei auseinanderzuhalten, zu wenig zum Mitlesen über die Schulter. Derselbe Massstab gilt für den Diagnosetext."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They are not visible inside the app either. The accounts page shows **that** a key is stored, and at most its last four characters — enough to tell two apart, too little to read over your shoulder. The same standard applies to the diagnostics text."
+          }
+        }
+      }
+    },
+    "Sonnet · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonnet · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonnet · month"
+          }
+        }
+      }
+    },
+    "Sprache": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        }
+      }
+    },
+    "Stellt die Karten wieder in die Reihenfolge, in der die App sie anlegt. Was eingeklappt ist, bleibt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stellt die Karten wieder in die Reihenfolge, in der die App sie anlegt. Was eingeklappt ist, bleibt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puts the cards back into the order the app creates them in. Whatever is collapsed stays collapsed."
+          }
+        }
+      }
+    },
+    "System": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        }
+      }
+    },
+    "Systemeinstellungen öffnen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Systemeinstellungen öffnen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
+          }
+        }
+      }
+    },
+    "Token erhalten, gültig bis %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token erhalten, gültig bis %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token received, valid until %@"
+          }
+        }
+      }
+    },
+    "Token liess sich nicht im Schlüsselbund ablegen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token liess sich nicht im Schlüsselbund ablegen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Token could not be stored in the keychain"
+          }
+        }
+      }
+    },
+    "Umstellen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Umstellen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changing it"
+          }
+        }
+      }
+    },
+    "Unerwartetes Format: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unerwartetes Format: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unexpected format: %@"
+          }
+        }
+      }
+    },
+    "Unter «Mitteilungen» ist AI Cockpit dort wieder freizugeben. Danach genügt es, hierher zurückzukommen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unter «Mitteilungen» ist AI Cockpit dort wieder freizugeben. Danach genügt es, hierher zurückzukommen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Re-enable AI Cockpit there under “Notifications”. After that it is enough to come back here."
+          }
+        }
+      }
+    },
+    "Ursprüngliche Reihenfolge": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ursprüngliche Reihenfolge"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Original order"
+          }
+        }
+      }
+    },
+    "Verfügbares Guthaben": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verfügbares Guthaben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Available balance"
+          }
+        }
+      }
+    },
+    "Version %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@"
+          }
+        }
+      }
+    },
+    "Version: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version: %@"
+          }
+        }
+      }
+    },
+    "Verweise": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verweise"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links"
+          }
+        }
+      }
+    },
+    "Vom Nutzer abgebrochen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vom Nutzer abgebrochen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelled by the user"
+          }
+        }
+      }
+    },
+    "Warnung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning"
+          }
+        }
+      }
+    },
+    "Warnung %lld %%, kritisch %lld %%": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnung %lld %%, kritisch %lld %%"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "warning %lld%%, critical %lld%%"
+          }
+        }
+      }
+    },
+    "Warnung ab": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warnung ab"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning from"
+          }
+        }
+      }
+    },
+    "Warte auf die Eingabe des Codes": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warte auf die Eingabe des Codes"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for the code to be entered"
+          }
+        }
+      }
+    },
+    "Was sie nicht tut": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sie nicht tut"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What it does not do"
+          }
+        }
+      }
+    },
+    "Was sonst auf dem Gerät liegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Was sonst auf dem Gerät liegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What else is stored on the device"
+          }
+        }
+      }
+    },
+    "Wenn ein Limit erreicht wird": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn ein Limit erreicht wird"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When a limit is reached"
+          }
+        }
+      }
+    },
+    "Wenn ein neues Fünf-Stunden-Fenster beginnt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wenn ein neues Fünf-Stunden-Fenster beginnt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When a new five-hour window starts"
+          }
+        }
+      }
+    },
+    "Wetterstation — %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wetterstation — %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weather station — %@"
+          }
+        }
+      }
+    },
+    "Widget-Stand:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widget-Stand:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widget figures:"
+          }
+        }
+      }
+    },
+    "Wirklich alles löschen?": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wirklich alles löschen?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Really delete everything?"
+          }
+        }
+      }
+    },
+    "Wo die Zugangsdaten liegen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wo die Zugangsdaten liegen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where the credentials are kept"
+          }
+        }
+      }
+    },
+    "Wohin diese App spricht": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wohin diese App spricht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where this app connects to"
+          }
+        }
+      }
+    },
+    "Zeigt das verfügbare Guthaben. Einen Endpunkt für Tages-, Monats- oder Gesamtverbrauch bietet Kimi nicht — diese Zahlen stehen nur in der Weboberfläche.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt das verfügbare Guthaben. Einen Endpunkt für Tages-, Monats- oder Gesamtverbrauch bietet Kimi nicht — diese Zahlen stehen nur in der Weboberfläche."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the available balance. Kimi offers no endpoint for daily, monthly or total usage — those figures exist only in the web interface."
+          }
+        }
+      }
+    },
+    "Zeigt die App mit Beispieldaten — ohne Anmeldung und ohne Schlüssel. Verlassen lässt sie sich jederzeit über das Band am oberen Rand.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt die App mit Beispieldaten — ohne Anmeldung und ohne Schlüssel. Verlassen lässt sie sich jederzeit über das Band am oberen Rand."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the app with sample data — without a sign-in and without keys. It can be left at any time via the banner at the top."
+          }
+        }
+      }
+    },
+    "Zeigt die Kosten der Anthropic-API — etwas anderes als das Abo, das über die Anmeldung oben läuft. Wer beides zahlt, sieht beides.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt die Kosten der Anthropic-API — etwas anderes als das Abo, das über die Anmeldung oben läuft. Wer beides zahlt, sieht beides."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the cost of the Anthropic API — a different thing from the plan that runs via the sign-in above. Anyone paying for both sees both."
+          }
+        }
+      }
+    },
+    "Zeigt die Kosten der OpenAI-API — heute, laufender Monat, gesamt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt die Kosten der OpenAI-API — heute, laufender Monat, gesamt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the cost of the OpenAI API — today, current month, total."
+          }
+        }
+      }
+    },
+    "Zeigt wieder die Zahlen der eigenen Konten.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeigt wieder die Zahlen der eigenen Konten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the figures from your own accounts again."
+          }
+        }
+      }
+    },
+    "Zu finden in der Kontoverwaltung der oben gewählten Plattform.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu finden in der Kontoverwaltung der oben gewählten Plattform."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found in the account settings of the platform selected above."
+          }
+        }
+      }
+    },
+    "Zu finden unter console.anthropic.com → Settings → Admin keys.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu finden unter console.anthropic.com → Settings → Admin keys."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found under console.anthropic.com → Settings → Admin keys."
+          }
+        }
+      }
+    },
+    "Zu finden unter platform.openai.com → Settings → Admin keys. Es muss ein Organisations-Admin-Schlüssel sein; ein gewöhnlicher Projektschlüssel gibt die Kosten nicht heraus.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu finden unter platform.openai.com → Settings → Admin keys. Es muss ein Organisations-Admin-Schlüssel sein; ein gewöhnlicher Projektschlüssel gibt die Kosten nicht heraus."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found under platform.openai.com → Settings → Admin keys. It has to be an organisation admin key; an ordinary project key does not hand out the cost figures."
+          }
+        }
+      }
+    },
+    "Zufallswerte nicht verfügbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zufallswerte nicht verfügbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "random values not available"
+          }
+        }
+      }
+    },
+    "Zugangsdaten liegen im Schlüsselbund dieses Geräts. Alles Übrige — Darstellung, Schwellen, welche Karten eingeklappt sind — steht in den Benutzervorgaben der App. Inhalte deiner Unterhaltungen liest die App nie; sie holt Kontingente und Beträge, mehr nicht.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugangsdaten liegen im Schlüsselbund dieses Geräts. Alles Übrige — Darstellung, Schwellen, welche Karten eingeklappt sind — steht in den Benutzervorgaben der App. Inhalte deiner Unterhaltungen liest die App nie; sie holt Kontingente und Beträge, mehr nicht."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Credentials are kept in this device’s keychain. Everything else — appearance, thresholds, which cards are collapsed — is in the app’s user defaults. The app never reads the content of your conversations; it fetches quotas and amounts, nothing more."
+          }
+        }
+      }
+    },
+    "Zugriffsschlüssel erhalten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriffsschlüssel erhalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access token received"
+          }
+        }
+      }
+    },
+    "Zugriffsschlüssel gültig bis %@ · wird selbsttätig erneuert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriffsschlüssel gültig bis %@ · wird selbsttätig erneuert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access token valid until %@ · renewed automatically"
+          }
+        }
+      }
+    },
+    "Zugriffsschlüssel wird geholt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriffsschlüssel wird geholt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching the access token"
+          }
+        }
+      }
+    },
+    "Zuletzt aktualisiert:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zuletzt aktualisiert:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last updated:"
+          }
+        }
+      }
+    },
+    "Zurücksetzung %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurücksetzung %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset %@"
+          }
+        }
+      }
+    },
+    "Zurücksetzung %@ · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zurücksetzung %@ · %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset %@ · %@"
+          }
+        }
+      }
+    },
+    "aktiv": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aktiv"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "active"
+          }
+        }
+      }
+    },
+    "angemeldet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "angemeldet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "signed in"
+          }
+        }
+      }
+    },
+    "arbeitet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "arbeitet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "working"
+          }
+        }
+      }
+    },
+    "aus": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "off"
+          }
+        }
+      }
+    },
+    "aus Sitzungsprotokoll": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aus Sitzungsprotokoll"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from the session log"
+          }
+        }
+      }
+    },
+    "ausgeklappt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ausgeklappt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "expanded"
+          }
+        }
+      }
+    },
+    "braucht einen laufenden Mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "braucht einen laufenden Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "needs a Mac that is running"
+          }
+        }
+      }
+    },
+    "davon Bargeld": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "davon Bargeld"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "of which cash"
+          }
+        }
+      }
+    },
+    "davon Gutscheine": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "davon Gutscheine"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "of which vouchers"
+          }
+        }
+      }
+    },
+    "der Seite von OpenAI": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "der Seite von OpenAI"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the OpenAI page"
+          }
+        }
+      }
+    },
+    "eingeklappt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "eingeklappt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "collapsed"
+          }
+        }
+      }
+    },
+    "fehlt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fehlt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "missing"
+          }
+        }
+      }
+    },
+    "fehlt (nicht angemeldet)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fehlt (nicht angemeldet)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "missing (not signed in)"
+          }
+        }
+      }
+    },
+    "gerade eben": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gerade eben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "just now"
+          }
+        }
+      }
+    },
+    "gpt-5.2 · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gpt-5.2 · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gpt-5.2 · month"
+          }
+        }
+      }
+    },
+    "gpt-5.2-mini · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gpt-5.2-mini · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gpt-5.2-mini · month"
+          }
+        }
+      }
+    },
+    "iOS lädt die Sprachdateien beim Start der App. Ein Schalter an dieser Stelle könnte deshalb erst beim nächsten Start greifen — bis dahin stünde die Oberfläche weiter in der alten Sprache. In den Systemeinstellungen steht dieselbe Wahl unter «Sprache», und das System startet AI Cockpit dabei gleich neu. Deshalb führt der Weg dorthin.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS lädt die Sprachdateien beim Start der App. Ein Schalter an dieser Stelle könnte deshalb erst beim nächsten Start greifen — bis dahin stünde die Oberfläche weiter in der alten Sprache. In den Systemeinstellungen steht dieselbe Wahl unter «Sprache», und das System startet AI Cockpit dabei gleich neu. Deshalb führt der Weg dorthin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS loads an app’s language files when the app starts. A switch at this spot could therefore only take effect at the next launch — until then the interface would stay in the old language. The system settings hold the same choice under “Language”, and the system restarts AI Cockpit as part of it. That is why the way leads there."
+          }
+        }
+      }
+    },
+    "ja": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ja"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yes"
+          }
+        }
+      }
+    },
+    "kein Anmeldecode in der Antwort": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein Anmeldecode in der Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no sign-in code in the response"
+          }
+        }
+      }
+    },
+    "kein JSON-Objekt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein JSON-Objekt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "not a JSON object"
+          }
+        }
+      }
+    },
+    "kein Kontingent in der Antwort": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein Kontingent in der Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no quota in the response"
+          }
+        }
+      }
+    },
+    "kein Verbrauch über die Schnittstelle": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein Verbrauch über die Schnittstelle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no usage via the API"
+          }
+        }
+      }
+    },
+    "kein Wert": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein Wert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no value"
+          }
+        }
+      }
+    },
+    "kein access_token in der Antwort": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kein access_token in der Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no access_token in the response"
+          }
+        }
+      }
+    },
+    "keine Kontingente": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keine Kontingente"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no quotas"
+          }
+        }
+      }
+    },
+    "keine Kontostandsdaten in der Antwort": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keine Kontostandsdaten in der Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no balance data in the response"
+          }
+        }
+      }
+    },
+    "keine bekannten Fenster in der Antwort": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keine bekannten Fenster in der Antwort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no known windows in the response"
+          }
+        }
+      }
+    },
+    "keiner abgelegt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keiner abgelegt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "none stored"
+          }
+        }
+      }
+    },
+    "kritisch": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kritisch"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "critical"
+          }
+        }
+      }
+    },
+    "leer": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "leer"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "empty"
+          }
+        }
+      }
+    },
+    "nein": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nein"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no"
+          }
+        }
+      }
+    },
+    "neues Fenster": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "neues Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "new window"
+          }
+        }
+      }
+    },
+    "nicht angemeldet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nicht angemeldet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "not signed in"
+          }
+        }
+      }
+    },
+    "nicht eingerichtet": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nicht eingerichtet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "not set up"
+          }
+        }
+      }
+    },
+    "noch keine Daten": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch keine Daten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no data yet"
+          }
+        }
+      }
+    },
+    "noch nie": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "noch nie"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "never"
+          }
+        }
+      }
+    },
+    "nur während der Anmeldung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "nur während der Anmeldung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "only during sign-in"
+          }
+        }
+      }
+    },
+    "o4-mini · Monat": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o4-mini · Monat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "o4-mini · month"
+          }
+        }
+      }
+    },
+    "ruht": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ruht"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "idle"
+          }
+        }
+      }
+    },
+    "unbekannt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unbekannt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unknown"
+          }
+        }
+      }
+    },
+    "unvollständige Freigabe": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unvollständige Freigabe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "incomplete approval"
+          }
+        }
+      }
+    },
+    "verweigert (Status %d)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "verweigert (Status %d)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "denied (status %d)"
+          }
+        }
+      }
+    },
+    "vom Mac übernommen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vom Mac übernommen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "taken from the Mac"
+          }
+        }
+      }
+    },
+    "vor %lld d": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld d"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld d ago"
+          }
+        }
+      }
+    },
+    "vor %lld h": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld h"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h ago"
+          }
+        }
+      }
+    },
+    "vor %lld min": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld min"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min ago"
+          }
+        }
+      }
+    },
+    "vor %lld s": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vor %lld s"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s ago"
+          }
+        }
+      }
+    },
+    "vorhanden (Abo %@, gültig bis %@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vorhanden (Abo %@, gültig bis %@)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "present (plan %@, valid until %@)"
+          }
+        }
+      }
+    },
+    "vorhanden (…%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vorhanden (…%@)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "present (…%@)"
+          }
+        }
+      }
+    },
+    "vorhanden, aber unlesbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vorhanden, aber unlesbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "present, but unreadable"
+          }
+        }
+      }
+    },
+    "wartet auf dich": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wartet auf dich"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "waiting for you"
+          }
+        }
+      }
+    },
+    "wird aktualisiert …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wird aktualisiert …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refreshing …"
+          }
+        }
+      }
+    },
+    "wird geholt …": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "wird geholt …"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fetching …"
+          }
+        }
+      }
+    },
+    "«Abmelden und alle lokalen Daten löschen» auf der Über-Seite entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Abmelden und alle lokalen Daten löschen» auf der Über-Seite entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Sign out and delete all local data” on the About page removes both sign-ins and all three keys from the keychain, resets appearance, region and thresholds to their defaults, and deletes the figures the widget shows."
+          }
+        }
+      }
+    },
+    "Öffne die Adresse und gib diesen Code ein:": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne die Adresse und gib diesen Code ein:"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the address and enter this code:"
+          }
+        }
+      }
+    },
+    "Über": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
+          }
+        }
+      }
+    }
+  }
+}
