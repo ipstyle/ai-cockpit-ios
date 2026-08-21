@@ -2,15 +2,17 @@
 
 *[Deutsch](README.de.md)*
 
-All your AI usage limits in one place, on your iPhone or iPad — Claude, the
-OpenAI and Anthropic APIs, Kimi, ChatGPT/Codex, and your running Claude Code
-sessions.
+All your AI usage limits in one place, on your iPhone or iPad — Claude,
+ChatGPT/Codex, the OpenAI and Anthropic APIs, and Kimi. On the Home Screen and
+the Lock Screen, too.
 
 This is the iOS edition of [AI Cockpit for macOS](https://apps.apple.com/app/id6802014255).
-It is **free**. It is **not** open source: the source code is shared with the
-paid macOS edition and stays closed.
+It is **free**. The source is in this repository so you can read what the app
+does with your credentials — that is not the same as a free licence, see
+[LICENSE](LICENSE).
 
-> **Status: in development.** Nothing is downloadable yet.
+> **Status: 1.0 submitted, waiting for Apple's review.** Once it is through,
+> the Installation section below gets the App Store link.
 
 ## Requirements
 
@@ -19,40 +21,59 @@ paid macOS edition and stays closed.
 
 ## What it shows
 
-| Card | What you get | Needs a running Mac |
-|---|---|:---:|
-| Claude | Usage windows of the subscription, forecast | no |
-| OpenAI API | Cost and token usage per model | no |
-| Anthropic API | Costs via an admin key — separate from the subscription above | no |
-| Kimi | Balance and quota | no |
-| ChatGPT / Codex | Quota windows from the Codex CLI's session logs | **yes** |
-| Sessions | Claude Code sessions currently running, with token usage | **yes** |
+| Card | What you get | Needs |
+|---|---|---|
+| Claude | Usage windows of the subscription, forecast | Claude sign-in |
+| ChatGPT / Codex | Quota windows of the ChatGPT subscription | ChatGPT sign-in |
+| OpenAI API | Cost and token usage per model | Admin key, optional |
+| Anthropic API | Costs via an admin key — separate from the subscription above | Admin key, optional |
+| Kimi | Balance and quota | API key, optional |
 
-## Two cards need a running Mac
+Every card talks to its service directly from your device over HTTPS. There is
+no server of ours in between, and no Mac is required.
 
-The first four cards talk to the respective service directly from your device
-over HTTPS — no Mac involved. The last two cannot work that way, for a simple
-reason: **the data they show does not exist anywhere except on a Mac.**
+Cards you don't use can be hidden, and the rest reordered — an account you
+don't have should not cost you a row on the screen.
 
-- The ChatGPT/Codex quota comes from session log files that the Codex CLI
-  writes locally on the machine it runs on. There is no API for it — reading
-  the files is the only way to get the numbers, on macOS or on iOS.
-- The list of active Claude Code sessions reflects a local process on the
-  Mac. It only exists while Claude Code is actually running there.
+## Widgets
 
-Neither exists on Apple's servers or on ours, so an iPhone or iPad cannot
-reach them directly. The macOS edition of AI Cockpit already reads this data
-locally and writes it into **your own private iCloud storage**. AI Cockpit
-Mobile reads it back from there. Apple's iCloud carries it between your
-devices — no server of ours is involved, and if the Mac is off or the macOS
-app isn't running, these two cards simply stay empty.
+The widget shows **every card you have switched on**, not just one service:
+one line per source, in that provider's colour, with the figure that matters
+and how old it is.
+
+| Size | What fits |
+|---|---|
+| Small | The most pressing source as a ring |
+| Medium | One line per active source |
+| Large | Per source a block with its usage windows as bars |
+| Lock Screen, circular | The most pressing source as a ring |
+| Lock Screen, rectangular | The most pressing source with its figure |
+
+The widget keeps showing the last figures it has and marks how old they are,
+rather than going blank while it fetches. The app does the same on a cold
+start.
+
+## Demo mode
+
+The app can be switched into a demo mode that shows a complete set of
+plausible figures without any sign-in. It exists so you can see what the app
+does before handing it a single credential — and so a screenshot never has to
+show anybody's real spending.
+
+## No Claude Code sessions card
+
+The macOS edition has a sixth card listing the Claude Code sessions currently
+running. **This edition does not**, deliberately: those sessions are files and
+a process on a Mac, with no endpoint to ask. Bridging them over iCloud was
+possible, but for a single card it would have cost the macOS app iCloud
+entitlements and a fresh review round at Apple. Decided against on 2026-08-20.
 
 ## Relationship to the macOS edition
 
 This edition shares its source code with the paid macOS edition (App Store ID
 6802014255) but is distributed and versioned separately, starting at 1.0.
-Feature parity is not promised — the six cards above are what this edition
-covers today.
+Feature parity is not promised — the cards above are what this edition covers
+today. Sparklines, history and the sessions card stay on the Mac.
 
 ## Not affiliated with the AI providers
 
@@ -63,14 +84,29 @@ names above are used only to identify which services each card belongs to.
 
 ## Installation
 
-Not yet available. Once published, this section will link to the App Store
-listing.
+Not yet available — 1.0 is with Apple for review. This section will link to
+the App Store listing once it is published.
 
 ## Privacy
 
 No accounts of our own, no tracking, no analytics, no advertising, no
 in-app purchases, no server. Credentials live in your device's keychain. See
-[PRIVACY.md](PRIVACY.md) for every network destination.
+[PRIVACY.md](PRIVACY.md) for every network destination, or the published
+policy at <https://ipstyle.github.io/ai-cockpit-ios/privacy.html>.
+
+## Why this repository is public while the app is not open source
+
+This app reads credentials and displays spending figures. Anyone installing
+something like that should be able to read what happens to them — hence the
+source. **That still does not make it open source** in the sense of a free
+licence; what is permitted is in [LICENSE](LICENSE).
+
+## Building
+
+**This repository does not build on its own.** The shared core
+(`AgentDeckCore`) lives in the macOS project and is not part of this
+publication. `project.yml` references it over a relative path. Without it
+Xcode reports a missing package — that is intent, not a defect.
 
 ## License
 

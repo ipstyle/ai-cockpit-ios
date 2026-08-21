@@ -2,14 +2,16 @@
 
 *[English](README.md)*
 
-Alle KI-Nutzungslimits an einem Ort, auf dem iPhone oder iPad — Claude, die
-OpenAI- und Anthropic-Schnittstellen, Kimi, ChatGPT/Codex und die laufenden
-Claude-Code-Sitzungen.
+Alle KI-Nutzungslimits an einem Ort, auf dem iPhone oder iPad — Claude,
+ChatGPT/Codex, die OpenAI- und die Anthropic-Schnittstelle und Kimi. Auf dem
+Homescreen und dem Sperrbildschirm ebenso.
 
 Das ist die iOS-Fassung von [AI Cockpit für macOS](https://apps.apple.com/app/id6802014255).
 Sie ist **kostenlos**. Der Quellcode liegt offen, damit nachlesbar ist, was die
 App mit Zugangsdaten tut — eine freie Lizenz ist das nicht, siehe [LICENSE](LICENSE).
-> **Stand: in Entwicklung.** Es gibt noch nichts herunterzuladen.
+
+> **Stand: 1.0 eingereicht, wartet auf die Prüfung durch Apple.** Sobald sie
+> durch ist, bekommt der Abschnitt «Installation» den App-Store-Link.
 
 ## Voraussetzungen
 
@@ -18,43 +20,61 @@ App mit Zugangsdaten tut — eine freie Lizenz ist das nicht, siehe [LICENSE](LI
 
 ## Was sie zeigt
 
-| Karte | Inhalt | Braucht einen laufenden Mac |
-|---|---|:---:|
-| Claude | Nutzungsfenster des Abos, Hochrechnung | nein |
-| OpenAI-API | Kosten und Token je Modell | nein |
-| Anthropic-API | Kosten über einen Admin-Schlüssel — etwas anderes als das Abo darüber | nein |
-| Kimi | Kontostand und Kontingent | nein |
-| ChatGPT / Codex | Kontingente aus den Sitzungsprotokollen der Codex-CLI | **ja** |
-| Sitzungen | Laufende Claude-Code-Sitzungen mit Tokenverbrauch | **ja** |
+| Karte | Inhalt | Braucht |
+|---|---|---|
+| Claude | Nutzungsfenster des Abos, Hochrechnung | Claude-Anmeldung |
+| ChatGPT / Codex | Kontingente des ChatGPT-Abos | ChatGPT-Anmeldung |
+| OpenAI-API | Kosten und Token je Modell | Admin-Schlüssel, freiwillig |
+| Anthropic-API | Kosten über einen Admin-Schlüssel — etwas anderes als das Abo darüber | Admin-Schlüssel, freiwillig |
+| Kimi | Kontostand und Kontingent | API-Schlüssel, freiwillig |
 
-## Zwei Karten brauchen einen laufenden Mac
+Jede Karte spricht direkt vom Gerät aus per HTTPS mit ihrem Dienst. Dazwischen
+steht kein Server von uns, und ein Mac wird nicht gebraucht.
 
-Die ersten vier Karten sprechen direkt vom Gerät aus per HTTPS mit dem
-jeweiligen Dienst — ohne Mac. Bei den letzten beiden geht das nicht, aus einem
-einfachen Grund: **Die Zahlen, die sie zeigen, gibt es nirgends ausser auf
-einem Mac.**
+Karten, die man nicht braucht, lassen sich ausblenden, der Rest umsortieren —
+ein Konto, das man nicht hat, soll keine Zeile auf dem Bildschirm kosten.
 
-- Das ChatGPT/Codex-Kontingent stammt aus Sitzungsprotokollen, die die
-  Codex-CLI lokal auf dem Rechner ablegt, auf dem sie läuft. Dafür gibt es
-  keine Schnittstelle — das Lesen der Dateien ist der einzige Weg an die
-  Zahlen, auf dem Mac genauso wie auf iOS.
-- Die Liste aktiver Claude-Code-Sitzungen bildet einen lokalen Prozess auf
-  dem Mac ab. Es gibt sie nur, solange Claude Code dort tatsächlich läuft.
+## Widgets
 
-Beides liegt weder auf Apples Servern noch auf unseren, ein iPhone oder iPad
-kommt also nicht direkt heran. Die macOS-Fassung von AI Cockpit liest diese
-Daten bereits lokal und legt sie in der **privaten iCloud des Nutzers** ab.
-AI Cockpit Mobile liest sie von dort zurück. Die Übertragung zwischen den
-Geräten übernimmt Apples iCloud — kein Server von uns ist beteiligt, und ist
-der Mac aus oder die macOS-App nicht offen, bleiben diese beiden Karten
-schlicht leer.
+Das Widget zeigt **alle eingeschalteten Karten**, nicht nur einen Dienst: eine
+Zeile je Quelle, in der Farbe des jeweiligen Anbieters, mit der Zahl, auf die
+es ankommt, und ihrem Alter.
+
+| Grösse | Was hineinpasst |
+|---|---|
+| Klein | Die dringendste Quelle als Ring |
+| Mittel | Eine Zeile je aktiver Quelle |
+| Gross | Je Quelle ein Block mit den Nutzungsfenstern als Balken |
+| Sperrbildschirm, rund | Die dringendste Quelle als Ring |
+| Sperrbildschirm, rechteckig | Die dringendste Quelle mit ihrer Zahl |
+
+Das Widget zeigt weiter die zuletzt bekannten Zahlen und schreibt dazu, wie alt
+sie sind, statt beim Abrufen leer zu werden. Die App macht es beim Kaltstart
+genauso.
+
+## Demomodus
+
+Die App lässt sich in einen Demomodus schalten, der einen vollständigen Satz
+plausibler Zahlen ohne jede Anmeldung zeigt. Es gibt ihn, damit man sieht, was
+die App tut, bevor man ihr einen einzigen Zugang gibt — und damit für einen
+Screenshot nie jemandes echte Ausgaben herhalten müssen.
+
+## Keine Karte für Claude-Code-Sitzungen
+
+Die macOS-Fassung hat eine sechste Karte mit den gerade laufenden
+Claude-Code-Sitzungen. **Diese Fassung hat sie nicht**, und zwar bewusst: Diese
+Sitzungen sind Dateien und ein Prozess auf einem Mac, es gibt keine Stelle, die
+man danach fragen könnte. Eine Brücke über iCloud wäre machbar gewesen — für
+**eine** Karte hätte sie die Mac-App iCloud-Rechte und damit eine neue
+Prüfrunde bei Apple gekostet. Entschieden am 20.08.2026.
 
 ## Verhältnis zur macOS-Fassung
 
 Diese Fassung teilt sich den Quellcode mit der kostenpflichtigen macOS-Fassung
 (App-Store-ID 6802014255), wird aber separat vertrieben und gezählt, beginnend
-bei 1.0. Ein Funktionsgleichstand wird nicht zugesichert — die sechs Karten
-oben sind der heutige Stand dieser Fassung.
+bei 1.0. Ein Funktionsgleichstand wird nicht zugesichert — die Karten oben sind
+der heutige Stand dieser Fassung. Verlaufskurven, Historie und die
+Sitzungskarte bleiben auf dem Mac.
 
 ## Nicht verbunden mit den KI-Anbietern
 
@@ -66,18 +86,15 @@ dienen nur der Zuordnung, welche Karte zu welchem Dienst gehört.
 
 ## Installation
 
-Noch nicht verfügbar. Nach der Veröffentlichung verlinkt dieser Abschnitt auf
-den App-Store-Eintrag.
+Noch nicht verfügbar — 1.0 liegt bei Apple zur Prüfung. Nach der
+Veröffentlichung verlinkt dieser Abschnitt auf den App-Store-Eintrag.
 
 ## Datenschutz
 
 Kein eigenes Konto, kein Tracking, keine Analyse, keine Werbung, keine
 In-App-Käufe, kein Server. Zugangsdaten liegen im Schlüsselbund des Geräts.
-Alle Netzwerkziele stehen in [PRIVACY.md](PRIVACY.md).
-
-## Lizenz
-
-Kostenlos nutzbar, nicht quelloffen — siehe [LICENSE](LICENSE). © 2026 ipstyle
+Alle Netzwerkziele stehen in [PRIVACY.md](PRIVACY.md), die veröffentlichte
+Fassung unter <https://ipstyle.github.io/ai-cockpit-ios/privacy.html>.
 
 ## Warum dieses Repo öffentlich ist, die App aber nicht quelloffen
 
@@ -92,3 +109,7 @@ trotzdem nicht**; was erlaubt ist, steht in [LICENSE](LICENSE).
 (`AgentDeckCore`) liegt im Projekt der macOS-Fassung und ist nicht Teil dieser
 Veröffentlichung. `project.yml` bindet ihn über einen relativen Pfad ein. Ohne
 ihn meldet Xcode ein fehlendes Paket — das ist kein Fehler, sondern Absicht.
+
+## Lizenz
+
+Kostenlos nutzbar, nicht quelloffen — siehe [LICENSE](LICENSE). © 2026 ipstyle
