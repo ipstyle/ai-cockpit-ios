@@ -37,11 +37,41 @@ struct WidgetZustand: Codable, Sendable, Equatable {
         /// 0…100.
         let prozent: Double
         let zuruecksetzung: Date?
+        /// Dieselbe Angabe auf zwei bis drei Zeichen: «5H», «1W».
+        ///
+        /// Auf der kleinen Kachel ist nebeneinander Platz für zwei Fenster,
+        /// wenn ihre Namen kurz sind, und für keines, wenn sie «5 Stunden»
+        /// heissen. Die Kurzform wird beim Schreiben festgelegt, nicht hier
+        /// abgeleitet: Das Widget schreibt hin, was die App entschieden hat.
+        let kurzname: String
 
-        init(name: String, prozent: Double, zuruecksetzung: Date?) {
+        init(name: String, prozent: Double, zuruecksetzung: Date?, kurzname: String? = nil) {
             self.name = name
             self.prozent = prozent
             self.zuruecksetzung = zuruecksetzung
+            self.kurzname = kurzname ?? name
+        }
+
+        /// Alte Stände kennen `kurzname` nicht — dort gilt der lange Name.
+        init(from decoder: any Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            name = try c.decode(String.self, forKey: .name)
+            prozent = try c.decode(Double.self, forKey: .prozent)
+            zuruecksetzung = try c.decodeIfPresent(Date.self, forKey: .zuruecksetzung)
+            kurzname = try c.decodeIfPresent(String.self, forKey: .kurzname) ?? name
+        }
+
+        /// Aus der Dauer statt aus dem Text: «5 Stunden» heisst auf Englisch
+        /// «5 hours» und auf der Kachel müsste beides «5H» ergeben. Die Minuten
+        /// kennen keine Sprache.
+        static func ausDauer(_ minuten: Int?) -> String? {
+            guard let minuten, minuten > 0 else { return nil }
+            switch minuten {
+            case ..<60:    return "\(minuten)M"
+            case ..<1440:  return "\(minuten / 60)H"
+            case ..<10080: return "\(minuten / 1440)D"
+            default:       return "\(minuten / 10080)W"
+            }
         }
     }
 

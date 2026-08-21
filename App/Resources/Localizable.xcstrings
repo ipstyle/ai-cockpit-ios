@@ -2153,6 +2153,40 @@
         }
       }
     },
+    "Der Abruf dauerte zu lange.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Abruf dauerte zu lange."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The fetch took too long."
+          }
+        }
+      }
+    },
+    "Der Abruf ist fehlgeschlagen.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Abruf ist fehlgeschlagen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The fetch failed."
+          }
+        }
+      }
+    },
     "Der Code gilt 15 Minuten. Danach fängt die Anmeldung von vorn an.": {
       "extractionState": "manual",
       "localizations": {
@@ -2846,6 +2880,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "The two fine marks on the bar show where the thresholds lie — they say it without colour, and therefore also in a tinted widget."
+          }
+        }
+      }
+    },
+    "Dienst nicht erreichbar": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dienst nicht erreichbar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "service unreachable"
           }
         }
       }
@@ -5135,6 +5186,23 @@
         }
       }
     },
+    "Verbindung fehlgeschlagen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung fehlgeschlagen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "connection failed"
+          }
+        }
+      }
+    },
     "Verfügbares Guthaben": {
       "extractionState": "manual",
       "localizations": {
@@ -5526,6 +5594,23 @@
         }
       }
     },
+    "Zeitüberschreitung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitüberschreitung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timed out"
+          }
+        }
+      }
+    },
     "Zu finden in der Kontoverwaltung der oben gewählten Plattform.": {
       "extractionState": "manual",
       "localizations": {
@@ -5709,6 +5794,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Reset %@ · %@"
+          }
+        }
+      }
+    },
+    "abgebrochen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "abgebrochen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cancelled"
           }
         }
       }
@@ -5951,6 +6053,23 @@
         }
       }
     },
+    "genutzt": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "genutzt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "used"
+          }
+        }
+      }
+    },
     "gerade eben": {
       "extractionState": "manual",
       "localizations": {
@@ -5964,6 +6083,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "just now"
+          }
+        }
+      }
+    },
+    "gesicherte Verbindung fehlgeschlagen": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gesicherte Verbindung fehlgeschlagen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "secure connection failed"
           }
         }
       }
@@ -6134,6 +6270,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "no access_token in the response"
+          }
+        }
+      }
+    },
+    "keine Internetverbindung": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "keine Internetverbindung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no internet connection"
           }
         }
       }
@@ -6648,19 +6801,19 @@
         }
       }
     },
-    "«Abmelden und alle lokalen Daten löschen» auf der Über-Seite entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt.": {
+    "«Abmelden und alles löschen» zuunterst in den Einstellungen entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt.": {
       "extractionState": "manual",
       "localizations": {
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "«Abmelden und alle lokalen Daten löschen» auf der Über-Seite entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt."
+            "value": "«Abmelden und alles löschen» zuunterst in den Einstellungen entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "“Sign out and delete all local data” on the About page removes both sign-ins and all three keys from the keychain, resets appearance, region and thresholds to their defaults, and deletes the figures the widget shows."
+            "value": "“Sign out and delete everything”, at the bottom of Settings, removes both sign-ins and all three keys from the keychain, resets appearance, region and thresholds to their defaults, and deletes the figures the widget shows."
           }
         }
       }

@@ -134,6 +134,15 @@ struct Card<Content: View>: View {
                     .foregroundStyle(palette.faint)
                     .frame(width: 12)
             }
+            // Das Zeichen vor dem Namen. Die farbige Kante links steht weiter
+            // am Rand, aber sie liegt ausserhalb des Blicks, sobald er auf dem
+            // Text ruht — und in der Widget-Zeile gibt es sie gar nicht. Ein
+            // Zeichen an dieser Stelle findet man in beiden.
+            AnbieterZeichen(name: title, anbieter: provider, groesse: 22)
+                // In einer Zeile, die an der Schriftlinie ausgerichtet ist,
+                // hätte ein Feld ohne Text keine — es sässe sonst auf der
+                // Unterkante und damit sichtbar zu tief.
+                .alignmentGuide(.firstTextBaseline) { $0.height * 0.78 }
             // Der Name trägt die Anbieterfarbe: die schmale Kante links sieht
             // man nicht mehr, sobald der Blick auf dem Text liegt.
             Text(title)
@@ -276,6 +285,7 @@ struct UsageBar: View {
                 // Punkt und damit nicht von «leer» zu unterscheiden.
                 Capsule()
                     .fill(tint)
+                    .overlay { Glanz().clipShape(Capsule()) }
                     .frame(width: anteil > 0 ? max(width * anteil, height) : 0)
             }
         }
@@ -362,12 +372,23 @@ struct LimitRow: View {
                     // nicht gibt.
                     .font(muted ? .caption.weight(.semibold) : .callout.weight(.semibold))
                     .monospacedDigit()
-                    .foregroundStyle(tint)
+                    // **Ruhig, solange nichts ist.**
+                    //
+                    // Vorher trug die Zahl durchgehend die Auslastungsfarbe —
+                    // bei fünf Karten mit je zwei bis drei Fenstern also ein
+                    // Dutzend farbiger Zahlen, von denen keine etwas meldete.
+                    // Farbe, die immer da ist, sagt nichts mehr, wenn sie
+                    // einmal etwas sagen müsste. Jetzt ist sie ein Signal:
+                    // normal steht weiss, orange heisst eng, rot heisst voll.
+                    .foregroundStyle(level == .normal ? palette.primary : tint)
                 if let symbol = level.symbol {
                     Image(systemName: symbol)
                         .font(.caption)
                         .foregroundStyle(tint)
                 }
+                Text("genutzt")
+                    .font(.caption2)
+                    .foregroundStyle(palette.faint)
             }
         }
     }
@@ -375,7 +396,7 @@ struct LimitRow: View {
     /// Ein Text statt drei nebeneinander: So bricht die Zeile bei grosser
     /// Schrift um, statt den Trenner in die nächste Zeile zu schieben.
     private func resetZeile(_ reset: Date, palette: Theme.Palette) -> some View {
-        Text("Zurücksetzung \(reset.formatted(.relative(presentation: .named))) · \(Theme.absolute(reset))")
+        Text("Zurücksetzung \(Theme.absolute(reset))")
             .font(.caption2)
             .monospacedDigit()
             .foregroundStyle(palette.faint)

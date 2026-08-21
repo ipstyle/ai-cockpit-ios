@@ -143,7 +143,7 @@ struct DatenschutzSeite: View {
     @ViewBuilder
     private var beimAbmelden: some View {
         Section {
-            Text("«Abmelden und alle lokalen Daten löschen» auf der Über-Seite entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt.")
+            Text("«Abmelden und alles löschen» zuunterst in den Einstellungen entfernt beide Anmeldungen und alle drei Schlüssel aus dem Schlüsselbund, setzt Darstellung, Region und Schwellen auf die Vorgaben zurück und löscht den Stand, den das Widget zeigt.")
             Text("Bei den Diensten selbst ändert sich dadurch nichts. Die Schlüssel bleiben dort gültig und müssten in der jeweiligen Konsole widerrufen werden — diese App kann das nicht für dich tun.")
         } header: {
             Text("Beim Abmelden")

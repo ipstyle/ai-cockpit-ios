@@ -65,6 +65,14 @@ enum Theme {
         /// damit sich der helle Modus nachjustieren lässt, ohne ein Dutzend
         /// Ansichten anzufassen.
         let warning, critical: Color
+        /// Was **auf** einer Anbieterfarbe steht — der Buchstabe im
+        /// Anbieterzeichen.
+        ///
+        /// Eine feste Farbe reicht dafür nicht: Im dunklen Modus sind die
+        /// Anbieterfarben hell (Claude ist ein warmes Orange), im hellen Modus
+        /// deutlich nachgedunkelt (dasselbe Claude ist dort fast Kastanie).
+        /// Schwarz wäre einmal richtig und einmal unlesbar.
+        let aufAnbieter: Color
 
         func color(for provider: Provider) -> Color {
             switch provider {
@@ -97,7 +105,8 @@ enum Theme {
         sessions: Color(red: 0.68, green: 0.75, blue: 0.30),
         kimi: Color(red: 0.93, green: 0.45, blue: 0.55),
         warning: .orange,
-        critical: .red
+        critical: .red,
+        aufAnbieter: Color(white: 0.10)
     )
 
     // Warmes Papier statt steriles Weiss. Die Akzentfarben sind gegenüber der
@@ -118,7 +127,8 @@ enum Theme {
         sessions: Color(red: 0.28, green: 0.32, blue: 0.03),
         kimi: Color(red: 0.60, green: 0.10, blue: 0.20),
         warning: .orange,
-        critical: .red
+        critical: .red,
+        aufAnbieter: Color(red: 0.965, green: 0.933, blue: 0.874)
     )
 
     /// Im Zweifel dunkel: Das ist die Vorgabe der Mac-Fassung, und sollte

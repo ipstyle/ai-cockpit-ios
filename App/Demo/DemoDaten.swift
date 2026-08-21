@@ -56,13 +56,16 @@ enum DemoDaten {
     private static func claude(_ jetzt: Date) -> CockpitCard {
         let fuenfStunden = LimitWindow(label: String(localized: "5 Stunden"),
                                        usedPercent: 63.4,
-                                       resetsAt: jetzt.addingTimeInterval(2 * 3600 + 11 * 60))
+                                       resetsAt: jetzt.addingTimeInterval(2 * 3600 + 11 * 60),
+                                       windowMinutes: 300)
         let woche = LimitWindow(label: String(localized: "7 Tage"),
                                 usedPercent: 81.7,
-                                resetsAt: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600))
+                                resetsAt: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600),
+                                windowMinutes: 10080)
         let opus = LimitWindow(label: "Opus",
                                usedPercent: 37.2,
-                               resetsAt: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600))
+                               resetsAt: jetzt.addingTimeInterval(3 * 86400 + 6 * 3600),
+                               windowMinutes: 10080)
 
         return CockpitCard(
             id: .claude, title: "Claude", provider: .claude,
@@ -106,10 +109,12 @@ enum DemoDaten {
     private static func chatGPT(_ jetzt: Date) -> CockpitCard {
         let fuenfStunden = LimitWindow(label: String(localized: "5 Stunden"),
                                        usedPercent: 48.9,
-                                       resetsAt: jetzt.addingTimeInterval(1 * 3600 + 47 * 60))
+                                       resetsAt: jetzt.addingTimeInterval(1 * 3600 + 47 * 60),
+                                       windowMinutes: 300)
         let woche = LimitWindow(label: String(localized: "7 Tage"),
                                 usedPercent: 71.5,
-                                resetsAt: jetzt.addingTimeInterval(4 * 86400 + 9 * 3600))
+                                resetsAt: jetzt.addingTimeInterval(4 * 86400 + 9 * 3600),
+                                windowMinutes: 10080)
 
         return CockpitCard(
             id: .chatgpt, title: "ChatGPT", provider: .chatGPT,

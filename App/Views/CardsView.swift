@@ -131,9 +131,19 @@ extension WidgetZustand.Quelle {
             // Kontingent ist das die erste — das nächste Fenster, das
             // zuschlägt. Bei Geld nimmt die Karte selbst Stellung.
             kurz: karte.widgetKurz ?? zeilen.first ?? kurz.text,
-            fenster: karte.limits.map {
-                .init(name: $0.window.label, prozent: $0.window.usedPercent,
-                      zuruecksetzung: $0.window.resetsAt)
+            fenster: karte.limits.enumerated().map { rang, grenze in
+                // **Nur die ersten beiden bekommen eine Kurzform aus der
+                // Dauer.** Das sind die Fenster des Abos selbst — fünf Stunden
+                // und eine Woche. Was danach kommt, sind modellbezogene
+                // Fenster, und die tragen den Namen des Modells («Opus»,
+                // «Fable»). Auch sie laufen eine Woche; «1W» dreimal
+                // untereinander wäre richtig und nutzlos.
+                .init(name: grenze.window.label,
+                      prozent: grenze.window.usedPercent,
+                      zuruecksetzung: grenze.window.resetsAt,
+                      kurzname: rang < 2
+                          ? WidgetZustand.Fenster.ausDauer(grenze.window.windowMinutes)
+                          : grenze.window.label)
             },
             prozent: karte.limits.first?.window.usedPercent,
             warnung: kurz.warning,

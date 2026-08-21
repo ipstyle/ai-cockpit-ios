@@ -223,6 +223,7 @@ struct WidgetBalken: View {
                 // einzelner Punkt und von «leer» nicht zu unterscheiden.
                 Capsule()
                     .fill(ton)
+                    .overlay { Glanz().clipShape(Capsule()) }
                     .frame(width: anteil > 0 ? max(breite * anteil, hoehe) : 0)
             }
         }
@@ -267,7 +268,10 @@ struct FensterZeile: View {
                 Text(Format.percent(fenster.prozent))
                     .font(.caption.weight(.semibold))
                     .monospacedDigit()
-                    .foregroundStyle(farbe)
+                    // Ruhig, solange nichts ist — dieselbe Regel wie auf der
+                    // Karte in der App: normal hell, orange heisst eng, rot
+                    // heisst voll. Farbe, die immer da ist, meldet nichts mehr.
+                    .foregroundStyle(stufe == .normal ? ton.haupt : farbe)
 
                 if let symbol = stufe.symbol {
                     // Eine Warnung behält ihre Farbe, auch wenn der Homescreen
@@ -428,39 +432,103 @@ struct QuellenListe: View {
         let stufe = quelle.prozent.map { LimitThresholds.standard.level($0) }
         let akzent = ton.farbe(fuer: anbieter)
 
-        return HStack(alignment: .center, spacing: 5) {
-            // Dieselbe Akzentkante wie auf der Karte in der App. Sie ist das
-            // Wiedererkennungszeichen der Quelle — und sie trägt auch dann noch,
-            // wenn der eingetönte Homescreen den Farbton verwirft: Dann ist sie
-            // eine hellere Fläche neben einer dunkleren.
-            RoundedRectangle(cornerRadius: 1)
-                .fill(akzent)
-                .frame(width: 2.5)
-                .frame(maxHeight: .infinity)
+        // **Auf der kleinen Kachel stehen die Werte unter dem Namen.**
+        //
+        // Nebeneinander gemessen: «Claude 5H 63 % 1W 82 %» braucht auf 158
+        // Punkten mehr Platz, als da ist — iOS kürzt dann die Zahlen weg
+        // («5H 6…»), also genau das, weswegen man hinsieht. Zwei Zeilen kosten
+        // eine Quelle weniger auf der Kachel und behalten dafür alle Ziffern.
+        return Group {
+            if knapp {
+                VStack(alignment: .leading, spacing: 0) {
+                    kopfzeile(quelle, stufe: stufe, anbieter: anbieter, ton: ton)
+                    werte(quelle, stufe: stufe, anbieter: anbieter, ton: ton)
+                        .padding(.leading, 20)
+                }
+            } else {
+                HStack(alignment: .center, spacing: 5) {
+                    kopfzeile(quelle, stufe: stufe, anbieter: anbieter, ton: ton)
+                    werte(quelle, stufe: stufe, anbieter: anbieter, ton: ton)
+                }
+            }
+        }
+        .frame(minHeight: knapp ? 24 : 15)
+        .font(knapp ? .system(size: 10) : .caption2)
+        .accessibilityElement(children: .combine)
+        // VoiceOver bekommt immer die volle Fassung — dort ist kein Platz knapp.
+        .accessibilityLabel("\(quelle.name): \(quelle.wert)")
+    }
+
+    /// Zeichen, Warnung, Name — der Teil, der links steht.
+    private func kopfzeile(_ quelle: WidgetZustand.Quelle, stufe: LimitLevel?,
+                           anbieter: Theme.Provider, ton: WidgetTon) -> some View {
+        HStack(alignment: .center, spacing: 5) {
+            // Das Anbieterzeichen statt der schmalen Farbkante.
+            //
+            // Die Kante war zweieinhalb Punkte breit und trug ihre Aussage
+            // ausschliesslich in der Farbe — auf einem eingetönten Homescreen
+            // blieb davon eine hellere Fläche neben einer dunkleren, und
+            // welche Quelle das war, stand nur im Namen daneben. Der Buchstabe
+            // sagt es in beiden Fällen.
+            AnbieterZeichen(name: quelle.name, anbieter: anbieter,
+                            groesse: knapp ? 15 : 17, einfarbig: ton.einfarbig)
             if let symbol = stufe?.symbol {
                 Image(systemName: symbol)
                     .widgetAccentedRenderingMode(.fullColor)
                     .font(.system(size: 9))
+                    .foregroundStyle(ton.warnung)
             }
             Text(quelle.name)
                 .fontWeight(.semibold)
-                .foregroundStyle(akzent)
+                .foregroundStyle(ton.haupt)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .layoutPriority(1)
             Spacer(minLength: 3)
+        }
+    }
+
+    /// Was rechts in der Zeile steht.
+    ///
+    /// **Beschriftung grau, Zahl hell.** Vorher stand dort eine fertige
+    /// Zeichenkette — «5 h: 64 % · 7 d: 57 %» — in einer Farbe und einer
+    /// Stärke. Auf einer Kachel von 155 Punkten ist das eine Zeile, die man
+    /// entziffert statt liest: Fünf Zahlen und vier Trennzeichen sehen alle
+    /// gleich wichtig aus. Getrennt gesetzt trägt das Auge nur noch die Zahlen
+    /// ab, die Beschriftung tritt zurück.
+    ///
+    /// Geldkarten führen keine Fenster; sie behalten ihre Kurzfassung.
+    @ViewBuilder
+    private func werte(_ quelle: WidgetZustand.Quelle, stufe: LimitLevel?,
+                       anbieter: Theme.Provider, ton: WidgetTon) -> some View {
+        let fenster = Array(quelle.fenster.prefix(knapp ? 2 : 3))
+        if fenster.isEmpty {
             Text(knapp ? quelle.kurz : quelle.wert)
                 .monospacedDigit()
                 .fontWeight(.semibold)
                 .foregroundStyle(stufe.map { ton.wert($0, anbieter: anbieter) } ?? ton.haupt)
                 .lineLimit(1)
                 .minimumScaleFactor(0.55)
+        } else {
+            HStack(spacing: 6) {
+                ForEach(Array(fenster.enumerated()), id: \.offset) { _, einzelnes in
+                    let eigene = LimitThresholds.standard.level(einzelnes.prozent)
+                    HStack(spacing: 2.5) {
+                        Text(einzelnes.kurzname)
+                            .foregroundStyle(ton.leise)
+                        Text(Format.percent(einzelnes.prozent))
+                            .monospacedDigit()
+                            .fontWeight(.semibold)
+                            // Ruhig, bis es eng wird — dieselbe Regel wie auf
+                            // der Karte in der App.
+                            .foregroundStyle(eigene == .normal ? ton.haupt
+                                                              : ton.wert(eigene, anbieter: anbieter))
+                    }
+                }
+            }
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
         }
-        .frame(minHeight: knapp ? 13 : 15)
-        .font(knapp ? .system(size: 10) : .caption2)
-        .accessibilityElement(children: .combine)
-        // VoiceOver bekommt immer die volle Fassung — dort ist kein Platz knapp.
-        .accessibilityLabel("\(quelle.name): \(quelle.wert)")
     }
 }
 
@@ -505,9 +573,12 @@ struct QuellenBlock: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    AnbieterZeichen(name: quelle.name, anbieter: anbieter,
+                                    groesse: 16, einfarbig: ton.einfarbig)
+                        .alignmentGuide(.firstTextBaseline) { $0.height * 0.78 }
                     Text(quelle.name)
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(akzent)
+                        .foregroundStyle(ton.haupt)
                         .lineLimit(1)
                     Spacer(minLength: 6)
                     // Bei einer Quelle mit Fenstern stünde der Wert zweimal —
@@ -564,7 +635,7 @@ struct KleineAnsicht: View {
                 Text("AI Cockpit")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(ton.akzent)
-                QuellenListe(eintrag: eintrag, maximum: 4, knapp: true)
+                QuellenListe(eintrag: eintrag, maximum: 3, knapp: true)
                 Spacer(minLength: 0)
                 StandZeile(eintrag: eintrag, kompakt: true)
                 if eintrag.anmeldungFaellig { AnmeldeHinweis(kompakt: true) }
