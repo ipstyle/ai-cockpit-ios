@@ -38,6 +38,11 @@ enum Quellenstand<Wert> {
     case fehler(String)
 }
 
+/// Ein Stand wird zwischen Aufgaben gereicht — jeder Abruf läuft seit 1.0.1 in
+/// einer eigenen. Bedingt, weil die Zusicherung dann von dem abhängt, was
+/// tatsächlich darin liegt.
+extension Quellenstand: Sendable where Wert: Sendable {}
+
 @MainActor
 @Observable
 final class Cockpit {
@@ -63,6 +68,13 @@ final class Cockpit {
     /// Läufe **derselben** Quelle würden denselben Refresh-Token doppelt
     /// einlösen. Genau das ist gesperrt — nicht mehr.
     private(set) var laufendeQuellen: Set<CardLayout.Card> = []
+
+    /// Die laufenden Abrufe, je Quelle einer.
+    ///
+    /// Sie gehören **dieser** Klasse und keinem Ansichtstask — das ist der
+    /// Unterschied, an dem die Karten vorher scheiterten. Wer sie abwarten
+    /// will, tut das als Zaungast; sein eigener Abbruch schlägt nicht durch.
+    private var laeufe: [CardLayout.Card: Task<Void, Never>] = [:]
 
     /// Läuft überhaupt noch etwas? Für den Kreisel im Aktualisieren-Knopf.
     var wirdAktualisiert: Bool { laufendeQuellen.isEmpty == false }
@@ -224,7 +236,13 @@ final class Cockpit {
             guard !erzwingen, let erhoben = stand(quelle) else { return true }
             return jetzt.timeIntervalSince(erhoben) >= Self.mindestalter(quelle)
         }
-        guard !offen.isEmpty else { return }
+        // Nichts Neues anzustossen — aber wer wartet, soll auf das warten, was
+        // gerade läuft, statt sofort zurückzukommen und die Liste hochschnellen
+        // zu lassen.
+        guard !offen.isEmpty else {
+            for (_, aufgabe) in laeufe { await aufgabe.value }
+            return
+        }
         laufendeQuellen.formUnion(offen)
 
         claudeAbo = Self.abostufe()
@@ -241,14 +259,37 @@ final class Cockpit {
         // Die Karten werden nach jeder eintreffenden Quelle neu gebaut. Das ist
         // ein paarmal mehr Arbeit für die Ansicht und der Grund, warum man
         // überhaupt etwas sieht, während der Rest noch läuft.
-        await withTaskGroup(of: Void.self) { gruppe in
-            for quelle in offen {
-                gruppe.addTask { [weak self] in await self?.hole(quelle, region: region) }
+        // **Je Quelle eine eigene, unstrukturierte Aufgabe — und das ist der
+        // ganze Punkt.**
+        //
+        // Vorher stand hier eine `withTaskGroup`. Die ist strukturiert: Ihre
+        // Wurzel war der Task, den SwiftUI für `.refreshable` anlegt, und
+        // dessen Lebensdauer gehört SwiftUI. Verwarf SwiftUI ihn — was es beim
+        // Herunterziehen tut, sobald die Ansicht neu ausgewertet wird —, brachen
+        // **alle** Kinder in derselben Mikrosekunde ab. `URLSession` meldete
+        // dann Fehler −999, und drei Karten standen gleichzeitig auf
+        // «cancelled», obwohl kein Dienst gestört war. Am Gerät gesehen am
+        // 21.08.2026.
+        //
+        // `Task {}` erbt den Akteur, aber **nicht** den Abbruch. Damit gehört
+        // die Netzarbeit wieder uns.
+        var gestartet: [Task<Void, Never>] = []
+        for quelle in offen {
+            let aufgabe = Task { [weak self] in
+                guard let self else { return }
+                await self.hole(quelle, region: region)
             }
+            laeufe[quelle] = aufgabe
+            gestartet.append(aufgabe)
         }
+        // Zaungast, nicht Eigentümer: Wer hier wartet, darf abgebrochen werden,
+        // ohne dass die Abrufe es merken. Gewartet wird auf die **eigenen**
+        // Aufgaben — über `laeufe` nachzuschlagen hiesse, versehentlich auf den
+        // Nachfolger eines längst fertigen Abrufs zu warten.
+        for aufgabe in gestartet { await aufgabe.value }
+
         // Sicherungsnetz: `hole` streicht jede Quelle selbst, sobald sie da ist.
-        // Wird ein Auftrag abgebrochen, käme er dort nicht mehr an — und eine
-        // Quelle, die für immer als «läuft» gilt, liesse sich nie wieder
+        // Eine Quelle, die für immer als «läuft» gilt, liesse sich nie wieder
         // anstossen.
         laufendeQuellen.subtract(offen)
 
@@ -267,25 +308,59 @@ final class Cockpit {
     /// Die Quelle wird gestrichen, bevor neu gebaut wird — so verschwindet ihr
     /// Name aus der Kopfzeile im selben Zug, in dem ihre Zahlen erscheinen.
     private func hole(_ quelle: CardLayout.Card, region: KimiClient.Region) async {
+        let frist = Self.frist(quelle)
         switch quelle {
-        case .claude:    claude = await Abruf.claude()
-        case .chatgpt:   codex = await Abruf.codex()
-        case .openai:    openAI = await Abruf.openAI()
-        case .anthropic: anthropic = await Abruf.anthropic()
-        case .kimi:      kimi = await Abruf.kimi(region: region)
+        case .claude:
+            claude = uebernimm(claude, await Frist.hoechstens(frist) { await Abruf.claude() } ?? nil)
+        case .chatgpt:
+            codex = uebernimm(codex, await Frist.hoechstens(frist) { await Abruf.codex() } ?? nil)
+        case .openai:
+            openAI = uebernimm(openAI, await Frist.hoechstens(frist) { await Abruf.openAI() } ?? nil)
+        case .anthropic:
+            anthropic = uebernimm(anthropic, await Frist.hoechstens(frist) { await Abruf.anthropic() } ?? nil)
+        case .kimi:
+            kimi = uebernimm(kimi, await Frist.hoechstens(frist) { await Abruf.kimi(region: region) } ?? nil)
         case .sitzungen:
             // Die einzige Karte, die tatsächlich am Mac hängt: Die laufenden
             // Sitzungen stehen in Dateien, für die es keinen Netz-Endpunkt gibt.
             break
         }
+        laeufe[quelle] = nil
         laufendeQuellen.remove(quelle)
-        // **Der Zeitstempel gehört hierhin, nicht ans Ende eines Durchgangs.**
-        // Sonst kann ein zweiter, kurzer Lauf über die schnellen Quellen
-        // «Aktualisiert vor 40 s» melden, während der erste OpenAI-Abruf noch
-        // gar nie durchgekommen ist. «Aktualisiert vor x» heisst: seither hat
-        // keine Quelle mehr etwas Neues gebracht.
-        if laufendeQuellen.isEmpty { zuletztAktualisiert = Date() }
+        // **Je Quelle, nicht erst am Ende eines Durchgangs.**
+        //
+        // Vorher stand hier `if laufendeQuellen.isEmpty`. Eine Quelle, die nie
+        // fertig wurde — der Kostenabruf lief am Gerät 35 Minuten —, hielt den
+        // Zeitstempel damit für immer auf ihrem alten Wert fest. Über frisch
+        // geholten Karten stand dann «Aktualisiert vor 34 min». Seit die Fristen
+        // oben greifen, wird jede Quelle fertig; der Zeitstempel beantwortet
+        // schlicht «wann habe ich zuletzt gefragt».
+        zuletztAktualisiert = Date()
         baueKarten()
+    }
+
+    /// Wie lange eine Quelle höchstens brauchen darf.
+    ///
+    /// Der Kostenabruf bei OpenAI blättert durch Tagesbuckets und ist dadurch
+    /// von Natur aus langsamer als die anderen vier. Er bekommt mehr Zeit —
+    /// aber eben nicht unbegrenzt viel.
+    private static func frist(_ quelle: CardLayout.Card) -> TimeInterval {
+        quelle == .openai ? 90 : 45
+    }
+
+    /// Nimmt ein Ergebnis an — oder behält, was schon da war.
+    ///
+    /// `nil` heisst: Der Abruf hatte nichts zu sagen, weil er abgebrochen wurde
+    /// oder seine Frist ablief. Dann gilt: **Stehende Zahlen sind besser als
+    /// eine Fehlermeldung.** Nur wer noch nie etwas hatte, bekommt einen
+    /// Hinweis — und der sagt, was los war, statt «cancelled».
+    private func uebernimm<Wert>(_ alt: Quellenstand<Wert>,
+                                 _ neu: Quellenstand<Wert>?) -> Quellenstand<Wert> {
+        guard neu == nil else { return neu! }
+        switch alt {
+        case .daten, .nichtEingerichtet: return alt
+        case .laedt, .fehler: return .fehler(String(localized: "Der Abruf dauerte zu lange."))
+        }
     }
 
     /// Aktualisiert nur, wenn die Zahlen alt genug sind.
@@ -847,7 +922,7 @@ private enum Abruf {
 
     // MARK: Claude
 
-    static func claude() async -> Quellenstand<ClaudeLimits> {
+    static func claude() async -> Quellenstand<ClaudeLimits>? {
         let zugaenge = Zugaenge()
         var token: OAuthTokens
 
@@ -886,7 +961,7 @@ private enum Abruf {
             // auftreten — dann sagt es erst die Gegenstelle.
             guard case .unauthorized = fehler, !schonErneuert,
                   let erneuert = try? await auth.refresh(token) else {
-                return .fehler(fehler.userMessage)
+                return stand(fehler)
             }
             zugaenge.schreibToken(erneuert)
             do {
@@ -894,10 +969,10 @@ private enum Abruf {
             } catch {
                 // Die Meldung des **zweiten** Versuchs zählt — sonst stünde da
                 // die längst behobene erste Ursache.
-                return .fehler(meldung(error))
+                return stand(error)
             }
         } catch {
-            return .fehler(meldung(error))
+            return stand(error)
         }
     }
 
@@ -906,7 +981,7 @@ private enum Abruf {
     /// Wie `claude()`, nur beim anderen Dienst — und mit demselben Grundsatz:
     /// **genau einmal** erneuern. Ein zweiter Anlauf im selben Durchgang löste
     /// denselben Schlüssel ein zweites Mal ein.
-    static func codex() async -> Quellenstand<CodexLimits> {
+    static func codex() async -> Quellenstand<CodexLimits>? {
         let zugaenge = Zugaenge()
         var token: CodexToken
 
@@ -943,13 +1018,13 @@ private enum Abruf {
             // Versuch sinnlos. Der Claude-Pfad darüber macht es richtig.
             guard case .unauthorized = fehler, !schonErneuert,
                   let erneuert = try? await auth.erneuere(token) else {
-                return .fehler(fehler.userMessage)
+                return stand(fehler)
             }
             zugaenge.schreibCodexToken(erneuert)
             do { return .daten(try await usage.fetch(token: erneuert)) }
-            catch { return .fehler(meldung(error)) }
+            catch { return stand(error) }
         } catch {
-            return .fehler(meldung(error))
+            return stand(error)
         }
     }
 
@@ -963,47 +1038,78 @@ private enum Abruf {
     /// Genau die beiden sind es, die bei OpenAI regelmässig ins Zeitlimit
     /// laufen. Diese Karte zeigt Heute, laufenden Monat und Gesamt — sie hat
     /// über eine Minute auf Daten gewartet, die sie nie angesehen hat.
-    static func openAI() async -> Quellenstand<OpenAICosts> {
+    static func openAI() async -> Quellenstand<OpenAICosts>? {
         guard let schluessel = Zugaenge().liesText(.openAIAdminKey), !schluessel.isEmpty else {
             return .nichtEingerichtet
         }
         do {
-            return .daten(try await OpenAIUsageClient().costs(adminKey: schluessel))
+            // **Nur nachholen, was neu ist.** Der Kern kann die Karte auch in
+            // einem Rutsch füllen (`costs`) — das sind drei Jahre Tages-Eimer
+            // über rund sieben Seiten, nacheinander, und genau der Abruf hing
+            // am Gerät 35 Minuten. Vergangene Tage ändern sich nicht mehr;
+            // `OpenAIVerlauf` hält sie fest, hier kommt nur der Nachschlag.
+            let jetzt = Date()
+            var verlauf = OpenAIVerlauf.lies(fuer: schluessel)
+            let ab = verlauf.abWann(jetzt: jetzt)
+            let frisch = try await OpenAIUsageClient().costBuckets(adminKey: schluessel, since: ab)
+            let alle = verlauf.verschmolzen(mit: frisch, ab: ab)
+            verlauf.merke(alle, jetzt: jetzt)
+            verlauf.schreib()
+            return .daten(OpenAIUsageClient.summiere(alle, now: jetzt))
         } catch {
-            return .fehler(meldung(error))
+            return stand(error)
         }
     }
 
     // MARK: Anthropic-API
 
-    static func anthropic() async -> Quellenstand<AnthropicCosts> {
+    static func anthropic() async -> Quellenstand<AnthropicCosts>? {
         guard let schluessel = Zugaenge().liesText(.anthropicAdminKey), !schluessel.isEmpty else {
             return .nichtEingerichtet
         }
         do {
             return .daten(try await AnthropicAdminClient().fetch(adminKey: schluessel))
         } catch {
-            return .fehler(meldung(error))
+            return stand(error)
         }
     }
 
     // MARK: Kimi
 
-    static func kimi(region: KimiClient.Region) async -> Quellenstand<KimiClient.Balance> {
+    static func kimi(region: KimiClient.Region) async -> Quellenstand<KimiClient.Balance>? {
         guard let schluessel = Zugaenge().liesText(.kimiAPIKey), !schluessel.isEmpty else {
             return .nichtEingerichtet
         }
         do {
             return .daten(try await KimiClient().balance(apiKey: schluessel, region: region))
         } catch {
-            return .fehler(meldung(error))
+            return stand(error)
         }
     }
 
+    /// Was aus einem Fehler wird — oder `nil`, wenn nichts daraus werden soll.
+    ///
+    /// **`nil` heisst: Der Abruf hat nichts zu sagen.** Ein Abbruch ist keine
+    /// Auskunft über den Dienst; die Karte behält dann, was sie hatte. Vorher
+    /// wurde jeder Abbruch zu einem `.fehler` mit dem nackten Systemwort
+    /// «cancelled» und einem Knopf «Erneut versuchen» — der Weg, auf dem drei
+    /// Karten gleichzeitig scheiterten, obwohl kein Dienst gestört war.
+    private static func stand<Wert>(_ fehler: any Error) -> Quellenstand<Wert>? {
+        if Task.isCancelled { return nil }
+        if let anbieter = fehler as? ProviderError, case .abgebrochen = anbieter { return nil }
+        if fehler is CancellationError { return nil }
+        return .fehler(meldung(fehler))
+    }
+
     /// `ProviderError` bringt bereits einen Satz mit, den man einem Menschen
-    /// zeigen kann — samt Wartezeit bei einer Drosselung. Alles andere hat
-    /// wenigstens `localizedDescription`.
+    /// zeigen kann — samt Wartezeit bei einer Drosselung.
+    ///
+    /// Der Rückfall ist bewusst ein eigener Satz und **nicht**
+    /// `localizedDescription`: Systemtexte sind für Entwickler geschrieben und
+    /// wechseln mit der Sprache des Systems statt mit der der App. Genau so
+    /// landete «cancelled» auf einer deutschen Oberfläche.
     private static func meldung(_ fehler: any Error) -> String {
-        (fehler as? ProviderError)?.userMessage ?? fehler.localizedDescription
+        (fehler as? ProviderError)?.userMessage
+            ?? String(localized: "Der Abruf ist fehlgeschlagen.")
     }
 }

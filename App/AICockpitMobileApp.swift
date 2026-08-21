@@ -31,7 +31,6 @@ struct WurzelAnsicht: View {
 
     var body: some View {
         CardsView(cards: cockpit.karten,
-                  lastUpdated: cockpit.zuletztAktualisiert,
                   laufend: cockpit.laufendeNamen,
                   thresholds: cockpit.schwellen,
                   collapsedCards: $cockpit.eingeklappteKarten,

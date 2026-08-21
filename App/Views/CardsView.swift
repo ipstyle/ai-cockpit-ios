@@ -145,7 +145,6 @@ extension WidgetZustand.Quelle {
 
 struct CardsView: View {
     let cards: [CockpitCard]
-    var lastUpdated: Date?
     /// Namen der Quellen, die gerade noch geholt werden.
     ///
     /// Eine Liste statt eines `Bool`: Solange **irgendetwas** lief, stand hier
@@ -185,7 +184,6 @@ struct CardsView: View {
     }
 
     init(cards: [CockpitCard],
-         lastUpdated: Date? = nil,
          laufend: [String] = [],
          thresholds: LimitThresholds = .standard,
          collapsedCards: Binding<String>,
@@ -193,7 +191,6 @@ struct CardsView: View {
          openSettings: @escaping () -> Void = {},
          cardAction: @escaping (CardLayout.Card) -> Void = { _ in }) {
         self.cards = cards
-        self.lastUpdated = lastUpdated
         self.laufend = laufend
         self.thresholds = thresholds
         self._collapsedCards = collapsedCards
@@ -229,10 +226,19 @@ struct CardsView: View {
                 Text("AI Cockpit")
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(palette.primary)
-                Text(sortiermodus ? String(localized: "Reihenfolge ändern") : updatedText)
-                    .font(.caption)
-                    .foregroundStyle(palette.faint)
-                    .fixedSize(horizontal: false, vertical: true)
+                // **Nur im Sortiermodus steht hier etwas.**
+                //
+                // Vorher stand hier dauerhaft «Aktualisiert vor 34 min ·
+                // OpenAI-API läuft noch». Das sagte, was jede Kachel ohnehin
+                // selbst trägt — nur ungenauer, weil ein einziger Zeitstempel
+                // für fünf verschieden alte Quellen gilt. Und solange eine
+                // Quelle hing, log er obendrein. Weg damit.
+                if sortiermodus {
+                    Text("Reihenfolge ändern")
+                        .font(.caption)
+                        .foregroundStyle(palette.faint)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
@@ -290,7 +296,6 @@ struct CardsView: View {
                   busy: laeuft) {
                 Task { await refresh() }
             }
-            .disabled(laeuft)
 
             knopf(systemImage: "gearshape",
                   label: String(localized: "Einstellungen"),
@@ -323,32 +328,6 @@ struct CardsView: View {
     }
 
     private var laeuft: Bool { laufend.isEmpty == false }
-
-    /// Was unter dem Titel steht — und zwar so genau, wie es geht.
-    ///
-    /// Hier stand einmal pauschal «wird aktualisiert …», solange irgendetwas
-    /// lief. Der Unterschied zwischen Fortschritt und Hänger ist aber nicht der
-    /// Kreisel, sondern die Auskunft, worauf er wartet: Ein benannter
-    /// Nachzügler neben vier fertigen Karten liest sich als «gleich soweit»,
-    /// dieselbe Wartezeit ohne Namen als «steht».
-    private var updatedText: String {
-        _ = tick
-        let stand = lastUpdated.map { String(localized: "Aktualisiert \(Theme.ago($0))") }
-        guard laeuft else { return stand ?? String(localized: "noch keine Daten") }
-
-        let offen: String
-        switch (laufend.count, stand) {
-        case (1, .none): offen = String(localized: "\(laufend[0]) wird geholt …")
-        case (1, .some): offen = String(localized: "\(laufend[0]) läuft noch")
-        // Ab zwei Namen wäre die Zeile länger als der Bildschirm breit. Die
-        // Zahl sagt dasselbe, und wer es genauer wissen will, sieht es an den
-        // Karten selbst.
-        case (_, .none): offen = String(localized: "\(laufend.count) Quellen werden geholt …")
-        case (_, .some): offen = String(localized: "noch \(laufend.count) Quellen")
-        }
-        guard let stand else { return offen }
-        return "\(stand) · \(offen)"
-    }
 
     // MARK: Karten
 
@@ -636,7 +615,6 @@ private struct CardsVorschau: View {
 
     var body: some View {
         CardsView(cards: beispiel,
-                  lastUpdated: Date().addingTimeInterval(-95),
                   collapsedCards: $collapsed,
                   refresh: { })
     }

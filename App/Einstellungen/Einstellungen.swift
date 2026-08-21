@@ -268,6 +268,10 @@ final class Einstellungen {
         // gelöscht wurde — und genau an dieser Stelle geht das Vertrauen
         // verloren, das der Knopf herstellen soll.
         Zwischenspeicher.loesche()
+        // Dasselbe Argument gilt für die gespeicherten Kostentage: Sie sind die
+        // Grundlage der Gesamtsumme und gehören zum Konto, das gerade abgemeldet
+        // wird.
+        OpenAIVerlauf.loesche()
 
         AppGruppe.vorgaben?.removeObject(forKey: WidgetZustand.schluessel)
         WidgetCenter.shared.reloadAllTimelines()

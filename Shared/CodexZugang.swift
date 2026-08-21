@@ -216,7 +216,14 @@ public struct CodexAuth: Sendable {
         do {
             (daten, antwort) = try await session.data(for: anfrage)
         } catch {
-            throw ProviderError.network(error.localizedDescription)
+            // Ein Abbruch ist keine Auskunft über den Dienst, und der
+            // Systemtext gehört nicht auf die Karte — siehe `HTTPJSON`.
+            let code = (error as NSError).code
+            if code == NSURLErrorCancelled { throw ProviderError.abgebrochen }
+            if code == NSURLErrorTimedOut || code == NSURLErrorNetworkConnectionLost {
+                throw ProviderError.transient(String(localized: "Zeitüberschreitung"))
+            }
+            throw ProviderError.network(String(localized: "Verbindung fehlgeschlagen"))
         }
 
         let status = (antwort as? HTTPURLResponse)?.statusCode ?? 0
@@ -506,7 +513,14 @@ public struct CodexAuth: Sendable {
         do {
             (daten, antwort) = try await session.data(for: anfrage)
         } catch {
-            throw ProviderError.network(error.localizedDescription)
+            // Ein Abbruch ist keine Auskunft über den Dienst, und der
+            // Systemtext gehört nicht auf die Karte — siehe `HTTPJSON`.
+            let code = (error as NSError).code
+            if code == NSURLErrorCancelled { throw ProviderError.abgebrochen }
+            if code == NSURLErrorTimedOut || code == NSURLErrorNetworkConnectionLost {
+                throw ProviderError.transient(String(localized: "Zeitüberschreitung"))
+            }
+            throw ProviderError.network(String(localized: "Verbindung fehlgeschlagen"))
         }
         let status = (antwort as? HTTPURLResponse)?.statusCode ?? 0
         switch status {
@@ -601,7 +615,14 @@ public struct CodexUsageClient: Sendable {
         do {
             (daten, antwort) = try await session.data(for: anfrage)
         } catch {
-            throw ProviderError.network(error.localizedDescription)
+            // Ein Abbruch ist keine Auskunft über den Dienst, und der
+            // Systemtext gehört nicht auf die Karte — siehe `HTTPJSON`.
+            let code = (error as NSError).code
+            if code == NSURLErrorCancelled { throw ProviderError.abgebrochen }
+            if code == NSURLErrorTimedOut || code == NSURLErrorNetworkConnectionLost {
+                throw ProviderError.transient(String(localized: "Zeitüberschreitung"))
+            }
+            throw ProviderError.network(String(localized: "Verbindung fehlgeschlagen"))
         }
 
         let status = (antwort as? HTTPURLResponse)?.statusCode ?? 0
