@@ -2,6 +2,38 @@
 
 Alle nennenswerten Änderungen. Neueste Version zuoberst.
 
+## [1.0.1] — 21.08.2026 (Build 8)
+
+### Behoben
+- **Herunterziehen brach die eigenen Abrufe ab.** Alle Quellen liefen in einer
+  Aufgabengruppe, deren Wurzel der Task von SwiftUI war; verwarf SwiftUI ihn,
+  brachen sie gemeinsam ab. Auf drei Karten stand danach «cancelled» mit einem
+  Knopf «Erneut versuchen», obwohl kein Dienst gestört war. Jede Quelle läuft
+  jetzt in einer eigenen Aufgabe, die der App gehört.
+- **Ein Abbruch gilt nicht mehr als Fehler.** Wo Zahlen dastanden, bleiben sie
+  stehen; nur wer noch nie welche hatte, bekommt einen Hinweis — und der ist
+  ein Satz, kein Systemwort.
+- **Kein Abruf ohne Obergrenze.** `timeoutInterval` misst nur die Pause
+  zwischen zwei Lebenszeichen. Der Kostenabruf lief so 35 Minuten, hielt seine
+  Quelle als «unterwegs» fest und sperrte damit den Aktualisieren-Knopf — dem
+  Nutzer blieb nur das Herunterziehen, also genau der Weg, der brach.
+- Der Hinweis auf der Datenschutzseite nannte das Zurücksetzen noch «auf der
+  Über-Seite» und mit dem alten Namen.
+
+### Geändert
+- **Der Kostenabruf merkt sich, was er schon hat.** Vergangene Tage ändern sich
+  nicht; nachgeholt wird nur, was seit dem letzten Mal dazugekommen ist.
+- **Die Prozentzahl ist ruhig, bis es eng wird** — weiss statt durchgehend
+  farbig, orange ab der Warnschwelle, rot ab der kritischen.
+- **Jeder Dienst hat ein eigenes Zeichen**, ein Monogramm in seiner Farbe. Es
+  überlebt die Eintönung, die iOS Widgets verpasst.
+- **Widget-Zeilen trennen Beschriftung und Zahl** — «5H 63 %» statt einer
+  Zeichenkette in einer Farbe. Auf der kleinen Kachel stehen die Werte unter
+  dem Namen, sonst kürzt iOS die Ziffern weg.
+- Balken und Zeichen tragen ein Glanzlicht.
+- Die Zeile unter «AI Cockpit» ist weg. Sie sagte, was jede Kachel selbst
+  trägt, nur ungenauer — und solange eine Quelle hing, log sie.
+
 ## [1.0] — eingereicht 21.08.2026, in Prüfung (Build 7)
 
 Erste Fassung für iOS 26.
@@ -31,9 +63,3 @@ Erste Fassung für iOS 26.
   holt; der Knopf und das Ziehen holen weiterhin sofort.
 - Der OpenAI-Abruf holt nur noch, was die Karte zeigt.
 - Der Demomodus zeigt dasselbe Widget wie der Betrieb.
-
-### Bekannt
-- Der Hinweistext auf der Datenschutzseite in der App nennt das Zurücksetzen
-  noch «auf der Über-Seite» und mit dem alten Namen. Der Knopf steht seit
-  Build 4 in den Einstellungen selbst. Reine Textstelle, korrigiert in 1.0.1 —
-  nicht mehr in Build 7, der bereits bei Apple liegt.
