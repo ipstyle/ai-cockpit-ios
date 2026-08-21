@@ -10,7 +10,7 @@ Das ist die iOS-Fassung von [AI Cockpit für macOS](https://apps.apple.com/app/i
 Sie ist **kostenlos**. Der Quellcode liegt offen, damit nachlesbar ist, was die
 App mit Zugangsdaten tut — eine freie Lizenz ist das nicht, siehe [LICENSE](LICENSE).
 
-> **Stand: 1.0 eingereicht, wartet auf die Prüfung durch Apple.** Sobald sie
+> **Stand: 1.0.1 eingereicht, wartet auf die Prüfung durch Apple.** Sobald sie
 > durch ist, bekommt der Abschnitt «Installation» den App-Store-Link.
 
 ## Voraussetzungen
@@ -86,7 +86,7 @@ dienen nur der Zuordnung, welche Karte zu welchem Dienst gehört.
 
 ## Installation
 
-Noch nicht verfügbar — 1.0 liegt bei Apple zur Prüfung. Nach der
+Noch nicht verfügbar — 1.0.1 liegt bei Apple zur Prüfung. Nach der
 Veröffentlichung verlinkt dieser Abschnitt auf den App-Store-Eintrag.
 
 ## Datenschutz

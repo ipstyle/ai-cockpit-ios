@@ -11,7 +11,7 @@ It is **free**. The source is in this repository so you can read what the app
 does with your credentials — that is not the same as a free licence, see
 [LICENSE](LICENSE).
 
-> **Status: 1.0 submitted, waiting for Apple's review.** Once it is through,
+> **Status: 1.0.1 submitted, waiting for Apple's review.** Once it is through,
 > the Installation section below gets the App Store link.
 
 ## Requirements
@@ -84,7 +84,7 @@ names above are used only to identify which services each card belongs to.
 
 ## Installation
 
-Not yet available — 1.0 is with Apple for review. This section will link to
+Not yet available — 1.0.1 is with Apple for review. This section will link to
 the App Store listing once it is published.
 
 ## Privacy
