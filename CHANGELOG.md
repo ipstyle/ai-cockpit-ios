@@ -2,6 +2,30 @@
 
 Alle nennenswerten Änderungen. Neueste Version zuoberst.
 
+## [1.1] — 22.08.2026 (Build 9)
+
+### Neu
+- **Apple Watch.** Eine Uhr-Fassung reist in der iPhone-App mit: drei Ebenen —
+  ein Urteil in einem Satz («Reicht noch», «Wird knapp», «Fenster voll»), darunter
+  die Quellen als Liste, im Detail der Ring je Fenster. Dazu eine Komplikation in
+  allen vier Zuschnitten (rund, Ecke, rechteckig, einzeilig).
+- **Die Uhr zeigt, sie holt nicht.** Sie hält kein einziges Geheimnis. Für Claude
+  und ChatGPT darf ein Refresh-Token nur an einer Stelle eingelöst werden; eine
+  dritte Instanz im Rennen verlöre irgendwann und meldete den Nutzer ab. Übertragen
+  werden ausschliesslich fertige Anzeigewerte, über die Kopplung von Apple.
+- Das Urteil erfindet keine Meinung: Es benutzt die Schwellen aus den
+  Einstellungen und die Worte, die `LimitLevel` seit jeher für VoiceOver führt.
+- Ein Testziel für die iOS-Fassung — bisher wurde nur der Kern geprüft. Elf Tests
+  auf die Urteilsableitung.
+
+### Behoben
+- **`Shared/Ring.swift` liess sich für watchOS nicht übersetzen.** Der Typprüfer
+  gab bei der Berechnung der freien Innenfläche auf. In drei Schritten statt
+  einem; gerechnet wird dasselbe.
+- **Der Demomodus schrieb am gemeinsamen Weg vorbei.** Er legte seinen Stand
+  direkt ab; damit war das Widget aktuell und die Uhr blieb leer. Alle Wege
+  laufen jetzt über eine Stelle.
+
 ## [1.0.1] — 21.08.2026 (Build 8)
 
 ### Behoben

@@ -86,7 +86,7 @@ final class DemoModus {
 
         // Stösst das Widget an, sobald sich die Werte unterscheiden — und das
         // tun sie hier immer, sonst hätte es vorher schon Demozahlen gezeigt.
-        DemoDaten.widgetZustand().schreib()
+        UhrVersorgung.veroeffentliche(DemoDaten.widgetZustand())
     }
 
     /// Schaltet die Demo aus und stellt her, was vorher war.
@@ -104,6 +104,10 @@ final class DemoModus {
         laeuft = false
 
         stelleWidgetZustandHer()
+        // Dieselbe Überlegung wie beim Widget, eine Etage weiter: Ohne diesen
+        // Schub trüge die Uhr die Demozahlen weiter, und dort gibt es kein
+        // Band, das sie als erfunden ausweist.
+        UhrVersorgung.schiebeAktuellen()
         WidgetCenter.shared.reloadAllTimelines()
     }
 

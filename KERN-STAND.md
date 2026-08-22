@@ -5,7 +5,7 @@ Fortschreiben mit `Tools/kern-stand.sh --schreiben`.
 
 | | |
 |---|---|
-| Commit | `f6680207e131647b8e5526e9adf523dccfbad080` |
-| kurz | `f668020` |
-| Betreff | Give the cost summing a name and a lean way in |
-| festgehalten | 20.08.2026 |
+| Commit | `35c1b900a0bb8ed2c3d8a7f95ef7d1c1fc4f0393` |
+| kurz | `35c1b90` |
+| Betreff | Let the core build for watchOS |
+| festgehalten | 22.08.2026 |

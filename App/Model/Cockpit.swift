@@ -455,7 +455,7 @@ final class Cockpit {
     private func uebernehmeDemodaten() {
         karten = DemoDaten.karten()
         zuletztAktualisiert = Date()
-        DemoDaten.widgetZustand().schreib()
+        UhrVersorgung.veroeffentliche(DemoDaten.widgetZustand())
     }
 
     /// Die Kennungen der ausgeblendeten Karten, zerlegt.
@@ -848,8 +848,9 @@ final class Cockpit {
             // Ohne Claude gibt es keine Fenster für den Ring — die Liste der
             // übrigen Quellen aber schon, und die soll nicht mit verschwinden.
             guard !quellen.isEmpty else { return }
-            WidgetZustand(erhoben: quellen.map(\.stand).min() ?? Date(),
-                          fenster: [], quellen: quellen).schreib()
+            UhrVersorgung.veroeffentliche(
+                WidgetZustand(erhoben: quellen.map(\.stand).min() ?? Date(),
+                              fenster: [], quellen: quellen))
             return
         }
 
@@ -868,7 +869,8 @@ final class Cockpit {
         // die Aussage muss für alles gelten, was dort steht — nicht nur für die
         // Zeile, die zufällig zuletzt geholt wurde.
         let aeltester = ([werte.fetchedAt] + quellen.map(\.stand)).min() ?? werte.fetchedAt
-        WidgetZustand(erhoben: aeltester, fenster: fenster, quellen: quellen).schreib()
+        UhrVersorgung.veroeffentliche(
+            WidgetZustand(erhoben: aeltester, fenster: fenster, quellen: quellen))
     }
 
     // MARK: - Kleinkram

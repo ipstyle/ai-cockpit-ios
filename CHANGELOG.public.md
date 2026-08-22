@@ -1,5 +1,23 @@
 # AI Cockpit Mobile
 
+## 1.1 — mit Apple Watch
+
+Die Zahlen aufs Handgelenk.
+
+### Auf der Uhr
+Ein Satz zuerst: «Reicht noch», «Wird knapp», «Fenster voll». Darunter die Zahl,
+die dazu geführt hat, mit Balken und Rücksetzzeit. Eine Kronendrehung weiter
+stehen alle Quellen untereinander, ein Tipp weiter der Ring je Fenster.
+
+### Als Komplikation
+Rund, in der Ecke, rechteckig oder einzeilig — auf jedem Zifferblatt, das einen
+Platz dafür hat. Auch in der einfarbigen Darstellung lesbar: Jede Warnstufe hat
+ein eigenes Zeichen, nicht nur eine eigene Farbe.
+
+### Was die Uhr nicht tut
+Sie fragt die Dienste nicht selbst. Kein Zugang, kein Schlüssel, kein Token
+liegt auf ihr — die Zahlen kommen fertig vom iPhone. Eingerichtet wird dort.
+
 ## 1.0.1 — eingereicht, in Prüfung bei Apple
 
 Erste Fassung für iPhone und iPad, iOS 26.

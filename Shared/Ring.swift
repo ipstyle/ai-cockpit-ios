@@ -104,7 +104,15 @@ struct UsageRing: View {
             let inset = lineWidth / 2 + side * paddingRatio
             // Das grösste Quadrat im freien Innenkreis, minus etwas Luft — ein
             // Zeichen, das den Ring berührt, sieht aus wie ein Zeichenfehler.
-            let clear = max((side - 2 * inset - lineWidth) / 1.414 - side * paddingRatio, 0)
+            //
+            // In drei Schritten und nicht in einem: Als eine Zeile gab der
+            // Typprüfer für watchOS auf («unable to type-check this expression
+            // in reasonable time»). Sechs CGFloat-Operationen mit einem
+            // Literal dazwischen reichen dafür schon. Gerechnet wird
+            // unverändert dasselbe.
+            let innenDurchmesser = side - 2 * inset - lineWidth
+            let luft = side * paddingRatio
+            let clear = max(innenDurchmesser / 1.414 - luft, 0)
 
             ZStack {
                 // Dezenter Spurring, sonst ist der Füllstand bei kleinen Werten

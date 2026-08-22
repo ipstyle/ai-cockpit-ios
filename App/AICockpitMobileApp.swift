@@ -10,7 +10,26 @@ struct AICockpitMobileApp: App {
     @State private var cockpit = Cockpit()
 
     var body: some Scene {
-        WindowGroup { WurzelAnsicht(cockpit: cockpit) }
+        WindowGroup {
+            WurzelAnsicht(cockpit: cockpit)
+                .task { verbindeUhr() }
+        }
+    }
+
+    /// Meldet die Uhr an — und sagt ihr, was zu tun ist, wenn sie um frische
+    /// Zahlen bittet.
+    ///
+    /// Der Rückruf steht hier und nicht in `UhrVersorgung`: Dort läge sonst
+    /// eine zweite Abruflogik neben der aus `Cockpit`, und zwei Wege zu
+    /// denselben Zahlen sind einer zu viel. **Ohne Erzwingen** — eine Uhr, die
+    /// nachfragt, soll nicht den Kostenlauf auslösen, der eine Viertelstunde
+    /// Ruhe verdient hat.
+    private func verbindeUhr() {
+        UhrVersorgung.geteilt.aufAnfrage = {
+            await cockpit.aktualisiere()
+            return WidgetZustand.lies()
+        }
+        UhrVersorgung.geteilt.starte()
     }
 }
 
