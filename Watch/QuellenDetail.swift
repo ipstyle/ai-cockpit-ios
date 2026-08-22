@@ -14,29 +14,36 @@ struct QuellenDetail: View {
     var body: some View {
         let palette = Theme.palette(schema)
 
-        ScrollView {
-            VStack(spacing: 10) {
-                if quelle.fenster.isEmpty {
-                    // Geldkarten führen kein Kontingent. Was sie haben, ist die
-                    // Zeile, die auch die eingeklappte Karte auf dem iPhone
-                    // zeigt — an zwei Stellen verschieden zu formulieren hiesse,
-                    // zwei Fassungen zu pflegen.
+        Group {
+            if quelle.fenster.isEmpty {
+                // Geldkarten führen kein Kontingent. Was sie haben, ist die
+                // Zeile, die auch die eingeklappte Karte auf dem iPhone zeigt —
+                // an zwei Stellen verschieden zu formulieren hiesse, zwei
+                // Fassungen zu pflegen.
+                VStack(spacing: 8) {
                     Text(quelle.wert)
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(palette.primary)
-                        .padding(.top, 6)
-                } else {
+                    Text(Theme.ago(quelle.stand))
+                        .font(.caption2)
+                        .foregroundStyle(palette.faint)
+                }
+                .frame(maxWidth: .infinity)
+            } else {
+                // **Ein Fenster je Seite, geblättert mit der Krone.**
+                // Untereinander gescrollt schnitt der Bildschirm den zweiten
+                // Ring mitten durch die Zahl — auf einem Handgelenk sieht das
+                // nicht nach «da kommt noch etwas» aus, sondern nach einem
+                // Zeichenfehler. Geblättert steht jede Seite ganz da, und die
+                // Punkte am Rand sagen, wie viele es sind.
+                TabView {
                     ForEach(Array(quelle.fenster.enumerated()), id: \.offset) { _, fenster in
                         fensterBlock(fenster, palette: palette)
                     }
                 }
-
-                Text(Theme.ago(quelle.stand))
-                    .font(.caption2)
-                    .foregroundStyle(palette.faint)
+                .tabViewStyle(.verticalPage)
             }
-            .frame(maxWidth: .infinity)
         }
         .navigationTitle(quelle.name)
         .containerBackground(palette.background, for: .navigation)
@@ -44,15 +51,15 @@ struct QuellenDetail: View {
 
     private func fensterBlock(_ fenster: WidgetZustand.Fenster,
                               palette: Theme.Palette) -> some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 6) {
             UsageRing(percent: fenster.prozent,
                       provider: quelle.alsAnbieter,
                       label: .percent,
                       accessibilityTitle: "\(quelle.name) \(fenster.name)")
-                .frame(width: 84, height: 84)
+                .frame(width: 96, height: 96)
 
             Text(fenster.name)
-                .font(.caption2)
+                .font(.footnote)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .foregroundStyle(palette.secondary)
@@ -63,6 +70,6 @@ struct QuellenDetail: View {
                     .foregroundStyle(palette.faint)
             }
         }
-        .padding(.bottom, 4)
+        .frame(maxWidth: .infinity)
     }
 }
