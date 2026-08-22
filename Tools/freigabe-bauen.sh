@@ -32,11 +32,12 @@ xcodebuild test -scheme AICockpitMobile \
   -quiet | tail -5
 
 echo "▸ Archivieren"
+# Die Signierung steht je Ziel in project.yml unter configs.Release — hier
+# nichts überschreiben. Ein `CODE_SIGN_STYLE=Manual` von aussen gilt für alle
+# Ziele gleich und nimmt ihnen genau die Profilnamen weg, die sie brauchen.
 xcodebuild archive -scheme AICockpitMobile \
   -destination 'generic/platform=iOS' \
   -archivePath "$ARCHIV" \
-  DEVELOPMENT_TEAM=UGLPKQFM9U \
-  CODE_SIGN_STYLE=Manual \
   -quiet
 
 # Jede Kennung braucht ihr Profil beim Namen. Ein fehlender Eintrag ist der
@@ -77,7 +78,11 @@ echo "  $IPA"
 
 # Die Uhr-App muss wirklich drin sein. Ein Archiv ohne sie baut und exportiert
 # klaglos — auffallen würde es erst, wenn im Store keine Uhr-Fassung erscheint.
-if unzip -l "$IPA" | grep -q "Watch/AICockpitWatch.app/"; then
+# Bewusst über eine Datei statt über eine Pipe: `… | grep -q` meldet auf
+# diesem Rechner reproduzierbar Falsches, auch wenn der Text dasteht. Schon
+# einmal eine Stunde gekostet, bei der Prüfung der Landingpage.
+unzip -l "$IPA" > build/paketliste.txt
+if grep -q "Watch/AICockpitWatch.app/" build/paketliste.txt; then
   echo "  ✓ Uhr-Fassung enthalten"
 else
   echo "✗ Die Uhr-Fassung fehlt im Paket"; exit 1

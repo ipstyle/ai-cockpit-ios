@@ -47,6 +47,17 @@ targets:
         INFOPLIST_FILE: App/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: App/Resources/AICockpitMobile.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        # Signiert wird von Hand: Alberts App-Store-Connect-Schlüssel hat
+        # keine Rechte fürs Cloud-Signing, und ohne Profilnamen je Ziel
+        # bricht das Archiv mit «requires a provisioning profile with the
+        # App Groups feature» ab. Nur in Release — sonst liesse sich für
+        # ein angestecktes Gerät nichts mehr bauen.
+        Release:
+          DEVELOPMENT_TEAM: UGLPKQFM9U
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Apple Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "AI Cockpit Mobile App Store"
     sources:
       - path: App
       - path: Shared
@@ -70,6 +81,12 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.ip-style.aicockpitmobile.widget
         INFOPLIST_FILE: Widget/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: Widget/Resources/AICockpitWidget.entitlements
+      configs:
+        Release:
+          DEVELOPMENT_TEAM: UGLPKQFM9U
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Apple Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "AI Cockpit Mobile Widget App Store"
     sources:
       - path: Widget
       - path: Shared
@@ -90,6 +107,16 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.ip-style.aicockpitmobile.watchkitapp
         INFOPLIST_FILE: Watch/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: Watch/Resources/AICockpitWatch.entitlements
+        # Ohne diesen Namen liefert Apple bei der Prüfung 90713 und 90391 —
+        # die Uhr-App braucht ein eigenes Symbol, das der iPhone-App genügt
+        # ihr nicht.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Release:
+          DEVELOPMENT_TEAM: UGLPKQFM9U
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Apple Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "AI Cockpit Mobile Watch App Store"
     sources:
       - path: Watch
       - path: WatchGeteilt
@@ -108,6 +135,12 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.ip-style.aicockpitmobile.watchkitapp.widget
         INFOPLIST_FILE: WatchWidget/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: WatchWidget/Resources/AICockpitWatchWidget.entitlements
+      configs:
+        Release:
+          DEVELOPMENT_TEAM: UGLPKQFM9U
+          CODE_SIGN_STYLE: Manual
+          CODE_SIGN_IDENTITY: "Apple Distribution"
+          PROVISIONING_PROFILE_SPECIFIER: "AI Cockpit Mobile Watch Widget App Store"
     sources:
       - path: WatchWidget
       - path: WatchGeteilt
